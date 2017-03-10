@@ -1,0 +1,2 @@
+Finished all Cycle 3 tasks. 
+We spent roughly four hours on these, with a further four hours for general troubleshooting, testing, and optimization. 

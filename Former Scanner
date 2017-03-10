@@ -1,0 +1,42 @@
+@SuppressWarnings("resource")
+    public void createLevel(int levelNumber) throws FileNotFoundException,
+            IOException {
+
+        int nextLevel = this.levelNum + levelNumber;
+
+        if (nextLevel < 1 || nextLevel >= 3) {
+
+            return;
+        }
+
+        Scanner input = new Scanner(System.in);
+        String textFile = "Level_" + nextLevel + ".txt";
+        this.levelNum = nextLevel;
+
+        input = new Scanner(new File(textFile));
+
+            // if (input.nextLine().equals("Mushrooms")) {
+
+            this.mushrooms.clear();
+            this.monsters.clear();
+
+            while (!input.nextLine().equals("Centipede")) {
+
+                int gridX = input.nextInt();
+                int gridY = input.nextInt();
+                input.nextLine();
+
+                this.mushrooms.add(new Mushroom(this, gridX, gridY));
+            }
+
+            while (input.hasNextLine()) {
+                int gridX = input.nextInt();
+                int gridY = input.nextInt();
+                input.nextLine();
+
+                this.monsters.add(new Centipede(this, gridX, gridY));
+            }
+        // else if(input.nextLine().equals("Centipede")) {
+
+        input.close();
+    }

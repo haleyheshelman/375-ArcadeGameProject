@@ -1,0 +1,3 @@
+Cycle 4 took roughly five hours of work, due to both the extra features
+ and efforts to optimize the code. 
+The presentation took roughly two hours to put together. 

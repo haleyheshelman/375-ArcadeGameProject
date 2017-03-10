@@ -1,0 +1,7 @@
+Completed all assigned tasks. 
+
+UML diagram and general planning -- 5 hours
+Player can move and fire -- 2.5 hours
+Player cannot move through mushrooms -- 1.5 hours
+Levels can load from files -- 2 hours
+Switch levels with U and D -- 30 minutes

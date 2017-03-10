@@ -1,0 +1,2 @@
+Most of the features for Cycle 2 were already finished since we went a bit ahead with Cycle 1. 
+Overall, the centipede took maybe two hours. 

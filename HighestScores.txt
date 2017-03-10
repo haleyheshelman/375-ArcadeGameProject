@@ -1,0 +1,5 @@
+Amy 20000
+Henry 10000
+Tom 7000
+Peter 4000
+Anna 2000
