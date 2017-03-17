@@ -9,13 +9,13 @@ import java.util.ArrayList;
  *
  * @author deradaam, lub and verlaqd. Created Oct 28, 2015.
  */
-public class Projectile extends Dieable {
+public abstract class Projectile extends Dieable {
 
 	private static final int PROJECTILE_WIDTH = 4;
 	private static final int PROJECTILE_HEIGHT = 9;
 	private static final int DEFAULT_PROJECTILE_VELOCITY = -8;
 	protected static final int DEFAULT_PROJECTILE_DAMAGE = 10;
-	protected static final int PROJECTILE_Y_ADJUST=4;
+	protected static final int PROJECTILE_Y_ADJUST = 4;
 	private int damage;
 
 	/**
@@ -43,7 +43,7 @@ public class Projectile extends Dieable {
 		this.height = PROJECTILE_HEIGHT;
 		this.width = PROJECTILE_WIDTH;
 		this.gap = (GRID_SIZE - this.width) * 0.5;
-		this.topGap=(GRID_SIZE-this.height)*0.5;
+		this.topGap = (GRID_SIZE - this.height) * 0.5;
 
 	}
 
@@ -56,11 +56,11 @@ public class Projectile extends Dieable {
 		double nextX = this.getCenterPoint().getX() + this.getVelocityX();
 		double nextY = this.getCenterPoint().getY() + this.getVelocityY();
 		this.setCenterPoint(new Point2D.Double(nextX, nextY));
-		
+
 		if (this.checkHit()) {
 			this.die();
 		}
-		if (!this.getGame().inGameY(this.getY()+this.height)) {
+		if (!this.getGame().inGameY(this.getY() + this.height)) {
 			this.die();
 		}
 	}
@@ -80,16 +80,16 @@ public class Projectile extends Dieable {
 		Dieable intersectObject = this.intersectsObject(objsToCheck);
 		if (intersectObject != null) {
 			hit = true;
+			System.out.println(intersectObject);
 			intersectObject.removeHealth(this.damage);
-			
 		}
-		
+
 		return hit;
 	}
 
 	/**
-	 * Returns the shape of the projectile.
-	 * Constructed a little differently than the others so it's more intuitive.
+	 * Returns the shape of the projectile. Constructed a little differently
+	 * than the others so it's more intuitive.
 	 * 
 	 * @return
 	 */
@@ -99,8 +99,8 @@ public class Projectile extends Dieable {
 		double x = getCenterPoint().getX();
 		double y = getCenterPoint().getY();
 
-		return new Rectangle2D.Double(x - PROJECTILE_WIDTH / 2, y
-				- PROJECTILE_HEIGHT / 2+PROJECTILE_Y_ADJUST, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
+		return new Rectangle2D.Double(x - PROJECTILE_WIDTH / 2, y - PROJECTILE_HEIGHT / 2 + PROJECTILE_Y_ADJUST,
+				PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
 	}
 
 }
