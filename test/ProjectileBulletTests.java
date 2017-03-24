@@ -14,10 +14,9 @@ public class ProjectileBulletTests {
 
 	@Before
 	public void setUp() throws Exception {
-		Main.main(null);
-		System.out.println("SETUP");
-		ag = new ArcadeGame(100, 100);
-		b = new Bullet(ag, new Point2D.Double(40,40));
+		Main.scoreboard = new Scoreboard();
+		ag = new ArcadeGame(318, 400);
+		b = new Bullet(ag, new Point2D.Double(40, 40));
 	}
 
 	@After
@@ -28,7 +27,6 @@ public class ProjectileBulletTests {
 	@Test
 	public void testMove() {
 
-		System.out.println("Testing move()");
 		Random r = new Random();
 		int dX = r.nextInt(15);
 		int dY = r.nextInt(15);
@@ -52,18 +50,22 @@ public class ProjectileBulletTests {
 
 	@Test
 	public void testCheckHit() {
-		for (Dieable d:ag.getDieableParts()){
+		for (Dieable d : ag.getDieableParts()) {
 			ag.removeObject(d);
 		}
 		b.setVelocityX(0);
 		b.setVelocityY(0);
 		b.move();
 		assertFalse(b.checkHit());
-		ag.addObject(new Mushroom(ag, b.getX(), b.getY()));
-		for (Dieable d:ag.getDieableParts()){
-			System.out.println(d);
-		}
+
+		int gridX = 3;
+		int gridY = 3;
+		b.setTLPoint(new Point2D.Double(gridX * Dieable.GRID_SIZE, gridY * Dieable.GRID_SIZE));
+		Mushroom hitMushroom = new Mushroom(ag, gridX, gridY);
+		ag.addObject(hitMushroom);
 		assertTrue(b.checkHit());
+		ag.removeObject(hitMushroom);
+		assertFalse(b.checkHit());
 	}
 
 }

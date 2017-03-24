@@ -471,7 +471,6 @@ public class ArcadeGame {
 	 * @return
 	 */
 	public boolean inGameX(double X, double gap, double obWidth) {
-		// System.out.println(X+" "+this.width);
 		if (0 - 1 <= X && X + 2 * gap + obWidth <= this.width)
 			return true;
 		return false;

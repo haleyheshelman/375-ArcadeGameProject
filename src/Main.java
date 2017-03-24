@@ -31,7 +31,6 @@ public class Main {
 	protected static StartScreen startScreen;
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Write your cool arcade game here!");
 		// make the frame, set the size
 		frame = new JFrame();
 		frame.setSize(getFrameWidth(), FRAME_HEIGHT);
