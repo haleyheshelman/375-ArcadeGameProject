@@ -53,10 +53,30 @@ public class ShipProjectileTests {
 	
 	@Test 
 	public void testFireProjectileProjectileType1 () {
+		assertEquals(5,s.bombsRemaining);
 		assertEquals(1, s.getProjectileType()); 
-		assertEquals(0, ag.getProjectiles());
+		assertEquals(0, ag.getProjectiles().size());
+		
+		int beforeParts = ag.getDieableParts().size(); 
+		s.fireProjectile(); 
+		int afterParts = ag.getDieableParts().size();
+		
+		assertEquals(beforeParts+1, afterParts); 
+		assertEquals(1, ag.getProjectiles().size());
+		
+		//check that the only thing in getProjectile is the new projectile 
+		//assertEquals(1, (Projectile) ag.getProjectiles().get(0).getProjectileType());
+		
+		
+		
+		
+		
+		
+		
 
 		
+		
+		assertEquals(5,s.bombsRemaining);
 		
 	}
 	
