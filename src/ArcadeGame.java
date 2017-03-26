@@ -80,7 +80,7 @@ public class ArcadeGame {
 	 */
 	public void onEveryRefresh() {
 
-		this.addNewMonsters();
+		this.MM.addNewMonsters();
 		this.moveDieables();
 		this.addBonuses();
 	}
@@ -122,7 +122,6 @@ public class ArcadeGame {
 	 * Paused/unpauses and displays/undisplays help screen
 	 *
 	 */
-	@SuppressWarnings("unused")
 	public void helpButtonHit() {
 		this.pause();
 		new HelpScreen();
@@ -137,44 +136,33 @@ public class ArcadeGame {
 	 * @throws IOException
 	 */
 
-	@SuppressWarnings("resource")
-	public void createLevel(int levelNumber)
-			throws FileNotFoundException, IOException {
+	public void createLevel(int levelNumber) throws FileNotFoundException, IOException {
 
 		int nextLevel = this.levelNum + levelNumber;
 
 		if (nextLevel < 1 || nextLevel >= 7) {
 			return;
 		}
-
-		Scanner input = new Scanner(System.in);
 		String textFile = "l" + nextLevel + ".txt";
 		this.levelNum = nextLevel;
 
 		this.updateScoreboard();
 
-		this.lastLevelChange = System.currentTimeMillis();
-		this.MM.lastScorpionTime = this.lastLevelChange;
-		this.MM.lastSpiderTime = this.lastLevelChange;
-		this.lastBonusTime = this.lastLevelChange;
-		this.randomizeTimeLimits();
+		setLastTimes();
+		randomizeTimeLimits();
 
-		this.mushrooms.clear();
-		this.monsters.clear();
-		this.projectiles.clear();
-		this.bonuses.clear();
+		clearBoard();
 
-		this.MM.numCentipedes = 0;
-		this.MM.numFleas = 0;
-		this.MM.numSpiders = 0;
-		this.MM.alreadyAddedScorpion = false;
+		this.MM.resetMonsterCounts();
 		this.MM.scorpionIsAlive = false;
 		this.mushroomsInPlayerArea = 0;
+		this.MM.chooseMonsters();
+		readLevelFromFile(textFile);
+	}
 
-		this.chooseMonsters();
-
+	private void readLevelFromFile(String textFile) throws FileNotFoundException {
 		int gridY = 0;
-		input = new Scanner(new File(textFile));
+		Scanner input = new Scanner(new File(textFile));
 		while (input.hasNextLine()) {
 			String row = input.nextLine();
 			for (int gridX = 0; gridX < row.length(); gridX++) {
@@ -191,6 +179,20 @@ public class ArcadeGame {
 		input.close();
 	}
 
+	private void setLastTimes() {
+		this.lastLevelChange = System.currentTimeMillis();
+		this.lastBonusTime = this.lastLevelChange;
+		this.MM.lastScorpionTime = this.lastLevelChange;
+		this.MM.lastSpiderTime = this.lastLevelChange;
+	}
+
+	private void clearBoard() {
+		this.mushrooms.clear();
+		this.monsters.clear();
+		this.projectiles.clear();
+		this.bonuses.clear();
+	}
+
 	/**
 	 * Performs the appropriate actions when the player beats a level
 	 */
@@ -200,8 +202,8 @@ public class ArcadeGame {
 		Main.scoreboard.changeLevel(this.levelNum);
 		this.MM.numCentipedes = 0;
 		this.MM.alreadyAddedScorpion = false;
-		this.newCentipede();
-		this.chooseMonsters();
+		this.MM.newCentipede();
+		this.MM.chooseMonsters();
 		this.lastLevelChange = System.currentTimeMillis();
 
 		this.randomizeTimeLimits();
@@ -242,71 +244,12 @@ public class ArcadeGame {
 		}
 	}
 
-	// //////////// MONSTER MANAGEMENT //////////// //
-	/**
-	 * Sees which monsters are allowed in this level. Called whenever we beat
-	 * the current level, or change levels manually.
-	 */
-
-	public void chooseMonsters() {
-		this.MM.chooseMonsters();
-
-	}
-
-	/**
-	 * Adds allowed monsters. Called by the onEveryRefresh method.
-	 * 
-	 */
-	public void addNewMonsters() {
-		this.MM.addNewMonsters();
-	}
-
-	/**
-	 * Creates a new Centipede starting at 0 and going to -i+1, heading right,
-	 * with length i.
-	 *
-	 */
-	public void newCentipede() {
-		this.MM.newCentipede();
-	}
-
-	/**
-	 * Figures out where we can put the flea and its mushrooms.
-	 *
-	 * @return
-	 */
-	public void addFleas() {
-		// To add a flea, there must be less than (a certain minimum number)
-		// mushrooms in the player area. There also should not be any other
-		// fleas.
-		this.MM.addFleas();
-	}
-
-	/**
-	 * Adds a Spider to the game, using a time limit.
-	 */
-	public void addSpiders() {
-		this.MM.addSpiders();
-	}
-
-	/**
-	 * Adds a scorpion to the game if there aren't already any and we've reached
-	 * the time limit.
-	 * 
-	 * @return
-	 */
-	public void addScorpions() {
-		this.MM.addScorpions();
-	}
-
-	// /////////////////////////////////////////
 	/**
 	 * Adds a Bonus to the game.
 	 *
 	 */
 	public void addBonuses() {
-		if (System.currentTimeMillis()
-				- this.lastBonusTime > this.bonusMinTime) {
+		if (System.currentTimeMillis() - this.lastBonusTime > this.bonusMinTime) {
 			this.addObject(new Bonus(this));
 			this.lastBonusTime = System.currentTimeMillis();
 		}
@@ -362,18 +305,6 @@ public class ArcadeGame {
 	}
 
 	/**
-	 * 
-	 * Reset monster counts to zero. Used on player death.
-	 *
-	 */
-	public void resetMonsterCounts() {
-		this.MM.numCentipedes = 0;
-		this.MM.numSpiders = 0;
-		this.MM.alreadyAddedScorpion = false;
-		this.MM.numFleas = 0;
-	}
-
-	/**
 	 * Removes the specified mushroom/monster/projectile.
 	 *
 	 * @param objToRemove
@@ -425,10 +356,8 @@ public class ArcadeGame {
 		if (this.lives < 0) {
 			System.out.println("game over");
 			System.out.println("You Scores are: " + this.score);
-			String nameString = JOptionPane
-					.showInputDialog("What is your name?");
-			HighestScoresBoard board = new HighestScoresBoard(this, nameString,
-					this.score);
+			String nameString = JOptionPane.showInputDialog("What is your name?");
+			HighestScoresBoard board = new HighestScoresBoard(this, nameString, this.score);
 			try {
 				board.showResult();
 			} catch (FileNotFoundException exception) {
@@ -446,7 +375,7 @@ public class ArcadeGame {
 			this.monsters.clear();
 			this.projectiles.clear();
 			// reset centipede count
-			this.resetMonsterCounts();
+			this.MM.resetMonsterCounts();
 			// this.timeBonus = 0;
 
 			// Mushrooms should be restored to full health if damaged and made
@@ -457,7 +386,7 @@ public class ArcadeGame {
 				currentMushroom.bounty = 1;
 			}
 			// initialize new Centipede
-			this.newCentipede();
+			this.MM.newCentipede();
 		}
 		Main.scoreboard.changeLives(this.lives);
 	}
@@ -465,22 +394,18 @@ public class ArcadeGame {
 	/**
 	 * Checks if the specified point is in the game (one for x, one for y)
 	 *
-	 * @param X: the top left x
+	 * @param X:
+	 *            the top left x
 	 * @param obWidth
 	 * @param gap
 	 * @return
 	 */
 	public boolean inGameX(double X, double gap, double obWidth) {
-		if (0 - 1 <= X && X + 2 * gap + obWidth <= this.width)
-			return true;
-		return false;
+		return (0 - 1 <= X && X + 2 * gap + obWidth <= this.width);
 	}
 
 	public boolean inGameY(double Y) {
-		if (0 <= Y && Y <= this.height + 4)
-			return true;
-		// if (0 - 1 <= Y && Y+2*gap*obHeight < this.height)
-		return false;
+		return (0 <= Y && Y <= this.height + 4);
 	}
 
 	// ////// GETTERS AND SETTERS ////// //

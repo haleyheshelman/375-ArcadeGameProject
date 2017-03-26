@@ -56,11 +56,11 @@ public class MonsterManager {
 	 * 
 	 */
 	public void addNewMonsters() {
-		this.game.addSpiders();
+		this.addSpiders();
 		if (fleasAllowed)
-			this.game.addFleas();
+			this.addFleas();
 		if (scorpionsAllowed)
-			this.game.addScorpions();
+			this.addScorpions();
 	}
 
 	/**
@@ -137,5 +137,18 @@ public class MonsterManager {
 				this.lastScorpionTime = System.currentTimeMillis();
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * Reset monster counts to zero. Used on player death.
+	 * @param arcadeGame TODO
+	 *
+	 */
+	public void resetMonsterCounts() {
+		numCentipedes = 0;
+		numSpiders = 0;
+		alreadyAddedScorpion = false;
+		numFleas = 0;
 	}
 }
