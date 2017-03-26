@@ -23,11 +23,11 @@ public class Spider extends Monster {
 
 	private static final double SPIDER_VELOCITY_X = 1;
 	private static final double SPIDER_VELOCITY_Y = 1;
-	private static final int MAX_HEIGHT = ArcadeGame.TOP_PLAYER_AREA*ArcadeGame.GRID_SIZE;
+	private static final int MAX_HEIGHT = ArcadeGame.TOP_PLAYER_AREA * ArcadeGame.GRID_SIZE;
 	private static final double INITIAL_X = 9.5;
 	private static final int SPIDER_SCORES = 600;
-	private  int yDirection = -1;
-	private  int xDirection = 1;
+	private int yDirection = -1;
+	private int xDirection = 1;
 	private int xReverseTimes = 0;
 	protected static Random rand = new Random();
 
@@ -40,7 +40,8 @@ public class Spider extends Monster {
 		super(game, 0, 0);
 		this.setVelocityX(SPIDER_VELOCITY_X * this.xDirection);
 		this.setVelocityY(SPIDER_VELOCITY_Y * this.yDirection);
-		int initialY = rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA-ArcadeGame.TOP_PLAYER_AREA+1) + ArcadeGame.TOP_PLAYER_AREA;
+		int initialY = rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
+				+ ArcadeGame.TOP_PLAYER_AREA;
 		this.setTLPoint(new Point2D.Double(INITIAL_X * (1 - this.xDirection) * Dieable.GRID_SIZE,
 				initialY * Dieable.GRID_SIZE));
 		this.bounty = SPIDER_SCORES;
@@ -55,8 +56,9 @@ public class Spider extends Monster {
 		double curX = this.getX();
 		double nextY = this.getY() + SPIDER_VELOCITY_Y * this.yDirection;
 		double nextX = curX + SPIDER_VELOCITY_X * this.xDirection;
-		if(this.getGame().inGameX(curX, nextY, this.width)&&!this.getGame().inGameX(nextX, nextY, this.width)) this.xDirection*=-1;
-		
+		if (this.getGame().inGameX(curX, nextY, this.width) && !this.getGame().inGameX(nextX, nextY, this.width))
+			this.xDirection *= -1;
+
 		this.moveOrDie(curY, nextX, nextY);
 		this.eatMushroom();
 	}

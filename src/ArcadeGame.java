@@ -465,7 +465,7 @@ public class ArcadeGame {
 	/**
 	 * Checks if the specified point is in the game (one for x, one for y)
 	 *
-	 * @param X
+	 * @param X: the top left x
 	 * @param obWidth
 	 * @param gap
 	 * @return

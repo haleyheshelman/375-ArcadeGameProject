@@ -42,8 +42,7 @@ public abstract class Dieable implements Drawable {
 	 * @param gridY
 	 */
 	public Dieable(ArcadeGame game, double gridX, double gridY) {
-		this.setTLPoint(new Point2D.Double(gridX * (GRID_SIZE), gridY
-				* (GRID_SIZE)));
+		this.setTLPoint(new Point2D.Double(gridX * (GRID_SIZE), gridY * (GRID_SIZE)));
 		this.health = 10;
 		this.game = game;
 		this.height = SPRITE_SIZE;
@@ -99,8 +98,7 @@ public abstract class Dieable implements Drawable {
 		return this.intersectsObject(objsToCheck, null);
 	}
 
-	public Dieable intersectsObject(ArrayList<Dieable> objsToCheck,
-			Dieable objToIgnore) {
+	public Dieable intersectsObject(ArrayList<Dieable> objsToCheck, Dieable objToIgnore) {
 
 		for (Dieable curDie : objsToCheck) {
 			if (curDie != objToIgnore) {
@@ -130,8 +128,7 @@ public abstract class Dieable implements Drawable {
 	public Shape getShape() {
 		double x = getTLPoint().getX();
 		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
-				this.height);
+		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width, this.height);
 	}
 
 	/**
@@ -141,10 +138,8 @@ public abstract class Dieable implements Drawable {
 	 * @return
 	 */
 	public Point2D getCenterPoint() {
-		double centerX = this.getTLPoint().getX() + this.gap + this.width / 2
-				+ 1;
-		double centerY = this.getTLPoint().getY() + this.topGap + this.height
-				/ 2;
+		double centerX = this.getTLPoint().getX() + this.gap + this.width / 2 + 1;
+		double centerY = this.getTLPoint().getY() + this.topGap + this.height / 2;
 		return new Point2D.Double(centerX, centerY);
 	}
 
@@ -170,11 +165,22 @@ public abstract class Dieable implements Drawable {
 	public Point2D getTLPoint() {
 		return this.TLPoint;
 	}
-	
-	public double getX(){
+
+	/**
+	 * Top left X
+	 * 
+	 * @return
+	 */
+	public double getX() {
 		return this.TLPoint.getX();
 	}
-	public double getY(){
+
+	/**
+	 * top left Y
+	 * 
+	 * @return
+	 */
+	public double getY() {
 		return this.TLPoint.getY();
 	}
 

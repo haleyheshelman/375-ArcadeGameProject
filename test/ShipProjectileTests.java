@@ -73,8 +73,10 @@ public class ShipProjectileTests {
 
 		// check that the only thing in getProjectile is the new bullet
 		// can't getProjectileType on dieable... what to do?
-		// assertEquals(1, (Projectile)
-		// ag.getProjectiles().get(0).getProjectileType());
+		// assertEquals(1, ((Projectile)
+		// ag.getProjectiles().get(0)).getProjectileType());
+		
+		assertTrue(ag.getProjectiles().get(0) instanceof Bullet);
 
 		assertEquals(5, s.bombsRemaining);
 		waitToFire();
