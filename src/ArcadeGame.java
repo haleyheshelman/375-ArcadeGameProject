@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -62,6 +63,7 @@ public class ArcadeGame {
 	public ArcadeGame(int height, int width) throws IOException {
 		this.height = height;
 		this.width = width;
+		initializeAddObjectMap();
 		this.ship = new Ship(this, 10, 16);
 		createLevel(1);
 	}
@@ -261,31 +263,28 @@ public class ArcadeGame {
 	 *
 	 * @param objToAdd
 	 */
+
+	HashMap<Class<? extends Dieable>, ArrayList<Dieable>> dieableMap = new HashMap<>();
+
+	private void initializeAddObjectMap() {
+		dieableMap.put(Monster.class, monsters);
+		dieableMap.put(Projectile.class, projectiles);
+		dieableMap.put(Mushroom.class, mushrooms);
+		dieableMap.put(Bonus.class, bonuses);
+	}
+
 	public void addObject(Dieable objToAdd) {
 		if (objToAdd instanceof Monster) {
-			this.monsters.add(objToAdd);
-			if (objToAdd instanceof Centipede) {
-				this.MM.numCentipedes++;
-			} else if (objToAdd instanceof Flea) {
-				this.MM.numFleas++;
-			} else if (objToAdd instanceof Scorpion) {
-				this.MM.alreadyAddedScorpion = true;
-				this.MM.scorpionIsAlive = true;
-			} else if (objToAdd instanceof Spider) {
-				this.MM.numSpiders++;
-			}
-		}
-		if (objToAdd instanceof Projectile) {
-			this.projectiles.add(objToAdd);
-		}
-		if (objToAdd instanceof Mushroom) {
-			this.mushrooms.add(objToAdd);
-		}
-		if (objToAdd instanceof Bonus) {
+			this.MM.incrementMonsterCounts((Monster) objToAdd);
 
-			this.bonuses.add(objToAdd);
 		}
-
+		ArrayList<Dieable> list;
+		if (dieableMap.containsKey(objToAdd.getClass())) {
+			list = dieableMap.get(objToAdd.getClass());
+		} else {
+			list = dieableMap.get(objToAdd.getClass().getSuperclass());
+		}
+		list.add(objToAdd);
 	}
 
 	/**

@@ -3,15 +3,14 @@
  * MonsterManager is a class for, well, managing monsters. It handles which
  * monsters should be added and when.
  *
- * @author deradaam, lub and verlaqd
- *         Created Nov 12, 2015.
+ * @author deradaam, lub and verlaqd Created Nov 12, 2015.
  */
 public class MonsterManager {
 
 	private ArcadeGame game;
 
 	protected static final int CENTIPEDE_BASE_NUM = 4;
-	
+
 	protected long lastSpiderTime;
 	protected long spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
 
@@ -19,11 +18,10 @@ public class MonsterManager {
 	protected boolean scorpionIsAlive = false;
 	protected long scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
 	protected long lastScorpionTime;
-	
 
 	protected static boolean fleasAllowed = false;
 	protected static boolean scorpionsAllowed = false;
-	
+
 	protected int numFleas = 0;
 	protected int numCentipedes = 0;
 	protected int numSpiders = 0;
@@ -32,7 +30,7 @@ public class MonsterManager {
 		this.game = arcadeGame;
 		this.lastSpiderTime = this.game.lastLevelChange;
 		this.lastScorpionTime = this.game.lastLevelChange;
-		
+
 	}
 
 	public void chooseMonsters() {
@@ -91,8 +89,7 @@ public class MonsterManager {
 
 			int initialX = ArcadeGame.rand.nextInt(ArcadeGame.GRID_SIZE);
 			int mush1Y = ArcadeGame.rand.nextInt(ArcadeGame.TOP_PLAYER_AREA);
-			int mush2Y = ArcadeGame.rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA
-					- ArcadeGame.TOP_PLAYER_AREA + 1)
+			int mush2Y = ArcadeGame.rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
 					+ ArcadeGame.TOP_PLAYER_AREA - 1;
 
 			Mushroom testMush1 = new Mushroom(this.game, initialX, mush1Y);
@@ -101,8 +98,7 @@ public class MonsterManager {
 					&& testMush2.intersectsObject(this.game.getMushrooms()) == null) {
 				testMush1.die();
 				testMush2.die();
-				this.game.addObject(new Flea(this.game, initialX, mush1Y,
-						mush2Y));
+				this.game.addObject(new Flea(this.game, initialX, mush1Y, mush2Y));
 				break;
 			}
 		}
@@ -130,8 +126,7 @@ public class MonsterManager {
 		if ((!this.alreadyAddedScorpion) && (!this.scorpionIsAlive)) {
 			if (System.currentTimeMillis() - this.lastScorpionTime > this.scorpionMinTime) {
 
-				int yGrid = ArcadeGame.rand
-						.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
+				int yGrid = ArcadeGame.rand.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
 
 				this.game.addObject(new Scorpion(this.game, 0, yGrid));
 				this.lastScorpionTime = System.currentTimeMillis();
@@ -142,7 +137,9 @@ public class MonsterManager {
 	/**
 	 * 
 	 * Reset monster counts to zero. Used on player death.
-	 * @param arcadeGame TODO
+	 * 
+	 * @param arcadeGame
+	 *            TODO
 	 *
 	 */
 	public void resetMonsterCounts() {
@@ -150,5 +147,18 @@ public class MonsterManager {
 		numSpiders = 0;
 		alreadyAddedScorpion = false;
 		numFleas = 0;
+	}
+
+	public void incrementMonsterCounts(Monster objToAdd) {
+		if (objToAdd instanceof Centipede) {
+			numCentipedes++;
+		} else if (objToAdd instanceof Flea) {
+			numFleas++;
+		} else if (objToAdd instanceof Scorpion) {
+			alreadyAddedScorpion = true;
+			scorpionIsAlive = true;
+		} else if (objToAdd instanceof Spider) {
+			numSpiders++;
+		}
 	}
 }
