@@ -79,16 +79,7 @@ public abstract class Dieable implements Drawable {
 
 	/**
 	 * 
-	 * The intersectsObject function takes a list of Dieables and a 'check'
-	 * Dieable. It goes through the list and sees if the 'check' object
-	 * intersects any of the list objects. If it does, then it returns said list
-	 * object.
-	 * 
-	 * It has an optional parameter, objToIgnore. This is a Dieable that the
-	 * intersectsObject function will ignore. In other words, the function will
-	 * not return the ignored object even if it intersects with the objToCheck.
-	 * At the moment, objToIgnore is used only by Centipede, for verti
-	 * movements.
+	 *Checks the dieable objects to see if they intersect with a given object
 	 *
 	 * @param objsToCheck
 	 * @param thisObject
@@ -99,6 +90,15 @@ public abstract class Dieable implements Drawable {
 		return this.intersectsObject(objsToCheck, null);
 	}
 
+	/**
+	 * 
+	 * Checks the dieable objects to see if they intersect with a given object but
+	 * ignores a given objToIgnore when checking
+	 * 
+	 * @param objsToCheck
+	 * @param objToIgnore
+	 * @return
+	 */
 	public Dieable intersectsObject(ArrayList<Dieable> objsToCheck,
 			Dieable objToIgnore) {
 
@@ -155,9 +155,8 @@ public abstract class Dieable implements Drawable {
 	 */
 
 	public void setCenterPoint(Point2D centerPoint) {
-		// this.centerPoint = centerPoint;
-		double TLX = centerPoint.getX() - this.gap - this.width / 2 - 1;
-		double TLY = centerPoint.getY() - this.topGap - this.height / 2;
+		double TLX = centerPoint.getX() - this.gap - (this.width / 2) ;
+		double TLY = centerPoint.getY() - this.topGap - (this.height / 2);
 		this.TLPoint = new Point2D.Double(TLX, TLY);
 	}
 
