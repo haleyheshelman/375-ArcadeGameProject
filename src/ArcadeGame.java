@@ -1,4 +1,5 @@
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -475,5 +476,23 @@ public class ArcadeGame {
 		dieables.add(this.ship);
 
 		return dieables;
+	}
+
+	public void addNewBullet(Double projectilePoint) {
+		addObject(new Bullet(this, projectilePoint));
+	}
+
+	public void addNewMissile(Double projectilePoint) {
+		addObject(new Missile(this, projectilePoint));
+	}
+
+	public void addNewShotgunShot(Double projectilePoint) {
+		this.addObject(new Bullet(this, projectilePoint, 8));
+		this.addObject(new Bullet(this, projectilePoint, 8, -1));
+		this.addObject(new Bullet(this, projectilePoint, 8, 1));
+	}
+
+	public void addNewBomb(Double projectilePoint) {
+		addObject(new Bomb(this, projectilePoint));
 	}
 }
