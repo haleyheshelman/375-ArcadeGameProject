@@ -23,7 +23,6 @@ public abstract class Monster extends Dieable {
 		this.setVelocityX(DEF_MONST_VEL);
 		this.setVelocityY(DEF_MONST_VEL);
 		this.setHealth(DEF_MONST_HEALTH);
-
 	}
 
 }

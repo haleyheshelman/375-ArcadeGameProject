@@ -80,7 +80,6 @@ public abstract class Projectile extends Dieable {
 		Dieable intersectObject = this.intersectsObject(objsToCheck);
 		if (intersectObject != null) {
 			hit = true;
-			System.out.println(intersectObject);
 			intersectObject.removeHealth(this.damage);
 		}
 
