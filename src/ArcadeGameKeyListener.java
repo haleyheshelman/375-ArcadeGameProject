@@ -13,11 +13,13 @@ public class ArcadeGameKeyListener implements KeyListener {
 	protected ArcadeGame game;
 	protected ArcadeGameComponent AGC;
 	protected boolean alreadyFiring = false;
+
 	public ArcadeGameKeyListener() {
 		this.game = null;
 		this.AGC = null;
 
 	}
+
 	/**
 	 * Constructs a listener can read the keyboard input from the user and
 	 * do some specific behaviors in the game.
@@ -45,9 +47,10 @@ public class ArcadeGameKeyListener implements KeyListener {
 					+ ", CC:" + this.game.MM.numCentipedes + "\n ship TLC:"
 					+ this.game.getShip().getX() + ","
 					+ this.game.getShip().getY());
-			System.out.println(this.game.MM.numSpiders+" spiders");
-			System.out.println(this.game.MM.numFleas+" fleas");
-			System.out.println(this.game.MM.scorpionIsAlive+" "+this.game.MM.scorpionsAllowed);
+			System.out.println(this.game.MM.numSpiders + " spiders");
+			System.out.println(this.game.MM.numFleas + " fleas");
+			System.out.println(this.game.MM.scorpionIsAlive + " "
+					+ this.game.MM.scorpionsAllowed);
 
 		}
 		/*
@@ -123,6 +126,9 @@ public class ArcadeGameKeyListener implements KeyListener {
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("4")) {
 			this.game.getShip().setProjectileType(4);
 		}
+		if (KeyEvent.getKeyText(e.getKeyCode()).equals("5")) {
+			this.game.getShip().setProjectileType(5);
+		}
 
 	}
 
@@ -166,12 +172,12 @@ public class ArcadeGameKeyListener implements KeyListener {
 
 		if (e.getKeyChar() == 'h') {
 			this.game.helpButtonHit();
-//			HelpScreen hs = new HelpScreen();
-//			hs.setVisible(true);
-			
+			// HelpScreen hs = new HelpScreen();
+			// hs.setVisible(true);
+
 		}
 		if (e.getKeyChar() == 'g') {
-			this.game.USE_IMAGES=(!this.game.USE_IMAGES);
+			this.game.USE_IMAGES = (!this.game.USE_IMAGES);
 			System.out.println("Enabled/disabled graphics");
 		}
 	}

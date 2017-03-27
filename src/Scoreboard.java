@@ -24,15 +24,15 @@ public class Scoreboard extends JPanel {
 	 */
 	public Scoreboard() {
 		this.setPreferredSize(new Dimension(Main.getFrameWidth() - 18, 20));
-this.setLayout(new GridLayout(1,4));
-		this.livesField.setPreferredSize(new Dimension(
-				Main.getFrameWidth() / 4, 19));
-		this.scoreField.setPreferredSize(new Dimension(
-				Main.getFrameWidth() / 4, 19));
-		this.levelField.setPreferredSize(new Dimension(
-				Main.getFrameWidth() / 4, 19));
-		this.weaponField.setPreferredSize(new Dimension(
-				Main.getFrameWidth() / 4, 19));
+		this.setLayout(new GridLayout(1, 4));
+		this.livesField
+				.setPreferredSize(new Dimension(Main.getFrameWidth() / 4, 19));
+		this.scoreField
+				.setPreferredSize(new Dimension(Main.getFrameWidth() / 4, 19));
+		this.levelField
+				.setPreferredSize(new Dimension(Main.getFrameWidth() / 4, 19));
+		this.weaponField
+				.setPreferredSize(new Dimension(Main.getFrameWidth() / 4, 19));
 
 		this.add(this.livesField);
 		this.add(this.scoreField);
@@ -75,22 +75,30 @@ this.setLayout(new GridLayout(1,4));
 	public void changeLevel(int level) {
 		this.levelField.setText("Level: " + (level));
 	}
-	
+
 	/**
 	 * Changes the type of weapon.
 	 *
 	 * @param weaponNum
 	 */
-	public void changeWeapon(int weaponNum){
+	public void changeWeapon(int weaponNum) {
 		String str = "";
-		if(weaponNum==1) str="Cannon";
-		else if(weaponNum==2) str = "Guided Missile";
-		else if(weaponNum==3) str = "Shotgun";
-		else if(weaponNum==4) str = "Mines (?)";
+		if (weaponNum == 1)
+			str = "Cannon";
+		else if (weaponNum == 2)
+			str = "Guided Missile";
+		else if (weaponNum == 3)
+			str = "Shotgun";
+		else if (weaponNum == 4)
+			str = "Mines (?)";
+		else if (weaponNum == 5)
+			str = "Exploding bullet";
 		this.weaponField.setText(str);
 	}
-	public void changeWeapon(@SuppressWarnings("unused") int weaponNum, int bombsRemaining){
-		this.weaponField.setText("Mines ("+bombsRemaining+")");
+
+	public void changeWeapon(@SuppressWarnings("unused") int weaponNum,
+			int bombsRemaining) {
+		this.weaponField.setText("Mines (" + bombsRemaining + ")");
 	}
 
 	/**

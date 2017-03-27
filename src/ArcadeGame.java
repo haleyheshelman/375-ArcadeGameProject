@@ -481,6 +481,10 @@ public class ArcadeGame {
 	public void addNewBullet(Double projectilePoint) {
 		addObject(new Bullet(this, projectilePoint));
 	}
+	
+	public void addNewExplodingBullet(Double projectilePoint) {
+		addObject(new ExplodingBullet(this, projectilePoint));
+	}
 
 	public void addNewMissile(Double projectilePoint) {
 		addObject(new Missile(this, projectilePoint));

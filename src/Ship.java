@@ -67,10 +67,12 @@ public class Ship extends Dieable {
 
 		// this is the next X value, assuming we can actually move in the
 		// desired X direction.
-		double nextX = curX + this.getVelocityX() * (this.rightMove - this.leftMove);
+		double nextX = curX
+				+ this.getVelocityX() * (this.rightMove - this.leftMove);
 
 		// ditto for Y
-		double nextY = curY + this.getVelocityY() * (this.downMove - this.upMove);
+		double nextY = curY
+				+ this.getVelocityY() * (this.downMove - this.upMove);
 
 		// decides if we should move to the new X/Y or stay at the current one
 		double newX = this.chooseNewX(curX, nextX, curY);
@@ -114,9 +116,11 @@ public class Ship extends Dieable {
 		Point2D curTL = this.getTLPoint(); // save current top left point
 		this.setTLPoint(new Point2D.Double(curX, nextY));
 
-		Dieable intersectedObject = this.intersectsObject(this.getGame().getMushrooms());
+		Dieable intersectedObject = this
+				.intersectsObject(this.getGame().getMushrooms());
 
-		if (this.getGame().inGameY(nextY) && nextY >= MAX_HEIGHT && intersectedObject == null) {
+		if (this.getGame().inGameY(nextY) && nextY >= MAX_HEIGHT
+				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextY;
 		}
@@ -129,9 +133,11 @@ public class Ship extends Dieable {
 		Point2D curTL = this.getTLPoint();
 		this.setTLPoint(new Point2D.Double(nextX, curY));
 
-		Dieable intersectedObject = this.intersectsObject(this.getGame().getMushrooms());
+		Dieable intersectedObject = this
+				.intersectsObject(this.getGame().getMushrooms());
 
-		if (this.getGame().inGameX(nextX, this.gap, this.width) && intersectedObject == null) {
+		if (this.getGame().inGameX(nextX, this.gap, this.width)
+				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextX;
 		}
@@ -176,7 +182,8 @@ public class Ship extends Dieable {
 		double coordinateX = this.getCenterPoint().getX();
 		double coordinateY = this.getCenterPoint().getY() - 10;
 
-		Point2D.Double projectilePoint = new Point2D.Double(coordinateX, coordinateY);
+		Point2D.Double projectilePoint = new Point2D.Double(coordinateX,
+				coordinateY);
 
 		if (this.getProjectileType() == 1) {
 			// first projectile type
@@ -197,6 +204,8 @@ public class Ship extends Dieable {
 				this.bombsRemaining--;
 				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
 			}
+		} else if (this.getProjectileType() == 5) {
+			this.getGame().addNewExplodingBullet(projectilePoint);
 		}
 	}
 
@@ -213,7 +222,8 @@ public class Ship extends Dieable {
 
 		double x = getTLPoint().getX();
 		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width, this.height);
+		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
+				this.height);
 		// return new Arc2D.Double(x + this.gap, y + this.gap, this.width, 2
 		// * this.height + this.gap, 0, 180, Arc2D.CHORD);
 	}
