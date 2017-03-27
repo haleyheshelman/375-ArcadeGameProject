@@ -47,6 +47,11 @@ public class ShipProjectileTests {
 		assertEquals(4, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
+		
+		s.setProjectileType(5); 
+		assertEquals(5, s.getProjectileType()); 
+		assertEquals(5, s.bombsRemaining); 
+		assertEquals(0, ag.getProjectiles().size());
 
 	}
 
@@ -187,7 +192,28 @@ public class ShipProjectileTests {
 		s.fireProjectile();
 		assertEquals(6, ag.getProjectiles().size());
 		assertEquals(0, s.bombsRemaining);
+		waitToFire(); 
 		
+	}
+	
+	@Test
+	public void testFireProjectileType5() {
+		assertEquals(5, s.bombsRemaining);
+		s.setProjectileType(5);
+		assertEquals(5, s.getProjectileType());
+		assertEquals(0, ag.getProjectiles().size());
+
+		int beforeParts = ag.getDieableParts().size();
+		s.fireProjectile();
+		int afterParts = ag.getDieableParts().size();
+
+		assertEquals(beforeParts+1, afterParts);
+		assertEquals(1, ag.getProjectiles().size());
+		assertTrue(ag.getProjectiles().get(0) instanceof ExplodingBullet);
+
+		assertEquals(5, s.bombsRemaining);
+
+		waitToFire();
 
 	}
 
