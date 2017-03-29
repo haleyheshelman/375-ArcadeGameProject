@@ -7,20 +7,27 @@
  */
 public class MonsterManager {
 
+	private static final int ZOMBIES_START_LEVEL = 5;
+	private static final int SCORPIONS_START_LEVEL = 4;
+	private static final int FLEAS_START_LEVEL = 3;
+
 	private ArcadeGame game;
 
 	protected static final int CENTIPEDE_BASE_NUM = 4;
 
 	protected long lastSpiderTime;
-	protected long spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
+	protected long spiderMinTime;
 
 	protected boolean alreadyAddedScorpion = false;
 	protected boolean scorpionIsAlive = false;
-	protected long scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
+	protected long scorpionMinTime;
 	protected long lastScorpionTime;
+	protected long zombieMinTime;
+	protected long lastZombieTime;
 
 	protected static boolean fleasAllowed = false;
 	protected static boolean scorpionsAllowed = false;
+	protected static boolean zombiesAllowed = false;
 
 	protected int numFleas = 0;
 	protected int numCentipedes = 0;
@@ -30,23 +37,20 @@ public class MonsterManager {
 		this.game = arcadeGame;
 		this.lastSpiderTime = this.game.lastLevelChange;
 		this.lastScorpionTime = this.game.lastLevelChange;
-
+		this.lastZombieTime = this.game.lastLevelChange;
+		this.randomizeMonsterMinTimes();
 	}
 
-	public void chooseMonsters() {
+	private boolean zombies_allowed() {
+		return this.game.levelNum >= ZOMBIES_START_LEVEL;
+	}
 
-		if (this.game.levelNum > 2) { // fleas start on level 3
-			fleasAllowed = true;
-		} else {
-			fleasAllowed = false;
-		}
-		if (this.game.levelNum > 3) { // scorpions start on level
-			scorpionsAllowed = true;
-		} else {
-			scorpionsAllowed = false;
-		}
-		// System.out.println("Fleas: " + fleasAllowed);
-		// System.out.println("Scorpions: " + scorpionsAllowed);
+	private boolean scorpions_allowed() {
+		return this.game.levelNum >= SCORPIONS_START_LEVEL;
+	}
+
+	private boolean fleas_allowed() {
+		return this.game.levelNum >= FLEAS_START_LEVEL;
 	}
 
 	/**
@@ -55,10 +59,15 @@ public class MonsterManager {
 	 */
 	public void addNewMonsters() {
 		this.addSpiders();
-		if (fleasAllowed)
+
+		if (fleas_allowed())
 			this.addFleas();
-		if (scorpionsAllowed)
+
+		if (scorpions_allowed())
 			this.addScorpions();
+
+		if (zombies_allowed())
+			this.addZombies();
 	}
 
 	/**
@@ -81,27 +90,35 @@ public class MonsterManager {
 		// To add a flea, there must be less than (a certain minimum number)
 		// mushrooms in the player area. There also should not be any other
 		// fleas.
-		if (!(this.game.mushroomsInPlayerArea < this.game.minNumMushrooms && this.numFleas == 0)) {
+		if (!(this.game.mushroomsInPlayerArea < this.game.minNumMushrooms
+				&& this.numFleas == 0)) {
 			return;
 		}
 		boolean bothGood = false;
 		while (!bothGood) {
 
-			int initialX = ArcadeGame.rand.nextInt(ArcadeGame.GRID_SIZE);
+			int initialX = randomGridX();
 			int mush1Y = ArcadeGame.rand.nextInt(ArcadeGame.TOP_PLAYER_AREA);
-			int mush2Y = ArcadeGame.rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
+			int mush2Y = ArcadeGame.rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA
+					- ArcadeGame.TOP_PLAYER_AREA + 1)
 					+ ArcadeGame.TOP_PLAYER_AREA - 1;
 
 			Mushroom testMush1 = new Mushroom(this.game, initialX, mush1Y);
 			Mushroom testMush2 = new Mushroom(this.game, initialX, mush1Y);
 			if (testMush1.intersectsObject(this.game.getMushrooms()) == null
-					&& testMush2.intersectsObject(this.game.getMushrooms()) == null) {
+					&& testMush2.intersectsObject(
+							this.game.getMushrooms()) == null) {
 				testMush1.die();
 				testMush2.die();
-				this.game.addObject(new Flea(this.game, initialX, mush1Y, mush2Y));
+				this.game.addObject(
+						new Flea(this.game, initialX, mush1Y, mush2Y));
 				break;
 			}
 		}
+	}
+
+	private int randomGridX() {
+		return ArcadeGame.rand.nextInt(ArcadeGame.GRID_SIZE);
 	}
 
 	/**
@@ -109,7 +126,8 @@ public class MonsterManager {
 	 */
 	public void addSpiders() {
 		if (this.numSpiders == 0) {
-			if (System.currentTimeMillis() - this.lastSpiderTime > this.spiderMinTime) {
+			if (System.currentTimeMillis()
+					- this.lastSpiderTime > this.spiderMinTime) {
 				this.game.addObject(new Spider(this.game));
 				this.lastSpiderTime = System.currentTimeMillis();
 			}
@@ -124,13 +142,23 @@ public class MonsterManager {
 	 */
 	public void addScorpions() {
 		if ((!this.alreadyAddedScorpion) && (!this.scorpionIsAlive)) {
-			if (System.currentTimeMillis() - this.lastScorpionTime > this.scorpionMinTime) {
+			if (System.currentTimeMillis()
+					- this.lastScorpionTime > this.scorpionMinTime) {
 
-				int yGrid = ArcadeGame.rand.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
+				int yGrid = ArcadeGame.rand
+						.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
 
 				this.game.addObject(new Scorpion(this.game, 0, yGrid));
 				this.lastScorpionTime = System.currentTimeMillis();
 			}
+		}
+	}
+
+	public void addZombies() {
+		if (System.currentTimeMillis() > this.lastZombieTime
+				+ this.zombieMinTime) {
+			this.game.addObject(new Zombie(game, randomGridX(), -1));
+			this.lastZombieTime = System.currentTimeMillis();
 		}
 	}
 
@@ -139,14 +167,20 @@ public class MonsterManager {
 	 * Reset monster counts to zero. Used on player death.
 	 * 
 	 * @param arcadeGame
-	 *            TODO
 	 *
 	 */
 	public void resetMonsterCounts() {
 		numCentipedes = 0;
 		numSpiders = 0;
 		alreadyAddedScorpion = false;
+		scorpionIsAlive = false;
 		numFleas = 0;
+	}
+
+	protected void randomizeMonsterMinTimes() {
+		spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
+		scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
+		zombieMinTime = ArcadeGame.rand.nextInt(10) * 2000 + 10000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {

@@ -140,25 +140,33 @@ public class ArcadeGameComponent extends JComponent {
 
 						if (m.getHealth() == Mushroom.DEFAULT_MUSHROOM_HEALTH) {
 
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinal.png"));
+							image = ImageIO.read(
+									new File("poisonedMushroomFinal.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (10)) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- (10)) {
 
 							image = ImageIO.read(new File(
 									"poisonedMushroomFinalDamage1.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (20)) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- (20)) {
 
 							image = ImageIO.read(new File(
 									"poisonedMushroomFinalDamage2.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 30) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- 30) {
 
 							image = ImageIO.read(new File(
 									"poisonedMushroomFinalDamage3.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 39) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- 39) {
 
 							image = ImageIO.read(new File(
 									"poisonedMushroomFinalDamage4.png"));
@@ -169,25 +177,33 @@ public class ArcadeGameComponent extends JComponent {
 
 							image = ImageIO.read(new File("mushroomFinal.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (10)) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- (10)) {
 
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage1.png"));
+							image = ImageIO
+									.read(new File("mushroomFinalDamage1.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (20)) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- (20)) {
 
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage2.png"));
+							image = ImageIO
+									.read(new File("mushroomFinalDamage2.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 30) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- 30) {
 
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage3.png"));
+							image = ImageIO
+									.read(new File("mushroomFinalDamage3.png"));
 
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 39) {
+						} else if (m
+								.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH
+										- 39) {
 
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage4.png"));
+							image = ImageIO
+									.read(new File("mushroomFinalDamage4.png"));
 						}
 
 						// m.setImage(image);
@@ -208,18 +224,18 @@ public class ArcadeGameComponent extends JComponent {
 
 						if (c.poisoned) {
 
-							image = ImageIO.read(new File(
-									"centipedePosionedFinal.png"));
+							image = ImageIO.read(
+									new File("centipedePosionedFinal.png"));
 						} else {
 
 							if (c.getHealth() < Monster.DEF_MONST_HEALTH) {
 
-								image = ImageIO.read(new File(
-										"centipedeFinalDamaged.png"));
+								image = ImageIO.read(
+										new File("centipedeFinalDamaged.png"));
 							} else {
 
-								image = ImageIO.read(new File(
-										"centipedeFinal.png"));
+								image = ImageIO
+										.read(new File("centipedeFinal.png"));
 							}
 						}
 
@@ -227,8 +243,8 @@ public class ArcadeGameComponent extends JComponent {
 
 						if (c.poisoned) {
 
-							image = ImageIO.read(new File(
-									"centipedePosionedFinalTwo.png"));
+							image = ImageIO.read(
+									new File("centipedePosionedFinalTwo.png"));
 						} else {
 
 							if (c.getHealth() < Monster.DEF_MONST_HEALTH) {
@@ -238,8 +254,8 @@ public class ArcadeGameComponent extends JComponent {
 
 							} else {
 
-								image = ImageIO.read(new File(
-										"centipedeFinalTwo.png"));
+								image = ImageIO.read(
+										new File("centipedeFinalTwo.png"));
 							}
 						}
 					}

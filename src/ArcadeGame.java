@@ -157,9 +157,7 @@ public class ArcadeGame {
 		clearBoard();
 
 		this.MM.resetMonsterCounts();
-		this.MM.scorpionIsAlive = false;
 		this.mushroomsInPlayerArea = 0;
-		this.MM.chooseMonsters();
 		readLevelFromFile(textFile);
 	}
 
@@ -206,7 +204,6 @@ public class ArcadeGame {
 		this.MM.numCentipedes = 0;
 		this.MM.alreadyAddedScorpion = false;
 		this.MM.newCentipede();
-		this.MM.chooseMonsters();
 		this.lastLevelChange = System.currentTimeMillis();
 
 		this.randomizeTimeLimits();
