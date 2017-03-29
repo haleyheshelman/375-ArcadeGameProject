@@ -15,21 +15,16 @@ public class Zombie extends Monster {
 		this.bounty = ZOMBIE_SCORE;
 		this.movingRight = true;
 		this.moveDown = false; 
+		this.setVelocityY(GRID_SIZE);
 	}
 
 	@Override
-	public void move() {
-		double currentX = this.getX(); 
-		double currentY = this.getY(); 
+	public void move() { 
 		
 		double nextX = this.getNextX();
-	//	double nextY = this.getNextY();
+		double nextY = this.getNextY();
 		
-	//	this.setTLPoint(new Point2D.Double (nextX, nextY));
-		
-		
-		
-
+		this.setTLPoint(new Point2D.Double (nextX, nextY));
 	}
 	
 	//gets the next x value. all we need to check is if it will go 
@@ -37,7 +32,7 @@ public class Zombie extends Monster {
 	public double getNextX() {
 		if (!movingRight) {
 			double moveXLeft = this.getX() - this.getVelocityX();
-			if (inGameX(moveXLeft)){
+			if (!inGameX(moveXLeft)){
 				indicateMoveDown(); 
 				switchXDirection();
 				return this.getX(); 
@@ -46,7 +41,7 @@ public class Zombie extends Monster {
 			}
 		} else {
 			double moveXRight = this.getX() + this.getVelocityX(); 
-			if (inGameX(moveXRight)){
+			if (!inGameX(moveXRight)){
 				indicateMoveDown();
 				switchXDirection(); 
 				return this.getX(); 
@@ -67,10 +62,16 @@ public class Zombie extends Monster {
 	private void switchXDirection () {
 		this.movingRight = !this.movingRight;
 	}
-//	
-//	public double getNextY() {
-//		
-//	}
+	
+	public double getNextY() {
+		double currentY = this.getY(); 
+		if (this.moveDown){
+			indicateMoveDown(); 
+			return currentY + this.getVelocityY();
+		}
+		return currentY; 
+		
+	}
 	
 	
 
