@@ -96,19 +96,20 @@ public class Mushroom extends Dieable {
 	 * 
 	 * @return
 	 */
-	@Override
-	public BufferedImage getImage() {
-		if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) < 0) {
-
-			System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-			System.out.println(this.getHealth());
-		}
-		if (this.getHealth() != 0) {
-			return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
-					MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-		}
-		return this.image;
-	}
+//	@Override
+//	public BufferedImage getImage() {
+//		if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) < 0) {
+//			System.out.println("HELLO FROM THE GREAT BEYOND");
+//
+//			System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
+//			System.out.println(this.getHealth());
+//		}
+//		if (this.getHealth() != 0) {
+//			return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
+//					MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
+//		}
+//		return this.image;
+//	}
 
 	/**
 	 * Removes the mushroom from the frame when its health its at 0

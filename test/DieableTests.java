@@ -163,7 +163,7 @@ public class DieableTests {
 	@Test
 	public void testGetCenterPoint() {
 		Point2D p = new Point();
-		p.setLocation(211.0, 330.0);
+		p.setLocation(210.0, 330.0);
 		assertTrue(p.equals(d.getCenterPoint()));
 
 	}
@@ -171,7 +171,7 @@ public class DieableTests {
 	@Test
 	public void testSetCenterPoint() {
 		Point2D p = new Point();
-		p.setLocation(211.0, 330.0);
+		p.setLocation(210.0, 330.0);
 		assertTrue(p.equals(d.getCenterPoint()));
 
 		Point2D test = new Point();
