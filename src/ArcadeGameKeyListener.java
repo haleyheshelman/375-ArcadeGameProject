@@ -49,8 +49,7 @@ public class ArcadeGameKeyListener implements KeyListener {
 					+ this.game.getShip().getY());
 			System.out.println(this.game.MM.numSpiders + " spiders");
 			System.out.println(this.game.MM.numFleas + " fleas");
-			System.out.println(this.game.MM.scorpionIsAlive + " "
-					+ this.game.MM.scorpionsAllowed);
+			System.out.println(this.game.MM.scorpionIsAlive);
 
 		}
 		/*

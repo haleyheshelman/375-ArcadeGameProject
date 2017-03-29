@@ -7,7 +7,7 @@
  */
 public class MonsterManager {
 
-	private static final int ZOMBIES_START_LEVEL = 5;
+	private static final int ZOMBIES_START_LEVEL = 1;
 	private static final int SCORPIONS_START_LEVEL = 4;
 	private static final int FLEAS_START_LEVEL = 3;
 
@@ -25,9 +25,6 @@ public class MonsterManager {
 	protected long zombieMinTime;
 	protected long lastZombieTime;
 
-	protected static boolean fleasAllowed = false;
-	protected static boolean scorpionsAllowed = false;
-	protected static boolean zombiesAllowed = false;
 
 	protected int numFleas = 0;
 	protected int numCentipedes = 0;
@@ -45,7 +42,7 @@ public class MonsterManager {
 		return this.game.levelNum >= ZOMBIES_START_LEVEL;
 	}
 
-	private boolean scorpions_allowed() {
+	protected boolean scorpions_allowed() {
 		return this.game.levelNum >= SCORPIONS_START_LEVEL;
 	}
 
@@ -180,7 +177,7 @@ public class MonsterManager {
 	protected void randomizeMonsterMinTimes() {
 		spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
 		scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
-		zombieMinTime = ArcadeGame.rand.nextInt(10) * 2000 + 10000;
+		zombieMinTime = 5000;//ArcadeGame.rand.nextInt(10) * 2000 + 10000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {
