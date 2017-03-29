@@ -1,23 +1,77 @@
 import java.awt.Color;
+import java.awt.geom.Point2D;
 
 
 public class Zombie extends Monster {
 	private static final int ZOMBIE_SCORE = 10; 
 	private static final double yShiftMax = GRID_SIZE / DEF_MONST_VEL;
 	
-	private int xDirection = 1; //1 is right, -1 is left
-	private int yDirection = 1; //1 is down 
+	private boolean movingRight;
+	private boolean moveDown; 
 
 	public Zombie(ArcadeGame game, double gridX, double gridY) {
 		super(game, gridX, gridY);
 		this.setColor(Color.MAGENTA);
 		this.bounty = ZOMBIE_SCORE;
+		this.movingRight = true;
+		this.moveDown = false; 
 	}
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
+		double currentX = this.getX(); 
+		double currentY = this.getY(); 
+		
+		double nextX = this.getNextX();
+	//	double nextY = this.getNextY();
+		
+	//	this.setTLPoint(new Point2D.Double (nextX, nextY));
+		
+		
+		
 
 	}
+	
+	//gets the next x value. all we need to check is if it will go 
+	//off the screen either way 
+	public double getNextX() {
+		if (!movingRight) {
+			double moveXLeft = this.getX() - this.getVelocityX();
+			if (inGameX(moveXLeft)){
+				indicateMoveDown(); 
+				switchXDirection();
+				return this.getX(); 
+			} else {
+				return moveXLeft; 
+			}
+		} else {
+			double moveXRight = this.getX() + this.getVelocityX(); 
+			if (inGameX(moveXRight)){
+				indicateMoveDown();
+				switchXDirection(); 
+				return this.getX(); 
+			} else {
+				return moveXRight; 
+			}
+		}
+	}
+	
+	private boolean inGameX(double position){
+		return this.getGame().inGameX(position, this.gap, this.width);
+	}
+	
+	private void indicateMoveDown () {
+		this.moveDown = !this.moveDown; 
+	}
+	
+	private void switchXDirection () {
+		this.movingRight = !this.movingRight;
+	}
+//	
+//	public double getNextY() {
+//		
+//	}
+	
+	
 
 }
