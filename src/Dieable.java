@@ -30,7 +30,7 @@ public abstract class Dieable implements Drawable {
 	protected double width;
 	protected double gap;
 	protected double topGap;
-	protected Point2D TLPoint;
+	private Point2D TLPoint;
 	private ArcadeGame game;
 	protected int bounty;
 
