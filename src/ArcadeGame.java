@@ -182,9 +182,7 @@ public class ArcadeGame {
 
 	private void setLastTimes() {
 		this.lastLevelChange = System.currentTimeMillis();
-		this.lastBonusTime = this.lastLevelChange;
-		this.MM.lastScorpionTime = this.lastLevelChange;
-		this.MM.lastSpiderTime = this.lastLevelChange;
+		this.MM.resetLastTimes();
 	}
 
 	private void clearBoard() {

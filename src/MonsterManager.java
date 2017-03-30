@@ -32,10 +32,18 @@ public class MonsterManager {
 
 	public MonsterManager(ArcadeGame arcadeGame) {
 		this.game = arcadeGame;
-		this.lastSpiderTime = this.game.lastLevelChange;
-		this.lastScorpionTime = this.game.lastLevelChange;
-		this.lastZombieTime = this.game.lastLevelChange;
+		this.resetLastTimes();
 		this.randomizeMonsterMinTimes();
+	}
+	
+	protected void resetLastTimes(){
+		this.resetLastTimes(this.game.lastLevelChange);
+	}
+	
+	protected void resetLastTimes(long time){
+		this.lastSpiderTime = time;
+		this.lastScorpionTime = time;
+		this.lastZombieTime = time;
 	}
 
 	private boolean zombies_allowed() {
