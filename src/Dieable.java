@@ -17,9 +17,10 @@ public abstract class Dieable implements Drawable {
 																	// on the
 																	// grid
 	protected final static int SPRITE_SIZE = 16; // default sprite width
-	protected final static double GAP_SIZE = (int) (0.5 * (GRID_SIZE - SPRITE_SIZE)); // 2
-																						// by
-																						// default
+	protected final static double GAP_SIZE = (int) (0.5
+			* (GRID_SIZE - SPRITE_SIZE)); // 2
+											// by
+											// default
 	private Color color;
 	private int health;
 	private double velocityX;
@@ -42,7 +43,8 @@ public abstract class Dieable implements Drawable {
 	 * @param gridY
 	 */
 	public Dieable(ArcadeGame game, double gridX, double gridY) {
-		this.setTLPoint(new Point2D.Double(gridX * (GRID_SIZE), gridY * (GRID_SIZE)));
+		this.setTLPoint(
+				new Point2D.Double(gridX * (GRID_SIZE), gridY * (GRID_SIZE)));
 		this.health = 10;
 		this.game = game;
 		this.height = SPRITE_SIZE;
@@ -88,7 +90,6 @@ public abstract class Dieable implements Drawable {
 		return this.intersectsObject(objsToCheck, null);
 	}
 
-	
 	/**
 	 * Checks if a given object intersects with other dieables but ignores a
 	 * given dieable
@@ -97,11 +98,13 @@ public abstract class Dieable implements Drawable {
 	 * @param objToIgnore
 	 * @return
 	 */
-	public Dieable intersectsObject(ArrayList<Dieable> objsToCheck, Dieable objToIgnore) {
+	public Dieable intersectsObject(ArrayList<Dieable> objsToCheck,
+			Dieable objToIgnore) {
 
 		for (Dieable curDie : objsToCheck) {
 			if (curDie != objToIgnore) {
-				if (this.getShape().intersects((Rectangle2D) curDie.getShape())) {
+				if (this.getShape()
+						.intersects((Rectangle2D) curDie.getShape())) {
 					return curDie;
 				}
 			}
@@ -125,9 +128,8 @@ public abstract class Dieable implements Drawable {
 	 */
 	@Override
 	public Shape getShape() {
-		double x = getTLPoint().getX();
-		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width, this.height);
+		return new Rectangle2D.Double(this.getX() + this.gap,
+				this.getY() + this.gap, this.width, this.height);
 	}
 
 	/**
@@ -137,9 +139,9 @@ public abstract class Dieable implements Drawable {
 	 * @return
 	 */
 	public Point2D getCenterPoint() {
-		//removed a plus one from getting centerX
-		double centerX = this.getTLPoint().getX() + this.gap + (this.width / 2);
-		double centerY = this.getTLPoint().getY() + this.topGap + (this.height / 2);
+		// removed a plus one from getting centerX
+		double centerX = this.getX() + this.gap + (this.width / 2);
+		double centerY = this.getY() + this.topGap + (this.height / 2);
 		return new Point2D.Double(centerX, centerY);
 	}
 
@@ -150,7 +152,7 @@ public abstract class Dieable implements Drawable {
 	 */
 
 	public void setCenterPoint(Point2D centerPoint) {
-		//removed a minus one from getting TLX
+		// removed a minus one from getting TLX
 		double TLX = centerPoint.getX() - this.gap - (this.width / 2);
 		double TLY = centerPoint.getY() - this.topGap - this.height / 2;
 		this.TLPoint = new Point2D.Double(TLX, TLY);

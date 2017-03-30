@@ -25,7 +25,6 @@ public class MonsterManager {
 	protected long zombieMinTime;
 	protected long lastZombieTime;
 
-
 	protected int numFleas = 0;
 	protected int numCentipedes = 0;
 	protected int numSpiders = 0;
@@ -35,27 +34,19 @@ public class MonsterManager {
 		this.resetLastTimes();
 		this.randomizeMonsterMinTimes();
 	}
-	
-	protected void resetLastTimes(){
+
+	protected void resetLastTimes() {
 		this.resetLastTimes(this.game.lastLevelChange);
 	}
-	
-	protected void resetLastTimes(long time){
+
+	protected void resetLastTimes(long time) {
 		this.lastSpiderTime = time;
 		this.lastScorpionTime = time;
 		this.lastZombieTime = time;
 	}
 
-	private boolean zombies_allowed() {
-		return this.game.levelNum >= ZOMBIES_START_LEVEL;
-	}
-
-	protected boolean scorpions_allowed() {
-		return this.game.levelNum >= SCORPIONS_START_LEVEL;
-	}
-
-	private boolean fleas_allowed() {
-		return this.game.levelNum >= FLEAS_START_LEVEL;
+	private boolean at_or_above_level(int target) {
+		return this.game.getLevelNum() >= target;
 	}
 
 	/**
@@ -65,13 +56,13 @@ public class MonsterManager {
 	public void addNewMonsters() {
 		this.addSpiders();
 
-		if (fleas_allowed())
+		if (at_or_above_level(FLEAS_START_LEVEL))
 			this.addFleas();
 
-		if (scorpions_allowed())
+		if (at_or_above_level(SCORPIONS_START_LEVEL))
 			this.addScorpions();
 
-		if (zombies_allowed())
+		if (at_or_above_level(ZOMBIES_START_LEVEL))
 			this.addZombies();
 	}
 
@@ -81,7 +72,7 @@ public class MonsterManager {
 	 *
 	 */
 	public void newCentipede() {
-		for (int i = 0; i < this.game.levelNum + CENTIPEDE_BASE_NUM; i++) {
+		for (int i = 0; i < this.game.getLevelNum() + CENTIPEDE_BASE_NUM; i++) {
 			this.game.addObject(new Centipede(this.game, -i, 0));
 		}
 	}
@@ -185,7 +176,7 @@ public class MonsterManager {
 	protected void randomizeMonsterMinTimes() {
 		spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
 		scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
-		zombieMinTime = 5000;//ArcadeGame.rand.nextInt(10) * 2000 + 10000;
+		zombieMinTime = 5000;// ArcadeGame.rand.nextInt(10) * 2000 + 10000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {

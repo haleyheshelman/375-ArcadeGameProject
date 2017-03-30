@@ -30,7 +30,7 @@ public class ArcadeGame {
 
 	long lastLevelChange = System.currentTimeMillis();
 
-	protected int levelNum = 0;
+	private int levelNum = 0;
 	protected int score = 0;
 	protected final int DEFAULT_LIVES = 2;
 	protected int lives = this.DEFAULT_LIVES;
@@ -435,6 +435,10 @@ public class ArcadeGame {
 
 	public Ship getShip() {
 		return this.ship;
+	}
+
+	protected int getLevelNum() {
+		return this.levelNum;
 	}
 
 	/**
