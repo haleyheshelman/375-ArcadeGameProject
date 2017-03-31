@@ -7,9 +7,9 @@
  */
 public class MonsterManager {
 
-	private static final int ZOMBIES_START_LEVEL = 1;
-	private static final int SCORPIONS_START_LEVEL = 4;
-	private static final int FLEAS_START_LEVEL = 3;
+	protected static final int ZOMBIES_START_LEVEL = 1;
+	protected static final int SCORPIONS_START_LEVEL = 4;
+	protected static final int FLEAS_START_LEVEL = 3;
 
 	private ArcadeGame game;
 
@@ -46,10 +46,6 @@ public class MonsterManager {
 		this.lastZombieTime = time;
 	}
 
-	private boolean at_or_above_level(int target) {
-		return this.game.getLevelNum() >= target;
-	}
-
 	/**
 	 * Adds allowed monsters. Called by the onEveryRefresh method.
 	 * 
@@ -57,13 +53,13 @@ public class MonsterManager {
 	public void addNewMonsters() {
 		this.addSpiders();
 
-		if (at_or_above_level(FLEAS_START_LEVEL))
+		if (game.at_or_above_level(FLEAS_START_LEVEL))
 			this.addFleas();
 
-		if (at_or_above_level(SCORPIONS_START_LEVEL))
+		if (game.at_or_above_level(SCORPIONS_START_LEVEL))
 			this.addScorpions();
 
-		if (at_or_above_level(ZOMBIES_START_LEVEL))
+		if (game.at_or_above_level(ZOMBIES_START_LEVEL))
 			this.addZombies();
 	}
 

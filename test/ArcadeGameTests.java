@@ -36,10 +36,10 @@ public class ArcadeGameTests {
 
 		ag.isPaused = true;
 	}
-	
+
 	@Test
-	public void test_addObject(){
-		Mushroom m = new Mushroom(ag,5,5);
+	public void test_addObject() {
+		Mushroom m = new Mushroom(ag, 5, 5);
 		assertFalse(ag.getMushrooms().contains(m));
 		ag.addObject(m);
 		assertTrue(ag.getMushrooms().contains(m));
@@ -74,15 +74,13 @@ public class ArcadeGameTests {
 			assertFalse(ag.inGameY(d.getY()));
 		}
 	}
-	
+
 	@Test
-	public void test_resetMonsterCounts(){
+	public void test_resetMonsterCounts() {
 		this.ag.MM.resetMonsterCounts();
 		assertEquals(0, ag.MM.getNumCentipedes());
 		assertEquals(0, ag.MM.getNumSpiders());
 		assertEquals(0, ag.MM.getNumFleas());
 		assertFalse(ag.MM.alreadyAddedScorpion);
-		
 	}
-
 }

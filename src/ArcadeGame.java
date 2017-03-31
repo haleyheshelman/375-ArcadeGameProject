@@ -466,4 +466,8 @@ public class ArcadeGame {
 	long getLastLevelChange() {
 		return this.lastLevelChange;
 	}
+
+	boolean at_or_above_level(int target) {
+		return getLevelNum() >= target;
+	}
 }
