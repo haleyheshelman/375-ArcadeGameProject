@@ -210,7 +210,7 @@ public class Centipede extends Monster {
 		if (curX < 0)
 			return nextX;
 		// only need to check for poison mushrooms if scorpions are allowed
-		if (intersectedObject != null && MonsterManager.scorpionsAllowed) {
+		if (intersectedObject != null) {
 			Mushroom intersectedMushroom = (Mushroom) intersectedObject;
 			if (intersectedMushroom.isPoisonous()) {
 				this.makePoisoned();

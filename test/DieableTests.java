@@ -1,19 +1,19 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Shape;
 
 public class DieableTests {
 
@@ -148,16 +148,16 @@ public class DieableTests {
 	public void testGetTLPoint() {
 		Point2D p = new Point();
 		p.setLocation(200.0, 320.0);
-		System.out.println(this.d.TLPoint);
-		assertTrue(p.equals(d.TLPoint));
+		System.out.println(this.d.getTLPoint());
+		assertTrue(p.equals(d.getTLPoint()));
 
 		Point2D t = new Point();
 		p.setLocation(250.0, 300.0);
 
 		d.setTLPoint(t);
 
-		assertFalse(p.equals(d.TLPoint));
-		assertTrue(t.equals(d.TLPoint));
+		assertFalse(p.equals(d.getTLPoint()));
+		assertTrue(t.equals(d.getTLPoint()));
 	}
 	
 	@Test
