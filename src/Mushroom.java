@@ -123,20 +123,20 @@ public class Mushroom extends Dieable {
 			this.getGame().mushroomsInPlayerArea--;
 	}
 
-	/**
-	 * Removes health and adjusts height
-	 */
-	@Override
-	public void removeHealth(int damage) {
-		super.removeHealth(damage);
-	}
-
-	/**
-	 * Sets health and adjusts height
-	 */
-	@Override
-	public void setHealth(int health) {
-		super.setHealth(health);
-	}
+//	/**
+//	 * Removes health and adjusts height
+//	 */
+//	@Override
+//	public void removeHealth(int damage) {
+//		super.removeHealth(damage);
+//	}
+//
+//	/**
+//	 * Sets health and adjusts height
+//	 */
+//	@Override
+//	public void setHealth(int health) {
+//		super.setHealth(health);
+//	}
 
 }
