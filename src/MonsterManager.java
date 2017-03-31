@@ -79,6 +79,18 @@ public class MonsterManager {
 		}
 	}
 
+	protected int getNumFleas() {
+		return this.numFleas;
+	}
+
+	protected int getNumSpiders() {
+		return this.numSpiders;
+	}
+
+	protected int getNumCentipedes() {
+		return this.numCentipedes;
+	}
+
 	/**
 	 * Figures out where we can put the flea and its mushrooms
 	 *
