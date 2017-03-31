@@ -28,7 +28,7 @@ public class ArcadeGame {
 	protected static final int TOP_PLAYER_AREA = 11;
 	protected static final int BOTTOM_PLAYER_AREA = 16;
 
-	long lastLevelChange = System.currentTimeMillis();
+	private long lastLevelChange;
 
 	private int levelNum = 0;
 	protected int score = 0;
@@ -41,16 +41,16 @@ public class ArcadeGame {
 	protected static Random rand = new Random();
 
 	protected long bonusMinTime = rand.nextInt(10) * 1000 + 30000;
-	protected long lastBonusTime = this.lastLevelChange;
+	protected long lastBonusTime;
 
 	protected boolean isPaused = false;
-	private ArrayList<Dieable> mushrooms = new ArrayList<>();
-	private ArrayList<Dieable> monsters = new ArrayList<>();
-	private ArrayList<Dieable> projectiles = new ArrayList<>();
-	private ArrayList<Dieable> bonuses = new ArrayList<>();
+	ArrayList<Dieable> mushrooms = new ArrayList<>();
+	ArrayList<Dieable> monsters = new ArrayList<>();
+	ArrayList<Dieable> projectiles = new ArrayList<>();
+	ArrayList<Dieable> bonuses = new ArrayList<>();
 	private Ship ship;
 
-	MonsterManager MM = new MonsterManager(this);
+	public MonsterManager MM = new MonsterManager(this);
 
 	/**
 	 * 
@@ -70,8 +70,8 @@ public class ArcadeGame {
 	}
 
 	public void randomizeTimeLimits() {
-		this.MM.spiderMinTime = rand.nextInt(3) * 1000 + 8000;
-		this.MM.scorpionMinTime = rand.nextInt(6) * 1000 + 10000;
+		this.MM.setSpiderMinTime(rand.nextInt(3) * 1000 + 8000);
+		this.MM.setScorpionMinTime(rand.nextInt(6) * 1000 + 10000);
 		this.bonusMinTime = rand.nextInt(10) * 1000 + 30000;
 	}
 
@@ -139,7 +139,8 @@ public class ArcadeGame {
 	 * @throws IOException
 	 */
 
-	public void createLevel(int levelNumber) throws FileNotFoundException, IOException {
+	public void createLevel(int levelNumber)
+			throws FileNotFoundException, IOException {
 
 		int nextLevel = this.levelNum + levelNumber;
 
@@ -161,7 +162,8 @@ public class ArcadeGame {
 		readLevelFromFile(textFile);
 	}
 
-	private void readLevelFromFile(String textFile) throws FileNotFoundException {
+	private void readLevelFromFile(String textFile)
+			throws FileNotFoundException {
 		int gridY = 0;
 		Scanner input = new Scanner(new File(textFile));
 		while (input.hasNextLine()) {
@@ -182,7 +184,9 @@ public class ArcadeGame {
 
 	private void setLastTimes() {
 		this.lastLevelChange = System.currentTimeMillis();
-		this.MM.resetLastTimes();
+		this.lastBonusTime = this.lastLevelChange;
+		this.MM.resetLastTimes(this.lastLevelChange);
+
 	}
 
 	private void clearBoard() {
@@ -199,7 +203,6 @@ public class ArcadeGame {
 	public void nextLevel() {
 		this.levelNum++;
 		Main.scoreboard.changeLevel(this.levelNum);
-		this.MM.numCentipedes = 0;
 		this.MM.alreadyAddedScorpion = false;
 		this.MM.newCentipede();
 		this.lastLevelChange = System.currentTimeMillis();
@@ -247,7 +250,8 @@ public class ArcadeGame {
 	 *
 	 */
 	public void addBonuses() {
-		if (System.currentTimeMillis() - this.lastBonusTime > this.bonusMinTime) {
+		if (System.currentTimeMillis()
+				- this.lastBonusTime > this.bonusMinTime) {
 			this.addObject(new Bonus(this));
 			this.lastBonusTime = System.currentTimeMillis();
 		}
@@ -300,48 +304,6 @@ public class ArcadeGame {
 	}
 
 	/**
-	 * Removes the specified mushroom/monster/projectile.
-	 *
-	 * @param objToRemove
-	 */
-	public void removeObject(Dieable objToRemove) {
-		if (objToRemove instanceof Monster) {
-			this.monsters.remove(objToRemove);
-			// System.out.println("CC: " + this.numCentipedes);
-			if (objToRemove instanceof Centipede) {
-				this.MM.numCentipedes--;
-			} else if (objToRemove instanceof Flea) {
-				this.MM.numFleas--;
-			} else if (objToRemove instanceof Spider) {
-				this.MM.numSpiders--;
-				this.MM.lastSpiderTime = System.currentTimeMillis();
-			} else if (objToRemove instanceof Scorpion) {
-				this.MM.scorpionIsAlive = false;
-				this.MM.lastScorpionTime = System.currentTimeMillis();
-			}
-
-			if (this.MM.numCentipedes <= 0) {
-				this.nextLevel();
-			}
-		}
-		if (objToRemove instanceof Projectile) {
-			this.projectiles.remove(objToRemove);
-		}
-		if (objToRemove instanceof Mushroom) {
-			this.mushrooms.remove(objToRemove);
-		}
-		if (objToRemove instanceof Ship) {
-			this.playerDied();
-
-		}
-		if (objToRemove instanceof Bonus) {
-			this.bonuses.remove(objToRemove);
-			// this.lastBonusTime = System.currentTimeMillis();
-		}
-		Main.scoreboard.changeScore(this.score);
-	}
-
-	/**
 	 * Handles what should happen if the player is killed.
 	 *
 	 */
@@ -351,8 +313,10 @@ public class ArcadeGame {
 		if (this.lives < 0) {
 			System.out.println("game over");
 			System.out.println("You Scores are: " + this.score);
-			String nameString = JOptionPane.showInputDialog("What is your name?");
-			HighestScoresBoard board = new HighestScoresBoard(this, nameString, this.score);
+			String nameString = JOptionPane
+					.showInputDialog("What is your name?");
+			HighestScoresBoard board = new HighestScoresBoard(this, nameString,
+					this.score);
 			try {
 				board.showResult();
 			} catch (FileNotFoundException exception) {
@@ -480,7 +444,7 @@ public class ArcadeGame {
 	public void addNewBullet(Double projectilePoint) {
 		addObject(new Bullet(this, projectilePoint));
 	}
-	
+
 	public void addNewExplodingBullet(Double projectilePoint) {
 		addObject(new ExplodingBullet(this, projectilePoint));
 	}
@@ -497,5 +461,9 @@ public class ArcadeGame {
 
 	public void addNewBomb(Double projectilePoint) {
 		addObject(new Bomb(this, projectilePoint));
+	}
+
+	long getLastLevelChange() {
+		return this.lastLevelChange;
 	}
 }

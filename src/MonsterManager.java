@@ -13,21 +13,22 @@ public class MonsterManager {
 
 	private ArcadeGame game;
 
-	protected static final int CENTIPEDE_BASE_NUM = 4;
+	private static final int CENTIPEDE_BASE_NUM = 4;
 
-	protected long lastSpiderTime;
-	protected long spiderMinTime;
+	private long lastSpiderTime;
+	private long spiderMinTime;
 
 	protected boolean alreadyAddedScorpion = false;
 	protected boolean scorpionIsAlive = false;
-	protected long scorpionMinTime;
-	protected long lastScorpionTime;
-	protected long zombieMinTime;
-	protected long lastZombieTime;
+	private long scorpionMinTime;
+	private long lastScorpionTime;
 
-	protected int numFleas = 0;
-	protected int numCentipedes = 0;
-	protected int numSpiders = 0;
+	private long zombieMinTime;
+	private long lastZombieTime;
+
+	private int numFleas = 0;
+	private int numCentipedes = 0;
+	private int numSpiders = 0;
 
 	public MonsterManager(ArcadeGame arcadeGame) {
 		this.game = arcadeGame;
@@ -36,12 +37,12 @@ public class MonsterManager {
 	}
 
 	protected void resetLastTimes() {
-		this.resetLastTimes(this.game.lastLevelChange);
+		this.resetLastTimes(this.game.getLastLevelChange());
 	}
 
 	protected void resetLastTimes(long time) {
-		this.lastSpiderTime = time;
-		this.lastScorpionTime = time;
+		this.setLastSpiderTime(time);
+		this.setLastScorpionTime(time);
 		this.lastZombieTime = time;
 	}
 
@@ -72,6 +73,7 @@ public class MonsterManager {
 	 *
 	 */
 	public void newCentipede() {
+		this.numCentipedes = 0;
 		for (int i = 0; i < this.game.getLevelNum() + CENTIPEDE_BASE_NUM; i++) {
 			this.game.addObject(new Centipede(this.game, -i, 0));
 		}
@@ -113,7 +115,7 @@ public class MonsterManager {
 		}
 	}
 
-	private int randomGridX() {
+	private static int randomGridX() {
 		return ArcadeGame.rand.nextInt(ArcadeGame.GRID_SIZE);
 	}
 
@@ -123,9 +125,9 @@ public class MonsterManager {
 	public void addSpiders() {
 		if (this.numSpiders == 0) {
 			if (System.currentTimeMillis()
-					- this.lastSpiderTime > this.spiderMinTime) {
+					- this.getLastSpiderTime() > this.getSpiderMinTime()) {
 				this.game.addObject(new Spider(this.game));
-				this.lastSpiderTime = System.currentTimeMillis();
+				this.setLastSpiderTime(System.currentTimeMillis());
 			}
 		}
 	}
@@ -139,13 +141,13 @@ public class MonsterManager {
 	public void addScorpions() {
 		if ((!this.alreadyAddedScorpion) && (!this.scorpionIsAlive)) {
 			if (System.currentTimeMillis()
-					- this.lastScorpionTime > this.scorpionMinTime) {
+					- this.getLastScorpionTime() > this.getScorpionMinTime()) {
 
 				int yGrid = ArcadeGame.rand
 						.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
 
 				this.game.addObject(new Scorpion(this.game, 0, yGrid));
-				this.lastScorpionTime = System.currentTimeMillis();
+				this.setLastScorpionTime(System.currentTimeMillis());
 			}
 		}
 	}
@@ -153,7 +155,7 @@ public class MonsterManager {
 	public void addZombies() {
 		if (System.currentTimeMillis() > this.lastZombieTime
 				+ this.zombieMinTime) {
-			this.game.addObject(new Zombie(game, randomGridX(), -1));
+			this.game.addObject(new Zombie(this.game, randomGridX(), -1));
 			this.lastZombieTime = System.currentTimeMillis();
 		}
 	}
@@ -166,29 +168,104 @@ public class MonsterManager {
 	 *
 	 */
 	public void resetMonsterCounts() {
-		numCentipedes = 0;
-		numSpiders = 0;
-		alreadyAddedScorpion = false;
-		scorpionIsAlive = false;
-		numFleas = 0;
+		this.numCentipedes = 0;
+		this.numSpiders = 0;
+		this.alreadyAddedScorpion = false;
+		this.scorpionIsAlive = false;
+		this.numFleas = 0;
 	}
 
 	protected void randomizeMonsterMinTimes() {
-		spiderMinTime = ArcadeGame.rand.nextInt(3) * 1000 + 8000;
-		scorpionMinTime = ArcadeGame.rand.nextInt(6) * 1000 + 10000;
-		zombieMinTime = 5000;// ArcadeGame.rand.nextInt(10) * 2000 + 10000;
+		setSpiderMinTime(ArcadeGame.rand.nextInt(3) * 1000 + 8000);
+		setScorpionMinTime(ArcadeGame.rand.nextInt(6) * 1000 + 10000);
+		this.zombieMinTime = 5000;// ArcadeGame.rand.nextInt(10) * 2000 + 10000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {
 		if (objToAdd instanceof Centipede) {
-			numCentipedes++;
+			this.numCentipedes++;
 		} else if (objToAdd instanceof Flea) {
-			numFleas++;
+			this.numFleas++;
 		} else if (objToAdd instanceof Scorpion) {
-			alreadyAddedScorpion = true;
-			scorpionIsAlive = true;
+			this.alreadyAddedScorpion = true;
+			this.scorpionIsAlive = true;
 		} else if (objToAdd instanceof Spider) {
-			numSpiders++;
+			this.numSpiders++;
 		}
+	}
+	
+	long getLastScorpionTime() {
+		return this.lastScorpionTime;
+	}
+
+	public long getSpiderMinTime() {
+		return this.spiderMinTime;
+	}
+
+	public void setSpiderMinTime(long spiderMinTime) {
+		this.spiderMinTime = spiderMinTime;
+	}
+
+	public long getScorpionMinTime() {
+		return this.scorpionMinTime;
+	}
+
+	public void setScorpionMinTime(long scorpionMinTime) {
+		this.scorpionMinTime = scorpionMinTime;
+	}
+
+	public long getLastSpiderTime() {
+		return this.lastSpiderTime;
+	}
+
+	public void setLastSpiderTime(long lastSpiderTime) {
+		this.lastSpiderTime = lastSpiderTime;
+	}
+
+	public void setLastScorpionTime(long lastScorpionTime) {
+		this.lastScorpionTime = lastScorpionTime;
+	}
+
+	/**
+	 * Removes the specified mushroom/monster/projectile.
+	 *
+	 * @param arcadeGame TODO
+	 * @param objToRemove
+	 */
+	public void removeObject(ArcadeGame arcadeGame, Dieable objToRemove) {
+		if (objToRemove instanceof Monster) {
+			arcadeGame.monsters.remove(objToRemove);
+			// System.out.println("CC: " + this.numCentipedes);
+			if (objToRemove instanceof Centipede) {
+				this.numCentipedes--;
+			} else if (objToRemove instanceof Flea) {
+				this.numFleas--;
+			} else if (objToRemove instanceof Spider) {
+				this.numSpiders--;
+				setLastSpiderTime(System.currentTimeMillis());
+			} else if (objToRemove instanceof Scorpion) {
+				this.scorpionIsAlive = false;
+				setLastScorpionTime(System.currentTimeMillis());
+			}
+	
+			if (this.numCentipedes <= 0) {
+				arcadeGame.nextLevel();
+			}
+		}
+		if (objToRemove instanceof Projectile) {
+			arcadeGame.projectiles.remove(objToRemove);
+		}
+		if (objToRemove instanceof Mushroom) {
+			arcadeGame.mushrooms.remove(objToRemove);
+		}
+		if (objToRemove instanceof Ship) {
+			arcadeGame.playerDied();
+	
+		}
+		if (objToRemove instanceof Bonus) {
+			arcadeGame.bonuses.remove(objToRemove);
+			// this.lastBonusTime = System.currentTimeMillis();
+		}
+		Main.scoreboard.changeScore(arcadeGame.score);
 	}
 }

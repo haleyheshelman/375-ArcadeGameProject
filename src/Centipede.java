@@ -165,7 +165,7 @@ public class Centipede extends Monster {
 		double curY = this.getY();
 		if (Math.abs(curX - this.markedX) > ArcadeGame.GRID_SIZE
 				|| Math.abs(curY - this.markedY) > ArcadeGame.GRID_SIZE) {
-			this.getGame().removeObject(this);
+			this.getGame().MM.removeObject(this.getGame(), this);
 			return;
 		}
 
@@ -179,7 +179,7 @@ public class Centipede extends Monster {
 			if (droppedMushroom.intersectsObject(droppedMushroom.getGame()
 					.getMushrooms()) == null)
 				this.getGame().addObject(droppedMushroom);
-			this.getGame().removeObject(this);
+			this.getGame().MM.removeObject(this.getGame(), this);
 		}
 	}
 

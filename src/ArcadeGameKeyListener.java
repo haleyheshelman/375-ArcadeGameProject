@@ -40,19 +40,6 @@ public class ArcadeGameKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		/*
-		 * Info for debugging
-		 */
-		if (KeyEvent.getKeyText(e.getKeyCode()).equals("I")) {
-			System.out.println("MIPA:" + this.game.mushroomsInPlayerArea
-					+ ", CC:" + this.game.MM.numCentipedes + "\n ship TLC:"
-					+ this.game.getShip().getX() + ","
-					+ this.game.getShip().getY());
-			System.out.println(this.game.MM.numSpiders + " spiders");
-			System.out.println(this.game.MM.numFleas + " fleas");
-			System.out.println(this.game.MM.scorpionIsAlive);
-
-		}
-		/*
 		 * Pause
 		 */
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("P")) {

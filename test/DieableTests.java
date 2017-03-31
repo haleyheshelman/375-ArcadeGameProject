@@ -159,7 +159,7 @@ public class DieableTests {
 		assertFalse(p.equals(d.getTLPoint()));
 		assertTrue(t.equals(d.getTLPoint()));
 	}
-	
+
 	@Test
 	public void testGetCenterPoint() {
 		Point2D p = new Point();
@@ -183,15 +183,13 @@ public class DieableTests {
 		assertTrue(test.equals(d.getCenterPoint()));
 
 	}
-	
+
 	@Test
-	public void testGetShape(){
-		Shape r = new Rectangle2D.Double(d.getTLPoint().getX()+d.gap,
-				d.getTLPoint().getY()+d.gap,
-				d.width,
-				d.height);
+	public void testGetShape() {
+		Shape r = new Rectangle2D.Double(d.getTLPoint().getX() + d.gap,
+				d.getTLPoint().getY() + d.gap, d.width, d.height);
 		assertTrue(r.equals(d.getShape()));
-				
+
 	}
 
 }

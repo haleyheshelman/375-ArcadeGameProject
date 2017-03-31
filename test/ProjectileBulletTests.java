@@ -51,7 +51,7 @@ public class ProjectileBulletTests {
 	@Test
 	public void testCheckHit() {
 		for (Dieable d : ag.getDieableParts()) {
-			ag.removeObject(d);
+			ag.MM.removeObject(ag, d);
 		}
 		b.setVelocityX(0);
 		b.setVelocityY(0);
@@ -64,7 +64,7 @@ public class ProjectileBulletTests {
 		Mushroom hitMushroom = new Mushroom(ag, gridX, gridY);
 		ag.addObject(hitMushroom);
 		assertTrue(b.checkHit());
-		ag.removeObject(hitMushroom);
+		ag.MM.removeObject(ag, hitMushroom);
 		assertFalse(b.checkHit());
 	}
 

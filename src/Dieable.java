@@ -75,7 +75,7 @@ public abstract class Dieable implements Drawable {
 	 */
 	void die() {
 		// System.out.println("Dying");
-		this.game.removeObject(this);
+		this.game.MM.removeObject(this.game, this);
 	}
 
 	/**
