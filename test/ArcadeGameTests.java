@@ -74,5 +74,15 @@ public class ArcadeGameTests {
 			assertFalse(ag.inGameY(d.getY()));
 		}
 	}
+	
+	@Test
+	public void test_resetMonsterCounts(){
+		this.ag.MM.resetMonsterCounts();
+		assertEquals(0, ag.MM.getNumCentipedes());
+		assertEquals(0, ag.MM.getNumSpiders());
+		assertEquals(0, ag.MM.getNumFleas());
+		assertFalse(ag.MM.alreadyAddedScorpion);
+		
+	}
 
 }
