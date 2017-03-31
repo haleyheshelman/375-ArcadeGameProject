@@ -30,36 +30,32 @@ public class Zombie extends Monster {
 	//gets the next x value. all we need to check is if it will go 
 	//off the screen either way 
 	public double getNextX() {
-		if (!movingRight) {
-			double moveXLeft = this.getX() - this.getVelocityX();
-			if (!inGameX(moveXLeft)){
-				indicateMoveDown(); 
-				switchXDirection();
-				return this.getX(); 
-			} else {
-				return moveXLeft; 
-			}
+		double nextX = getMoveX(); 
+		if (!inGameX(nextX)){
+			indicateMoveDown(); 
+			switchXDirection(); 
+			return this.getX(); 
 		} else {
-			double moveXRight = this.getX() + this.getVelocityX(); 
-			if (!inGameX(moveXRight)){
-				indicateMoveDown();
-				switchXDirection(); 
-				return this.getX(); 
-			} else {
-				return moveXRight; 
-			}
+			return nextX; 
 		}
 	}
+	
+	protected double getMoveX () {
+		double currX = this.getX(); 
+		double velX = this.getVelocityX();
+		return movingRight ? currX + velX : currX - velX; 
+	}
+	
 	
 	private boolean inGameX(double position){
 		return this.getGame().inGameX(position, this.gap, this.width);
 	}
 	
-	private void indicateMoveDown () {
+	protected void indicateMoveDown () {
 		this.moveDown = !this.moveDown; 
 	}
 	
-	private void switchXDirection () {
+	protected void switchXDirection () {
 		this.movingRight = !this.movingRight;
 	}
 	
@@ -71,6 +67,15 @@ public class Zombie extends Monster {
 		}
 		return currentY; 
 		
+	}
+	
+	//for testing
+	protected boolean checkMovingRight () {
+		return this.movingRight;
+	}
+	
+	protected boolean checkMoveDown() {
+		return this.moveDown; 
 	}
 	
 	
