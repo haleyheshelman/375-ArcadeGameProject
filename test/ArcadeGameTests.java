@@ -36,6 +36,14 @@ public class ArcadeGameTests {
 
 		ag.isPaused = true;
 	}
+	
+	@Test
+	public void test_addObject(){
+		Mushroom m = new Mushroom(ag,5,5);
+		assertFalse(ag.getMushrooms().contains(m));
+		ag.addObject(m);
+		assertTrue(ag.getMushrooms().contains(m));
+	}
 
 	@Test
 	public void test_createLevel() {

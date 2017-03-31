@@ -256,7 +256,7 @@ public class MonsterManager {
 			arcadeGame.projectiles.remove(objToRemove);
 		}
 		if (objToRemove instanceof Mushroom) {
-			arcadeGame.mushrooms.remove(objToRemove);
+			arcadeGame.getMushrooms().remove(objToRemove);
 		}
 		if (objToRemove instanceof Ship) {
 			arcadeGame.playerDied();

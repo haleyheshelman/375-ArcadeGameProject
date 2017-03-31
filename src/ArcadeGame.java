@@ -44,7 +44,7 @@ public class ArcadeGame {
 	protected long lastBonusTime;
 
 	protected boolean isPaused = false;
-	ArrayList<Dieable> mushrooms = new ArrayList<>();
+	private ArrayList<Dieable> mushrooms = new ArrayList<>();
 	ArrayList<Dieable> monsters = new ArrayList<>();
 	ArrayList<Dieable> projectiles = new ArrayList<>();
 	ArrayList<Dieable> bonuses = new ArrayList<>();
