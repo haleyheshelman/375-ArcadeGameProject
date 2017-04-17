@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * Represents a specific kind of monster in the arcade game.
  *
- * @author deradaam,lub and verlaqd. Created Nov 6, 2015.
+ * @author deradaam, lub, and verlaqd. Created Nov 6, 2015.
  */
 public class Centipede extends Monster {
 	private static final double yShiftMax = GRID_SIZE / DEF_MONST_VEL;
@@ -123,10 +123,11 @@ public class Centipede extends Monster {
 				this.xDirection = this.poisonXDirOriginal * -1;
 			}
 		}
-//		System.out.println(xOffset);
-		this.setTLPoint(new Point2D.Double(this.getX()
-				+ (this.getVelocityX() * this.xDirection - xOffset), this
-				.getTLPoint().getY() + this.getVelocityY() * this.yDirection));
+		// System.out.println(xOffset);
+		this.setTLPoint(new Point2D.Double(
+				this.getX() + (this.getVelocityX() * this.xDirection - xOffset),
+				this.getTLPoint().getY()
+						+ this.getVelocityY() * this.yDirection));
 
 		if ((int) (this.getY() / GRID_SIZE) == ArcadeGame.BOTTOM_PLAYER_AREA) {
 			this.poisoned = false;
@@ -176,8 +177,8 @@ public class Centipede extends Monster {
 
 			Mushroom droppedMushroom = new Mushroom(this.getGame(),
 					(int) curXGrid, (int) curYGrid);
-			if (droppedMushroom.intersectsObject(droppedMushroom.getGame()
-					.getMushrooms()) == null)
+			if (droppedMushroom.intersectsObject(
+					droppedMushroom.getGame().getMushrooms()) == null)
 				this.getGame().addObject(droppedMushroom);
 			this.getGame().MM.removeObject(this.getGame(), this);
 		}
@@ -197,8 +198,8 @@ public class Centipede extends Monster {
 		Point2D curTL = this.getTLPoint();
 		this.setTLPoint(new Point2D.Double(nextX, curY));
 
-		Dieable intersectedObject = this.intersectsObject(this.getGame()
-				.getMushrooms(), this.ignoredMushroom);
+		Dieable intersectedObject = this.intersectsObject(
+				this.getGame().getMushrooms(), this.ignoredMushroom);
 
 		if (this.getGame().inGameX(nextX, this.gap, this.width)
 				&& intersectedObject == null) {
@@ -224,7 +225,6 @@ public class Centipede extends Monster {
 		this.yShifting = true;
 		this.setTLPoint(curTL);
 		return curX;
-
 	}
 
 	/**
@@ -253,8 +253,8 @@ public class Centipede extends Monster {
 		this.yShifting = false;
 
 		// if we landed on top of a mushroom, we need to ignore it:
-		this.ignoredMushroom = (Mushroom) this.intersectsObject(this.getGame()
-				.getMushrooms());
+		this.ignoredMushroom = (Mushroom) this
+				.intersectsObject(this.getGame().getMushrooms());
 
 		if (this.ignoredMushroom != null && this.ignoredMushroom.isPoisonous())
 			this.ignoredMushroom = null;

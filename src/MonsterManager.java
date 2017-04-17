@@ -186,7 +186,7 @@ public class MonsterManager {
 	protected void randomizeMonsterMinTimes() {
 		setSpiderMinTime(ArcadeGame.rand.nextInt(3) * 1000 + 8000);
 		setScorpionMinTime(ArcadeGame.rand.nextInt(6) * 1000 + 10000);
-		this.zombieMinTime = 5000;// ArcadeGame.rand.nextInt(10) * 2000 + 10000;
+		this.zombieMinTime =  ArcadeGame.rand.nextInt(10) * 2000 + 2000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {
