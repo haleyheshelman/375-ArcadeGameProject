@@ -3,17 +3,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
- * The main class for your arcade game.
- * 
- * You can design your game any way you like, but make the game start by running
- * main here.
- * 
- * Also don't forget to write javadocs for your classes and functions!
- * 
- * 
- * (student note--I'm leaving his description in on purpose)
- * 
- * CYCLE 1 COMPLETE
+ * The main class for your arcade game. 
  * 
  * @author Buffalo
  *
@@ -31,23 +21,23 @@ public class Main {
 	protected static StartScreen startScreen;
 
 	public static void main(String[] args) throws IOException {
-		// make the frame, set the size
-		frame = new JFrame();
-		frame.setSize(getFrameWidth(), FRAME_HEIGHT);
-		
-		// Make the scoreboard
+		frameSetup();
 		scoreboard = new Scoreboard();
-
-		// Create the game
 		ArcadeGame game = new ArcadeGame(FRAME_HEIGHT - 87 - IMAGE_HEIGHT,
 				getFrameWidth() - 18);
-		
-		// Makes the start screen
 		startScreen = new StartScreen(game, frame, scoreboard);
-		
+		displayFrame();
+	}
+
+	private static void displayFrame() {
 		frame.setTitle("Arcade Game!!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+	}
+
+	private static void frameSetup() {
+		frame = new JFrame();
+		frame.setSize(getFrameWidth(), FRAME_HEIGHT);
 	}
 
 	public static void changeTitle(String newTitle) {
