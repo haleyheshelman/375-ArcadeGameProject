@@ -9,16 +9,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ArcadeGameTests {
-	ArcadeGame ag;
-	Point2D.Double[] inGame = new Point2D.Double[2];
-	Point2D.Double[] outOfGame = new Point2D.Double[2];
+	static ArcadeGame ag;
+	static Point2D.Double[] inGame = new Point2D.Double[2];
+	static Point2D.Double[] outOfGame = new Point2D.Double[2];
 
-	Dieable d;
+	static Dieable d;
 
 	@Before
 	public void setUp() throws Exception {
-		Main.scoreboard = new Scoreboard();
-		ag = new ArcadeGame(318, 400);
+		ag = new ArcadeGame(318, 400) {
+			@Override
+			public void updateScoreboard() {
+				// nothing
+			}
+		};
+
 		d = new Dieable(ag, 0, 0) {
 			@Override
 			public void move() {

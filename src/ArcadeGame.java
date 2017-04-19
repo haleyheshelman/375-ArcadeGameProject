@@ -20,7 +20,6 @@ public class ArcadeGame {
 
 	protected boolean USE_IMAGES = true;
 
-	protected Scoreboard scoreboard;
 	protected int width;
 	protected int height;
 	protected static final int GRID_SIZE = 20;
@@ -202,7 +201,7 @@ public class ArcadeGame {
 
 	public void nextLevel() {
 		this.levelNum++;
-		Main.scoreboard.changeLevel(this.levelNum);
+		this.updateScoreboard();
 		this.MM.alreadyAddedScorpion = false;
 		this.MM.newCentipede();
 		this.lastLevelChange = System.currentTimeMillis();
@@ -347,7 +346,7 @@ public class ArcadeGame {
 			// initialize new Centipede
 			this.MM.newCentipede();
 		}
-		Main.scoreboard.changeLives(this.lives);
+		this.updateScoreboard();
 	}
 
 	/**
