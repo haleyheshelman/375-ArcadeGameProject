@@ -20,8 +20,8 @@ public class ArcadeGame {
 
 	protected boolean USE_IMAGES = true;
 
-	protected int width;
-	protected int height;
+	protected final static int width = 400;
+	protected final static int height = 318;
 	protected static final int GRID_SIZE = 20;
 
 	protected static final int TOP_PLAYER_AREA = 11;
@@ -51,6 +51,10 @@ public class ArcadeGame {
 
 	public MonsterManager MM = new MonsterManager(this);
 
+	public ArcadeGame() throws IOException{
+		this(318,400);
+	}
+	
 	/**
 	 * 
 	 * Creates an ArcadeGame at level 1, with a new ship at grid location 10,16
@@ -61,8 +65,6 @@ public class ArcadeGame {
 	 * @throws IOException
 	 */
 	public ArcadeGame(int height, int width) throws IOException {
-		this.height = height;
-		this.width = width;
 		initializeAddObjectMap();
 		this.ship = new Ship(this, 10, 16);
 		createLevel(1);
