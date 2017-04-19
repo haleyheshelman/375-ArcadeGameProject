@@ -454,11 +454,13 @@ public class ArcadeGame {
 		addObject(new Missile(this, projectilePoint));
 	}
 
+	@SuppressWarnings("unused")
 	public void addNewShotgunShot(Double projectilePoint) {
-		addObject(new ShotGun(this, projectilePoint));
+		new ShotGun(this, projectilePoint);
 	}
 
 	public void addNewBomb(Double projectilePoint) {
+		System.out.println("Adding new bomb");
 		addObject(new Bomb(this, projectilePoint));
 	}
 

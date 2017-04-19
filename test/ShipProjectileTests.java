@@ -1,6 +1,5 @@
-import static org.junit.Assert.*;
-
-import java.awt.geom.Point2D;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -47,10 +46,10 @@ public class ShipProjectileTests {
 		assertEquals(Bomb.class, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
-		
-		s.setProjectileType(ExplodingBullet.class); 
-		assertEquals(ExplodingBullet.class, s.getProjectileType()); 
-		assertEquals(5, s.bombsRemaining); 
+
+		s.setProjectileType(ExplodingBullet.class);
+		assertEquals(ExplodingBullet.class, s.getProjectileType());
+		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
 
 	}
@@ -80,7 +79,7 @@ public class ShipProjectileTests {
 		// can't getProjectileType on dieable... what to do?
 		// assertEquals(1, ((Projectile)
 		// ag.getProjectiles().get(0)).getProjectileType());
-		
+
 		assertTrue(ag.getProjectiles().get(0) instanceof Bullet);
 
 		assertEquals(5, s.bombsRemaining);
@@ -99,7 +98,7 @@ public class ShipProjectileTests {
 		s.fireProjectile();
 		int afterParts = ag.getDieableParts().size();
 
-		assertEquals(beforeParts+1, afterParts);
+		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
 		assertTrue(ag.getProjectiles().get(0) instanceof Missile);
 
@@ -116,17 +115,18 @@ public class ShipProjectileTests {
 		assertEquals(ShotGun.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
-		int beforeParts = ag.getDieableParts().size();
+		int beforeParts = ag.getProjectiles().size();
 		s.fireProjectile();
-		int afterParts = ag.getDieableParts().size();
+		int afterParts = ag.getProjectiles().size();
 
+		System.out.println(ag.getProjectiles());
 		assertEquals(beforeParts + 3, afterParts);
 		assertEquals(3, ag.getProjectiles().size());
-		
+
 		assertTrue(ag.getProjectiles().get(0) instanceof Bullet);
 		assertTrue(ag.getProjectiles().get(1) instanceof Bullet);
 		assertTrue(ag.getProjectiles().get(2) instanceof Bullet);
-		
+
 		assertEquals(5, s.bombsRemaining);
 
 		waitToFire();
@@ -140,9 +140,9 @@ public class ShipProjectileTests {
 		assertEquals(Bomb.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
-		int beforeParts = ag.getDieableParts().size();
+		int beforeParts = ag.getProjectiles().size();
 		s.fireProjectile();
-		int afterParts = ag.getDieableParts().size();
+		int afterParts = ag.getProjectiles().size();
 
 		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
@@ -192,10 +192,10 @@ public class ShipProjectileTests {
 		s.fireProjectile();
 		assertEquals(6, ag.getProjectiles().size());
 		assertEquals(0, s.bombsRemaining);
-		waitToFire(); 
-		
+		waitToFire();
+
 	}
-	
+
 	@Test
 	public void testFireProjectileType5() {
 		assertEquals(5, s.bombsRemaining);
@@ -207,7 +207,7 @@ public class ShipProjectileTests {
 		s.fireProjectile();
 		int afterParts = ag.getDieableParts().size();
 
-		assertEquals(beforeParts+1, afterParts);
+		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
 		assertTrue(ag.getProjectiles().get(0) instanceof ExplodingBullet);
 
