@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -47,9 +45,7 @@ public class ArcadeGameComponent extends JComponent {
 					while (true) {
 						Thread.sleep(REPAINT_INTERVALS_MS);
 						if (!ArcadeGameComponent.this.game.isPaused) {
-
 							ArcadeGameComponent.this.onEveryRefresh();
-
 						}
 					}
 				} catch (InterruptedException exception) {
@@ -73,37 +69,46 @@ public class ArcadeGameComponent extends JComponent {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		/*
-		 * Testing screen dimensions g2.fill(new Rectangle2D.Double(1, 1, 2,
-		 * 2)); g2.fill(new Rectangle2D.Double(398, 1, 1, 2)); g2.fill(new
-		 * Rectangle2D.Double(399, 2, 1, 2)); g2.fill(new Rectangle2D.Double(0,
-		 * 3, 399, 2));
-		 */
 
 		if (this.game.USE_IMAGES) {
-
-			BufferedImage image = null;
-			try {
-				image = ImageIO.read(new File("gameBackground.png"));
-			} catch (IOException exception) {
-
-				exception.printStackTrace();
-			}
-
-			g2.drawImage(image, 0, 0, this.game.width, this.game.height + 40,
-					Color.BLACK, this);
+			drawBackground(g2);
 		}
 
-		List<Drawable> drawableParts = this.game.getDrawableParts();
-		for (Drawable curDraw : drawableParts) {
-			drawDrawable(g2, curDraw);
-		}
-
+		drawDrawables(g2);
 	}
 
 	/**
-	 * This helper method draws the given drawable object on the given graphics
-	 * area.
+	 * Draw all drawables in the game
+	 * 
+	 * @param g2
+	 */
+	private void drawDrawables(Graphics2D g2) {
+		for (Drawable curDraw : this.game.getDrawableParts()) {
+			drawDrawable(g2, curDraw);
+		}
+	}
+
+	/**
+	 * Draw the background
+	 *
+	 * @param g2
+	 */
+	private void drawBackground(Graphics2D g2) {
+		BufferedImage image = null;
+
+		try {
+
+			image = ImageIO.read(new File("gameBackground.png"));
+			g2.drawImage(image, 0, 0, this.game.width, this.game.height + 40,
+					Color.BLACK, this);
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	/**
+	 * Draw a specific drawable
 	 *
 	 * @param g2
 	 * @param d
@@ -135,6 +140,14 @@ public class ArcadeGameComponent extends JComponent {
 
 	}
 
+	/**
+	 * Attempt to draw a Drawable with rich graphics
+	 *
+	 * @param g2
+	 * @param d
+	 * @param shape
+	 * @throws Exception
+	 */
 	private void drawWithImages(Graphics2D g2, Drawable d, Shape shape)
 			throws Exception {
 		BufferedImage image = d.getImage();
@@ -147,6 +160,11 @@ public class ArcadeGameComponent extends JComponent {
 				Color.BLACK, this);
 	}
 
+	/**
+	 * Change FPS
+	 *
+	 * @param deltaFPS
+	 */
 	public void changeFPS(int deltaFPS) {
 		if (FRAMES_PER_SECOND >= 10 && FRAMES_PER_SECOND <= 150) {
 			FRAMES_PER_SECOND += deltaFPS;
