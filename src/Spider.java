@@ -1,7 +1,12 @@
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the spider in the Arcade Game.
@@ -23,7 +28,8 @@ public class Spider extends Monster {
 
 	private static final double SPIDER_VELOCITY_X = 1;
 	private static final double SPIDER_VELOCITY_Y = 1;
-	private static final int MAX_HEIGHT = ArcadeGame.TOP_PLAYER_AREA * ArcadeGame.GRID_SIZE;
+	private static final int MAX_HEIGHT = ArcadeGame.TOP_PLAYER_AREA
+			* ArcadeGame.GRID_SIZE;
 	private static final double INITIAL_X = 9.5;
 	private static final int SPIDER_SCORES = 600;
 	private int yDirection = -1;
@@ -40,9 +46,11 @@ public class Spider extends Monster {
 		super(game, 0, 0);
 		this.setVelocityX(SPIDER_VELOCITY_X * this.xDirection);
 		this.setVelocityY(SPIDER_VELOCITY_Y * this.yDirection);
-		int initialY = rand.nextInt(ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
+		int initialY = rand.nextInt(
+				ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
 				+ ArcadeGame.TOP_PLAYER_AREA;
-		this.setTLPoint(new Point2D.Double(INITIAL_X * (1 - this.xDirection) * Dieable.GRID_SIZE,
+		this.setTLPoint(new Point2D.Double(
+				INITIAL_X * (1 - this.xDirection) * Dieable.GRID_SIZE,
 				initialY * Dieable.GRID_SIZE));
 		this.bounty = SPIDER_SCORES;
 	}
@@ -56,7 +64,8 @@ public class Spider extends Monster {
 		double curX = this.getX();
 		double nextY = this.getY() + SPIDER_VELOCITY_Y * this.yDirection;
 		double nextX = curX + SPIDER_VELOCITY_X * this.xDirection;
-		if (this.getGame().inGameX(curX, nextY, this.width) && !this.getGame().inGameX(nextX, nextY, this.width))
+		if (this.getGame().inGameX(curX, nextY, this.width)
+				&& !this.getGame().inGameX(nextX, nextY, this.width))
 			this.xDirection *= -1;
 
 		this.moveOrDie(curY, nextX, nextY);
@@ -96,7 +105,8 @@ public class Spider extends Monster {
 	 *
 	 */
 	public void eatMushroom() {
-		Mushroom mushroom = (Mushroom) this.intersectsObject(this.getGame().getMushrooms());
+		Mushroom mushroom = (Mushroom) this
+				.intersectsObject(this.getGame().getMushrooms());
 		if (mushroom != null) {
 			if (ArcadeGame.rand.nextInt(50) < 2)
 				mushroom.die();
@@ -121,7 +131,19 @@ public class Spider extends Monster {
 	public Shape getShape() {
 		double x = getTLPoint().getX();
 		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width, this.height);
+		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
+				this.height);
 	}
 
+	@Override
+	public BufferedImage getImage() throws IOException {
+		String imagePath;
+		if (this.getHealth() < Monster.DEF_MONST_HEALTH) {
+			imagePath = "spiderFinalDamaged.png";
+		} else {
+			imagePath = "spiderFinal.png";
+		}
+
+		return ImageIO.read(new File(imagePath));
+	}
 }

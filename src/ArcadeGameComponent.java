@@ -121,10 +121,13 @@ public class ArcadeGameComponent extends JComponent {
 		}
 		if (this.game.USE_IMAGES) {
 			try {
-				drawWithImages(g2, d, color, shape);
+				drawWithImages(g2, d, shape);
 				return;
-			} catch (IOException exception) {
-				exception.printStackTrace();
+			} catch (Exception exception) {
+				/*
+				 * nothing to do with exception; we'll just be drawing shape and
+				 * color below
+				 */
 			}
 		}
 		g2.setColor(color);
@@ -132,50 +135,14 @@ public class ArcadeGameComponent extends JComponent {
 
 	}
 
-	private void drawWithImages(Graphics2D g2, Drawable d, Color color,
-			Shape shape) throws IOException {
-		BufferedImage image = null;
-		Rectangle bounds = shape.getBounds();
+	private void drawWithImages(Graphics2D g2, Drawable d, Shape shape)
+			throws Exception {
+		BufferedImage image = d.getImage();
+		if (image == null)
+			throw new NullPointerException(
+					"No image for this Drawable: " + d.toString());
 
-		if (d.getClass().getName().equals("Mushroom")) {
-			Mushroom m = (Mushroom) d;
-			image = m.getImage();
-		} else if (d.getClass().getName().equals("Centipede")) {
-			Centipede c = (Centipede) d;
-			image = c.getImage();
-		} else if (d.getClass().getName().equals("Spider")) {
-			try {
-				Spider s = (Spider) d;
-				if (s.getHealth() < Monster.DEF_MONST_HEALTH) {
-					image = ImageIO.read(new File("spiderFinalDamaged.png"));
-				} else {
-					image = ImageIO.read(new File("spiderFinal.png"));
-				}
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-		} else if (d.getClass().getName().equals("Ship")) {
-			try {
-				image = ImageIO.read(new File("shipFinal.png"));
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-		} else if (d.getClass().getName().equals("Scorpion")) {
-			try {
-				image = ImageIO.read(new File("scorpionFinal.png"));
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-		} else if (d.getClass().getName().equals("Flea")) {
-			try {
-				image = ImageIO.read(new File("fleaFinal.png"));
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-		} else {
-			g2.setColor(color);
-			g2.fill(shape);
-		}
+		Rectangle bounds = shape.getBounds();
 		g2.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height,
 				Color.BLACK, this);
 	}

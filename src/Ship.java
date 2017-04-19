@@ -2,6 +2,11 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the ship in the arcade game.
@@ -220,5 +225,10 @@ public class Ship extends Dieable {
 		double y = getTLPoint().getY();
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
+	}
+	
+	@Override
+	public BufferedImage getImage() throws IOException{
+		return ImageIO.read(new File("shipFinal.png"));
 	}
 }

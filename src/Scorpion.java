@@ -2,6 +2,11 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the Scorpion in the Arcade Game.
@@ -25,7 +30,7 @@ public class Scorpion extends Monster {
 	public Scorpion(ArcadeGame game, double gridX, double gridY) {
 		super(game, gridX, gridY);
 		this.setColor(Color.CYAN);
-//		System.out.println("new Scorpion");
+		// System.out.println("new Scorpion");
 		this.bounty = 900;
 		// System.out.println(gridX+" "+gridY);
 	}
@@ -42,8 +47,8 @@ public class Scorpion extends Monster {
 		double curY = this.getY();
 		double newX = curX + this.getVelocityX();
 
-		Dieable intersectedObject = this.intersectsObject(this.getGame()
-				.getMushrooms());
+		Dieable intersectedObject = this
+				.intersectsObject(this.getGame().getMushrooms());
 
 		if (intersectedObject != null
 				&& intersectedObject.getClass().getName().equals("Mushroom")) {
@@ -71,6 +76,11 @@ public class Scorpion extends Monster {
 		double y = getTLPoint().getY();
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
+	}
+
+	@Override
+	public BufferedImage getImage() throws IOException {
+		return ImageIO.read(new File("scorpionFinal.png"));
 	}
 
 }

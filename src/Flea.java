@@ -1,6 +1,11 @@
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the Flea in the Arcade Game.
@@ -55,7 +60,7 @@ public class Flea extends Monster {
 
 	/**
 	 * Move method moves the flea down, kills it if it's out of the game, and
-	 * calls mushroomDropper(). 
+	 * calls mushroomDropper().
 	 */
 	@Override
 	public void move() {
@@ -72,7 +77,7 @@ public class Flea extends Monster {
 	}
 
 	/**
-	 * Drops a mushroom once it's reached the correct location. 
+	 * Drops a mushroom once it's reached the correct location.
 	 *
 	 * @param yPos
 	 */
@@ -111,5 +116,10 @@ public class Flea extends Monster {
 		double y = getTLPoint().getY();
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
+	}
+
+	@Override
+	public BufferedImage getImage() throws IOException {
+		return ImageIO.read(new File("fleaFinal.png"));
 	}
 }

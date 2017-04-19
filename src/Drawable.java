@@ -36,9 +36,11 @@ public interface Drawable {
 	 * Gets the image of the object.
 	 *
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	BufferedImage getImage() throws IOException;
+	default BufferedImage getImage() throws IOException {
+		return null;
+	}
 
 	/**
 	 * Sets the image of the object.
@@ -46,6 +48,5 @@ public interface Drawable {
 	 * @param image
 	 */
 	void setImage(BufferedImage image);
-	
-	
+
 }

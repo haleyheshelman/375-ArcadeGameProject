@@ -3,7 +3,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -224,11 +223,6 @@ public abstract class Dieable implements Drawable {
 
 	public void setVelocityY(double velocityY) {
 		this.velocityY = velocityY;
-	}
-
-	@Override
-	public BufferedImage getImage() throws IOException {
-		return this.image;
 	}
 
 	@Override
