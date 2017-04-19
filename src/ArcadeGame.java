@@ -454,9 +454,7 @@ public class ArcadeGame {
 	}
 
 	public void addNewShotgunShot(Double projectilePoint) {
-		this.addObject(new Bullet(this, projectilePoint, 8));
-		this.addObject(new Bullet(this, projectilePoint, 8, -1));
-		this.addObject(new Bullet(this, projectilePoint, 8, 1));
+		addObject(new ShotGun(this, projectilePoint));
 	}
 
 	public void addNewBomb(Double projectilePoint) {

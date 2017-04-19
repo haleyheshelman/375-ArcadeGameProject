@@ -18,7 +18,7 @@ public class Ship extends Dieable {
 	private int leftMove = 0;
 	private int upMove = 0;
 	private int downMove = 0;
-	private int projectileType = 1;
+	private Class<? extends Projectile> projectileType = Bullet.class;
 	protected int bombsRemaining = 5;
 	private static long lastFiredTime = System.currentTimeMillis();
 
@@ -37,16 +37,16 @@ public class Ship extends Dieable {
 		this.setVelocityY(4);
 	}
 
-	public int getProjectileType() {
+	public Class<? extends Projectile> getProjectileType() {
 		return this.projectileType;
 	}
 
-	public void setProjectileType(int projectileType) {
-		this.projectileType = projectileType;
-		if (projectileType == 4) {
+	public void setProjectileType(Class<? extends Projectile> type) {
+		this.projectileType = type;
+		if (this.projectileType.getClass().equals(Bomb.class)) {
 			Main.scoreboard.changeWeapon(4, this.bombsRemaining);
 		} else {
-			Main.scoreboard.changeWeapon(projectileType);
+			Main.scoreboard.changeWeapon(type);
 		}
 	}
 
@@ -184,29 +184,25 @@ public class Ship extends Dieable {
 
 		Point2D.Double projectilePoint = new Point2D.Double(coordinateX,
 				coordinateY);
-
-		if (this.getProjectileType() == 1) {
-			// first projectile type
+		if (isClass(Bullet.class)) {
 			this.getGame().addNewBullet(projectilePoint);
-
-		} else if (this.getProjectileType() == 2) {
-			// second projectile type
+		} else if (isClass(Missile.class)){
 			this.getGame().addNewMissile(projectilePoint);
-
-		} else if (this.getProjectileType() == 3) {
-			// third projectile type
-
+		}else if (isClass(ShotGun.class)) {
 			this.getGame().addNewShotgunShot(projectilePoint);
-
-		} else if (this.getProjectileType() == 4) {
+		} else if (isClass(Bomb.class)) {
 			if (this.bombsRemaining > 0 && this.getGame().countBomb() < 5) {
 				this.getGame().addNewBomb(projectilePoint);
 				this.bombsRemaining--;
 				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
 			}
-		} else if (this.getProjectileType() == 5) {
+		} else if (isClass(ExplodingBullet.class)) {
 			this.getGame().addNewExplodingBullet(projectilePoint);
 		}
+	}
+
+	private boolean isClass(Class<? extends Projectile> p) {
+		return this.projectileType.getTypeName().equals(p.getTypeName());
 	}
 
 	/**
@@ -224,7 +220,5 @@ public class Ship extends Dieable {
 		double y = getTLPoint().getY();
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
-		// return new Arc2D.Double(x + this.gap, y + this.gap, this.width, 2
-		// * this.height + this.gap, 0, 180, Arc2D.CHORD);
 	}
 }

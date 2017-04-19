@@ -101,19 +101,19 @@ public class ArcadeGameKeyListener implements KeyListener {
 			this.alreadyFiring = true;
 		}
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("1")) {
-			this.game.getShip().setProjectileType(1);
+			this.game.getShip().setProjectileType(Bullet.class);
 		}
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("2")) {
-			this.game.getShip().setProjectileType(2);
+			this.game.getShip().setProjectileType(Missile.class);
 		}
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("3")) {
-			this.game.getShip().setProjectileType(3);
+			this.game.getShip().setProjectileType(ShotGun.class);
 		}
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("4")) {
-			this.game.getShip().setProjectileType(4);
+			this.game.getShip().setProjectileType(Bomb.class);
 		}
 		if (KeyEvent.getKeyText(e.getKeyCode()).equals("5")) {
-			this.game.getShip().setProjectileType(5);
+			this.game.getShip().setProjectileType(ExplodingBullet.class);
 		}
 
 	}

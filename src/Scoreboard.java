@@ -79,21 +79,10 @@ public class Scoreboard extends JPanel {
 	/**
 	 * Changes the type of weapon.
 	 *
-	 * @param weaponNum
+	 * @param type
 	 */
-	public void changeWeapon(int weaponNum) {
-		String str = "";
-		if (weaponNum == 1)
-			str = "Cannon";
-		else if (weaponNum == 2)
-			str = "Guided Missile";
-		else if (weaponNum == 3)
-			str = "Shotgun";
-		else if (weaponNum == 4)
-			str = "Mines (?)";
-		else if (weaponNum == 5)
-			str = "Exploding bullet";
-		this.weaponField.setText(str);
+	public void changeWeapon(Class<? extends Projectile> type) {
+		this.weaponField.setText(type.getName());
 	}
 
 	public void changeWeapon(@SuppressWarnings("unused") int weaponNum,
