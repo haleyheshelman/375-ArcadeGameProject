@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -69,26 +68,6 @@ public class DieableTests {
 
 		ArcadeGame newGame = new ArcadeGame(100, 100);
 		assertFalse(g.equals(newGame));
-
-	}
-
-	@Test
-	public void testSetImage() throws IOException {
-		BufferedImage i = d.getImage();
-		System.out.println(i);
-		assertEquals(null, i);
-
-		// Is never used in project
-
-	}
-
-	@Test
-	public void testGetImage() throws IOException {
-		BufferedImage i = d.getImage();
-		System.out.println(i);
-		assertEquals(null, i);
-
-		// Is never used in project
 
 	}
 
