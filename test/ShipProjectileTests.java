@@ -26,30 +26,30 @@ public class ShipProjectileTests {
 	@Test
 	public void testConstructor() {
 		assertEquals(5, s.bombsRemaining);
-		assertEquals(1, s.getProjectileType());
+		assertEquals(Bullet.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 	}
 
 	@Test
 	public void testSetProjectileType() {
-		s.setProjectileType(2);
-		assertEquals(2, s.getProjectileType());
+		s.setProjectileType(Missile.class);
+		assertEquals(Missile.class, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
 
-		s.setProjectileType(3);
-		assertEquals(3, s.getProjectileType());
+		s.setProjectileType(ShotGun.class);
+		assertEquals(ShotGun.class, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
 
-		s.setProjectileType(4);
-		assertEquals(4, s.getProjectileType());
+		s.setProjectileType(Bomb.class);
+		assertEquals(Bomb.class, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
 		
-		s.setProjectileType(5); 
-		assertEquals(5, s.getProjectileType()); 
+		s.setProjectileType(ExplodingBullet.class); 
+		assertEquals(ExplodingBullet.class, s.getProjectileType()); 
 		assertEquals(5, s.bombsRemaining); 
 		assertEquals(0, ag.getProjectiles().size());
 
@@ -66,7 +66,7 @@ public class ShipProjectileTests {
 	@Test
 	public void testFireProjectileType1() {
 		assertEquals(5, s.bombsRemaining);
-		assertEquals(1, s.getProjectileType());
+		assertEquals(Bullet.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
@@ -91,8 +91,8 @@ public class ShipProjectileTests {
 	@Test
 	public void testFireProjectileType2() {
 		assertEquals(5, s.bombsRemaining);
-		s.setProjectileType(2);
-		assertEquals(2, s.getProjectileType());
+		s.setProjectileType(Missile.class);
+		assertEquals(Missile.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
@@ -112,8 +112,8 @@ public class ShipProjectileTests {
 	@Test
 	public void testFireProjectileType3() {
 		assertEquals(5, s.bombsRemaining);
-		s.setProjectileType(3);
-		assertEquals(3, s.getProjectileType());
+		s.setProjectileType(ShotGun.class);
+		assertEquals(ShotGun.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
@@ -136,8 +136,8 @@ public class ShipProjectileTests {
 	@Test
 	public void testFireProjectileType4() {
 		assertEquals(5, s.bombsRemaining);
-		s.setProjectileType(4);
-		assertEquals(4, s.getProjectileType());
+		s.setProjectileType(Bomb.class);
+		assertEquals(Bomb.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
@@ -180,15 +180,15 @@ public class ShipProjectileTests {
 		assertEquals(0, s.bombsRemaining);
 		waitToFire();
 
-		s.setProjectileType(1);
+		s.setProjectileType(Bullet.class);
 		s.fireProjectile();
 		assertEquals(6, ag.getProjectiles().size());
 		assertEquals(0, s.bombsRemaining);
 		assertTrue(ag.getProjectiles().get(5) instanceof Bullet);
 		waitToFire();
 
-		s.setProjectileType(4);
-		assertEquals(4, s.getProjectileType());
+		s.setProjectileType(Bomb.class);
+		assertEquals(Bomb.class, s.getProjectileType());
 		s.fireProjectile();
 		assertEquals(6, ag.getProjectiles().size());
 		assertEquals(0, s.bombsRemaining);
@@ -199,8 +199,8 @@ public class ShipProjectileTests {
 	@Test
 	public void testFireProjectileType5() {
 		assertEquals(5, s.bombsRemaining);
-		s.setProjectileType(5);
-		assertEquals(5, s.getProjectileType());
+		s.setProjectileType(ExplodingBullet.class);
+		assertEquals(ExplodingBullet.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
