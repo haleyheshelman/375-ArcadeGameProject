@@ -120,127 +120,64 @@ public class ArcadeGameComponent extends JComponent {
 			return;
 		}
 		if (this.game.USE_IMAGES) {
-			BufferedImage image = null;
-			Rectangle tlr = shape.getBounds();
-			if (d.getClass().getName().equals("Mushroom")) {
-				try {
-					Mushroom m = (Mushroom) d;
-					if (m.isPoisonous()) {
-						/*
-						 * Numbers below are just thresholds for different
-						 * health 'levels'
-						 */
-						if (m.getHealth() == Mushroom.DEFAULT_MUSHROOM_HEALTH) {
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinal.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (10)) {
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinalDamage1.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (20)) {
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinalDamage2.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 30) {
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinalDamage3.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 39) {
-							image = ImageIO.read(new File(
-									"poisonedMushroomFinalDamage4.png"));
-						}
-					} else {
-						if (m.getHealth() == Mushroom.DEFAULT_MUSHROOM_HEALTH) {
-							image = ImageIO.read(new File("mushroomFinal.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (10)) {
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage1.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - (20)) {
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage2.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 30) {
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage3.png"));
-						} else if (m.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - 39) {
-							image = ImageIO.read(new File(
-									"mushroomFinalDamage4.png"));
-						}
-						// m.setImage(image);
-						// image = m.getImage();
-					}
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else if (d.getClass().getName().equals("Centipede")) {
-				try {
-					Centipede c = (Centipede) d;
-					if (c.xDirection == 1) {
-						if (c.poisoned) {
-							image = ImageIO.read(new File(
-									"centipedePosionedFinal.png"));
-						} else {
-							if (c.getHealth() < Monster.DEF_MONST_HEALTH) {
-								image = ImageIO.read(new File(
-										"centipedeFinalDamaged.png"));
-							} else {
-								image = ImageIO.read(new File(
-										"centipedeFinal.png"));
-							}
-						}
-					} else {
-						if (c.poisoned) {
-							image = ImageIO.read(new File(
-									"centipedePosionedFinalTwo.png"));
-						} else {
-							if (c.getHealth() < Monster.DEF_MONST_HEALTH) {
-								image = ImageIO.read(new File(
-										"centipedeFinalTwoDamaged.png"));
-							} else {
-								image = ImageIO.read(new File(
-										"centipedeFinalTwo.png"));
-							}
-						}
-					}
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else if (d.getClass().getName().equals("Spider")) {
-				try {
-					Spider s = (Spider) d;
-					if (s.getHealth() < Monster.DEF_MONST_HEALTH) {
-						image = ImageIO
-								.read(new File("spiderFinalDamaged.png"));
-					} else {
-						image = ImageIO.read(new File("spiderFinal.png"));
-					}
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else if (d.getClass().getName().equals("Ship")) {
-				try {
-					image = ImageIO.read(new File("shipFinal.png"));
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else if (d.getClass().getName().equals("Scorpion")) {
-				try {
-					image = ImageIO.read(new File("scorpionFinal.png"));
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else if (d.getClass().getName().equals("Flea")) {
-				try {
-					image = ImageIO.read(new File("fleaFinal.png"));
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			} else {
-				g2.setColor(color);
-				g2.fill(shape);
+			try {
+				drawWithImages(g2, d, color, shape);
+				return;
+			} catch (IOException exception) {
+				exception.printStackTrace();
 			}
-			g2.drawImage(image, tlr.x, tlr.y, tlr.width, tlr.height,
-					Color.BLACK, this);
+		}
+		g2.setColor(color);
+		g2.fill(shape);
+
+	}
+
+	private void drawWithImages(Graphics2D g2, Drawable d, Color color,
+			Shape shape) throws IOException {
+		BufferedImage image = null;
+		Rectangle bounds = shape.getBounds();
+
+		if (d.getClass().getName().equals("Mushroom")) {
+			Mushroom m = (Mushroom) d;
+			image = m.getImage();
+		} else if (d.getClass().getName().equals("Centipede")) {
+			Centipede c = (Centipede) d;
+			image = c.getImage();
+		} else if (d.getClass().getName().equals("Spider")) {
+			try {
+				Spider s = (Spider) d;
+				if (s.getHealth() < Monster.DEF_MONST_HEALTH) {
+					image = ImageIO.read(new File("spiderFinalDamaged.png"));
+				} else {
+					image = ImageIO.read(new File("spiderFinal.png"));
+				}
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		} else if (d.getClass().getName().equals("Ship")) {
+			try {
+				image = ImageIO.read(new File("shipFinal.png"));
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		} else if (d.getClass().getName().equals("Scorpion")) {
+			try {
+				image = ImageIO.read(new File("scorpionFinal.png"));
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		} else if (d.getClass().getName().equals("Flea")) {
+			try {
+				image = ImageIO.read(new File("fleaFinal.png"));
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
 		} else {
 			g2.setColor(color);
 			g2.fill(shape);
 		}
+		g2.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height,
+				Color.BLACK, this);
 	}
 
 	public void changeFPS(int deltaFPS) {

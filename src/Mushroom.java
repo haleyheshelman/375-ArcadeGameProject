@@ -1,6 +1,11 @@
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the mushrooms in the arcade game.
@@ -96,20 +101,22 @@ public class Mushroom extends Dieable {
 	 * 
 	 * @return
 	 */
-//	@Override
-//	public BufferedImage getImage() {
-//		if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) < 0) {
-//			System.out.println("HELLO FROM THE GREAT BEYOND");
-//
-//			System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-//			System.out.println(this.getHealth());
-//		}
-//		if (this.getHealth() != 0) {
-//			return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
-//					MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-//		}
-//		return this.image;
-//	}
+	// @Override
+	// public BufferedImage getImage() {
+	// if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) <
+	// 0) {
+	// System.out.println("HELLO FROM THE GREAT BEYOND");
+	//
+	// System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() /
+	// DEFAULT_MUSHROOM_HEALTH);
+	// System.out.println(this.getHealth());
+	// }
+	// if (this.getHealth() != 0) {
+	// return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
+	// MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
+	// }
+	// return this.image;
+	// }
 
 	/**
 	 * Removes the mushroom from the frame when its health its at 0
@@ -123,20 +130,57 @@ public class Mushroom extends Dieable {
 			this.getGame().mushroomsInPlayerArea--;
 	}
 
-//	/**
-//	 * Removes health and adjusts height
-//	 */
-//	@Override
-//	public void removeHealth(int damage) {
-//		super.removeHealth(damage);
-//	}
-//
-//	/**
-//	 * Sets health and adjusts height
-//	 */
-//	@Override
-//	public void setHealth(int health) {
-//		super.setHealth(health);
-//	}
+	private boolean healthDroppedLessThan(int drop) {
+		return this.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - drop;
+	}
 
+	private static Map<Integer, String[]> imagesMap = new HashMap<>();
+	static int health_level_0 = 0;
+	static int health_level_1 = 10;
+	static int health_level_2 = 20;
+	static int health_level_3 = 30;
+	static int health_level_4 = 39;
+	static int[] health_level_arr = { health_level_0, health_level_1,
+			health_level_2, health_level_3, health_level_4 };
+
+	private static void initImagesMap() {
+		addImageMapping(health_level_0, "mushroomFinal.png",
+				"poisonedMushroomFinal.png");
+		addImageMapping(health_level_1, "mushroomFinalDamage1.png",
+				"poisonedMushroomFinalDamage1.png");
+		addImageMapping(health_level_2, "mushroomFinalDamage2.png",
+				"poisonedMushroomFinalDamage2.png");
+		addImageMapping(health_level_3, "mushroomFinalDamage3.png",
+				"poisonedMushroomFinalDamage3.png");
+		addImageMapping(health_level_4, "mushroomFinalDamage4.png",
+				"poisonedMushroomFinalDamage4.png");
+	}
+
+	public static void addImageMapping(int drop, String normalImage,
+			String poisonImage) {
+		imagesMap.put(new Integer(drop),
+				new String[] { normalImage, poisonImage });
+	}
+
+	public String getImageForDropLevel(int drop) {
+		int ind = (this.isPoisonous() ? 1 : 0);
+		if (imagesMap.isEmpty()) {
+			initImagesMap();
+		}
+		return imagesMap.get(drop)[ind];
+	}
+
+	@Override
+	public BufferedImage getImage() throws IOException {
+
+		String imagePath = null;
+		for (int level : health_level_arr) {
+			if (healthDroppedLessThan(level)) {
+				imagePath = getImageForDropLevel(level);
+				break;
+			}
+		}
+		return ImageIO.read(new File(imagePath));
+
+	}
 }

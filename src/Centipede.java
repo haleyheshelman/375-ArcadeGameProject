@@ -1,7 +1,10 @@
 import java.awt.Color;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents a specific kind of monster in the arcade game.
@@ -282,17 +285,30 @@ public class Centipede extends Monster {
 		this.markedY = this.getY();
 	}
 
-	/**
-	 * Gets the shape of the Centipede.
-	 * 
-	 * @return
-	 */
+	static String[] poisonedImgs = new String[] {
+			"centipedePosionedFinalTwo.png", "centipedePosionedFinal.png" };
+
+	static String[] fullHealthImgs = new String[] { "centipedeFinalTwo.png",
+			"centipedeFinal.png" };
+
+	static String[] damagedImgs = new String[] { "centipedeFinalTwoDamaged.png",
+			"centipedeFinalDamaged.png" };
+
 	@Override
-	public Shape getShape() {
-		double x = getTLPoint().getX();
-		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
-				this.height);
+	public BufferedImage getImage() throws IOException {
+		String imagePath;
+		// right = 1 -> 1; left = -1 -> 0
+		int ind = (this.xDirection + 1) / 2;
+		if (this.poisoned) {
+			imagePath = poisonedImgs[ind];
+		} else {
+			if (this.getHealth() == this.DEF_MONST_HEALTH) {
+				imagePath = fullHealthImgs[ind];
+			} else {
+				imagePath = damagedImgs[ind];
+			}
+		}
+		return ImageIO.read(new File(imagePath));
 	}
 
 }

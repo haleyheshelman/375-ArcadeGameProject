@@ -3,6 +3,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,7 @@ public abstract class Dieable implements Drawable {
 	private int health;
 	private double velocityX;
 	private double velocityY;
-	protected BufferedImage image;
+	private BufferedImage image;
 	protected double height;
 	protected double width;
 	protected double gap;
@@ -226,7 +227,7 @@ public abstract class Dieable implements Drawable {
 	}
 
 	@Override
-	public BufferedImage getImage() {
+	public BufferedImage getImage() throws IOException {
 		return this.image;
 	}
 

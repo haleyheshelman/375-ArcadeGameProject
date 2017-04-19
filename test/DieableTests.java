@@ -73,7 +73,7 @@ public class DieableTests {
 	}
 
 	@Test
-	public void testSetImage() {
+	public void testSetImage() throws IOException {
 		BufferedImage i = d.getImage();
 		System.out.println(i);
 		assertEquals(null, i);
@@ -83,7 +83,7 @@ public class DieableTests {
 	}
 
 	@Test
-	public void testGetImage() {
+	public void testGetImage() throws IOException {
 		BufferedImage i = d.getImage();
 		System.out.println(i);
 		assertEquals(null, i);

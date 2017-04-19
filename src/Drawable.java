@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Represents objects that have a shape and a fill color.
@@ -35,8 +36,9 @@ public interface Drawable {
 	 * Gets the image of the object.
 	 *
 	 * @return
+	 * @throws IOException 
 	 */
-	BufferedImage getImage();
+	BufferedImage getImage() throws IOException;
 
 	/**
 	 * Sets the image of the object.
@@ -44,4 +46,6 @@ public interface Drawable {
 	 * @param image
 	 */
 	void setImage(BufferedImage image);
+	
+	
 }
