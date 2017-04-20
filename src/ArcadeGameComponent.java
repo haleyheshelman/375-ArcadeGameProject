@@ -80,26 +80,25 @@ public class ArcadeGameComponent extends JComponent {
 	/**
 	 * Draw all drawables in the game
 	 * 
-	 * @param g2
+	 * @param graphics
 	 */
-	private void drawDrawables(Graphics2D g2) {
-		for (Drawable curDraw : this.game.getDrawableParts()) {
-			drawDrawable(g2, curDraw);
+	private void drawDrawables(Graphics2D graphics) {
+		for (Drawable eachDrawable : this.game.getDrawableParts()) {
+			drawDrawable(graphics, eachDrawable);
 		}
 	}
 
 	/**
 	 * Draw the background
 	 *
-	 * @param g2
+	 * @param graphics
 	 */
-	private void drawBackground(Graphics2D g2) {
+	private void drawBackground(Graphics2D graphics) {
 		BufferedImage image = null;
 
 		try {
-
 			image = ImageIO.read(new File("gameBackground.png"));
-			g2.drawImage(image, 0, 0, this.game.width, this.game.height + 40,
+			graphics.drawImage(image, 0, 0, this.game.width, this.game.height + 40,
 					Color.BLACK, this);
 
 		} catch (Exception exception) {
@@ -110,23 +109,18 @@ public class ArcadeGameComponent extends JComponent {
 	/**
 	 * Draw a specific drawable
 	 *
-	 * @param g2
-	 * @param d
+	 * @param graphics
+	 * @param drawable
 	 */
-	private void drawDrawable(Graphics2D g2, Drawable d) {
-		Color color = d.getColor();
-		if (color == null) {
-			System.out.println("null color");
+	private void drawDrawable(Graphics2D graphics, Drawable drawable) {
+		Color color = drawable.getColor();
+		Shape shape = drawable.getShape();
+		if (shape == null || color == null)
 			return;
-		}
-		Shape shape = d.getShape();
-		if (shape == null) {
-			System.out.println("null shape");
-			return;
-		}
+
 		if (this.game.USE_IMAGES) {
 			try {
-				drawWithImages(g2, d, shape);
+				drawWithImages(graphics, drawable);
 				return;
 			} catch (Exception exception) {
 				/*
@@ -135,8 +129,8 @@ public class ArcadeGameComponent extends JComponent {
 				 */
 			}
 		}
-		g2.setColor(color);
-		g2.fill(shape);
+		graphics.setColor(color);
+		graphics.fill(shape);
 
 	}
 
@@ -148,9 +142,9 @@ public class ArcadeGameComponent extends JComponent {
 	 * @param shape
 	 * @throws Exception
 	 */
-	private void drawWithImages(Graphics2D g2, Drawable d, Shape shape)
-			throws Exception {
+	private void drawWithImages(Graphics2D g2, Drawable d) throws Exception {
 		BufferedImage image = d.getImage();
+		Shape shape = d.getShape();
 		if (image == null)
 			throw new NullPointerException(
 					"No image for this Drawable: " + d.toString());
