@@ -100,7 +100,7 @@ public class Spider extends Monster {
 
 	}
 
-	private int getRandomSwitch() {
+	protected int getRandomSwitch() {
 		int randomSwitch = rand.nextInt(1000);
 		return randomSwitch;
 	}
