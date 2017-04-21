@@ -13,7 +13,7 @@ import java.util.Random;
 public class Bonus extends Dieable {
 
 	protected static Random rand = new Random();
-	private int BonusType = 0;
+	protected int BonusType = 0;
 	private int BonusTimeLimit = 5000;
 
 	/**
@@ -29,11 +29,11 @@ public class Bonus extends Dieable {
 		int gridX = getRandX();
 		this.setTLPoint(new Point2D.Double(gridX * Dieable.GRID_SIZE, gridY
 				* Dieable.GRID_SIZE));
-		getRandBonusType();
+		setBonusType(); 
 		setColor(this.BonusType);
 	}
 
-	private void setColor(int type) {
+	protected void setColor(int type) {
 		if (type == 1) {
 			this.setColor(Color.GRAY);
 		} else if (type == 2) {
@@ -42,19 +42,33 @@ public class Bonus extends Dieable {
 			this.setColor(Color.ORANGE);
 		}
 	}
+	
 
-	private void getRandBonusType() {
-		this.BonusType = rand.nextInt(3) + 1;
+	
+	/*
+	 * This might seem like needless indirection
+	 * but it's for the purpose of testing 
+	 */
+	protected void setBonusType() {
+		this.BonusType = getRandBonusType();
 	}
 
-	private int getRandY() {
+	protected int getRandBonusType() {
+		return rand.nextInt(3) + 1;
+	}
+
+	protected int getRandY() {
 		int gridY = rand.nextInt(6) + 11;
 		return gridY;
 	}
 
-	private int getRandX() {
+	protected int getRandX() {
 		int gridX = rand.nextInt(20);
 		return gridX;
+	}
+	
+	protected int getBonusTyp(){
+		return this.BonusType;
 	}
 
 	/**

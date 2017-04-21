@@ -198,7 +198,7 @@ public class Ship extends Dieable {
 		} else if (isClass(Bomb.class)) {
 			if (this.bombsRemaining > 0 && this.getGame().countBomb() < 5) {
 				this.getGame().addNewBomb(projectilePoint);
-				this.bombsRemaining--;
+				decrementBombsRemaining();
 				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
 			}
 		} else if (isClass(ExplodingBullet.class)) {
@@ -230,5 +230,11 @@ public class Ship extends Dieable {
 	@Override
 	public BufferedImage getImage() throws IOException{
 		return ImageIO.read(new File("shipFinal.png"));
+	}
+	
+	protected void decrementBombsRemaining() {
+		if (this.bombsRemaining > 0){
+			this.bombsRemaining--;
+		}
 	}
 }
