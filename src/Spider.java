@@ -42,8 +42,8 @@ public class Spider extends Monster {
 	 *
 	 * @param game
 	 */
-	public Spider(ArcadeGame game) {
-		super(game, 0, 0);
+	public Spider() {
+		super(0, 0);
 		this.setVelocityX(SPIDER_VELOCITY_X * this.xDirection);
 		this.setVelocityY(SPIDER_VELOCITY_Y * this.yDirection);
 		int initialY = rand.nextInt(

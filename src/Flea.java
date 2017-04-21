@@ -45,8 +45,8 @@ public class Flea extends Monster {
 	private double gridX;
 	private static double terminalVelocity = DEF_MONST_VEL * 3;
 
-	public Flea(ArcadeGame game, double gridX, double mush1Y, double mush2Y) {
-		super(game, gridX, -1.0);
+	public Flea( double gridX, double mush1Y, double mush2Y) {
+		super( gridX, -1.0);
 		this.gridX = gridX;
 		this.mush1Y = mush1Y;
 		this.mush2Y = mush2Y;

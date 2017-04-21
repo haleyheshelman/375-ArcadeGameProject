@@ -29,12 +29,12 @@ public abstract class Projectile extends Dieable {
 	 * @param damage
 	 */
 	public Projectile(ArcadeGame game, Point2D centerPoint) {
-		this(game, centerPoint, DEFAULT_PROJECTILE_DAMAGE);
+		this(centerPoint, DEFAULT_PROJECTILE_DAMAGE);
 	}
 
-	public Projectile(ArcadeGame game, Point2D centerPoint, int damage) {
+	public Projectile( Point2D centerPoint, int damage) {
 
-		super(game, 10, 16);
+		super(10, 16);
 		this.setVelocityY(DEFAULT_PROJECTILE_VELOCITY);
 		this.setVelocityX(0);
 		this.setCenterPoint(centerPoint);

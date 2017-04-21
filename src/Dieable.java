@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -21,37 +20,32 @@ public abstract class Dieable implements Drawable {
 			* (GRID_SIZE - SPRITE_SIZE)); // 2
 											// by
 											// default
-	private Color color;
-	private int health;
+	private Color color = Color.GREEN;
+	private int health = 10;
 	private double velocityX;
 	private double velocityY;
-	private BufferedImage image;
-	protected double height;
-	protected double width;
-	protected double gap;
-	protected double topGap;
+	protected double height = SPRITE_SIZE;
+	protected double width = SPRITE_SIZE;
+	protected double gap = GAP_SIZE;
+	protected double topGap = GAP_SIZE;
 	private Point2D TLPoint;
-	private ArcadeGame game;
 	protected int bounty;
+	private static ArcadeGame game;
 
 	/**
 	 * Creates a new Dieable at the specified grid location, using the grid size
 	 * for pixel placement
 	 *
-	 * @param game
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Dieable(ArcadeGame game, double gridX, double gridY) {
-		this.setTLPoint(
-				new Point2D.Double(gridX * (GRID_SIZE), gridY * (GRID_SIZE)));
-		this.health = 10;
-		this.game = game;
-		this.height = SPRITE_SIZE;
-		this.width = SPRITE_SIZE;
-		this.gap = GAP_SIZE;
-		this.topGap = this.gap;
-		this.color = Color.GREEN;
+	public Dieable(int gridX, int gridY) {
+		// yes, it's silly
+		this((double) gridX * GRID_SIZE, gridY * GRID_SIZE);
+	}
+
+	public Dieable(double pixelX, double pixelY) {
+		this.setTLPoint(new Point2D.Double(pixelX, pixelY));
 	}
 
 	/**
@@ -63,7 +57,7 @@ public abstract class Dieable implements Drawable {
 	void removeHealth(int damage) {
 		this.health -= damage;
 		if (this.health <= 0) {
-			this.game.score += this.bounty;
+			this.getGame().score += this.bounty;
 			this.health = 0;
 			this.die();
 		}
@@ -75,7 +69,7 @@ public abstract class Dieable implements Drawable {
 	 */
 	void die() {
 		// System.out.println("Dying");
-		this.game.MM.removeObject(this.game, this);
+		this.getGame().MM.removeObject(this.getGame(), this);
 	}
 
 	/**
@@ -225,14 +219,23 @@ public abstract class Dieable implements Drawable {
 		this.velocityY = velocityY;
 	}
 
-	@Override
-	public void setImage(BufferedImage image) {
+	public static ArcadeGame getGame() {
+		if (game == null)
+			game = ArcadeGame.getInstance();
+		return game;
 
-		this.image = image;
 	}
 
-	public ArcadeGame getGame() {
-		return this.game;
+	static void generateAtPixels(double x, double y) {
+		// Due to java silliness, this is how it has to be
+		String n = null;
+		System.out.println(n.equals("Test"));
+	}
+	
+	abstract void generateAtPixels_override(double x, double y);
+
+	static final void generateAtGrid(int x, int y) {
+		generateAtPixels(x * GRID_SIZE, y * GRID_SIZE);
 	}
 
 }

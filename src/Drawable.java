@@ -42,11 +42,4 @@ public interface Drawable {
 		return null;
 	}
 
-	/**
-	 * Sets the image of the object.
-	 *
-	 * @param image
-	 */
-	void setImage(BufferedImage image);
-
 }

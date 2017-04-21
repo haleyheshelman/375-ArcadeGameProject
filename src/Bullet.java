@@ -8,19 +8,25 @@ import java.awt.geom.Point2D;
 public class Bullet extends Projectile {
 
 	// default damage if none is specified
-	public Bullet(ArcadeGame game, Point2D centerPoint) {
-		this(game, centerPoint, Projectile.DEFAULT_PROJECTILE_DAMAGE);
+	public Bullet(Point2D centerPoint) {
+		this(centerPoint, Projectile.DEFAULT_PROJECTILE_DAMAGE);
 	}
 
 	// makes a bullet at the point with the given damage
-	public Bullet(ArcadeGame game, Point2D centerPoint, int damage) {
-		super(game, centerPoint, damage);
+	public Bullet(Point2D centerPoint, int damage) {
+		super(centerPoint, damage);
 	}
 
 	// makes a bullet in the game with given centerPoint, damage and X velocity.
-	public Bullet(ArcadeGame game, Point2D centerPoint, int damage, double velX) {
-		super(game, centerPoint, damage);
+	public Bullet(Point2D centerPoint, int damage, double velX) {
+		super(centerPoint, damage);
 		this.setVelocityX(velX);
+	}
+
+	@Override
+	void generateAtPixels_override(double x, double y) {
+		getGame().addObject(new Bullet(new Point2D.Double(x,y)));
+		
 	}
 
 }

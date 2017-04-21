@@ -24,7 +24,7 @@ public class ArcadeGameTests {
 			}
 		};
 
-		d = new Dieable(ag, 0, 0) {
+		d = new Dieable(0, 0) {
 			@Override
 			public void move() {
 				// do nothing

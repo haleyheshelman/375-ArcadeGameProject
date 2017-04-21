@@ -14,14 +14,18 @@ public class Bomb extends Projectile {
 	private static final int BOMB_DAMAGE = 50;
 	private static final double X_ADJUST = 1.5;
 
+	public Bomb(double x, double y) {
+		this(new Point2D.Double(x, y));
+	}
+
 	/**
 	 * Constructs a Bomb in the game.
 	 *
 	 * @param game
 	 * @param centerPoint
 	 */
-	public Bomb(ArcadeGame game, Point2D centerPoint) {
-		super(game, centerPoint, BOMB_DAMAGE);
+	public Bomb(Point2D centerPoint) {
+		super(centerPoint, BOMB_DAMAGE);
 		this.setColor(Color.WHITE);
 		this.setVelocityX(0);
 		this.setVelocityY(0);
@@ -35,6 +39,13 @@ public class Bomb extends Projectile {
 		double x = getCenterPoint().getX();
 		double y = getCenterPoint().getY();
 
-		return new Ellipse2D.Double(x - BOMB_DIAMETER / 2 - X_ADJUST, y - BOMB_DIAMETER, BOMB_DIAMETER, BOMB_DIAMETER);
+		return new Ellipse2D.Double(x - BOMB_DIAMETER / 2 - X_ADJUST,
+				y - BOMB_DIAMETER, BOMB_DIAMETER, BOMB_DIAMETER);
+	}
+
+	static void generateAtPixels(double x, double y) {
+		Bomb b = new Bomb(x, y);
+		getGame().addObject(b);
+
 	}
 }

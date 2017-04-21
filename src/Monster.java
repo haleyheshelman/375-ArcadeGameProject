@@ -16,8 +16,8 @@ public abstract class Monster extends Dieable {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Monster(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Monster(double gridX, double gridY) {
+		super(gridX, gridY);
 
 		// in most cases, velocity y = velocity x.
 		this.setVelocityX(DEF_MONST_VEL);

@@ -11,15 +11,15 @@ public class ShipProjectileTests {
 
 	@Before
 	public void setUp() throws Exception {
-		Main.main(null);
+		Main.main(new String[]{"mute"});
 		// System.out.println("SETUP");
-		ag = new ArcadeGame(318, 400);
-		s = new Ship(ag, 10, 16);
+		ag = ArcadeGame.getInstance();
+		s = new Ship(10, 16);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		// System.out.println("teardown");
+		ArcadeGame.resetArcadeGame();
 	}
 
 	@Test
@@ -64,14 +64,16 @@ public class ShipProjectileTests {
 
 	@Test
 	public void testFireProjectileType1() {
+		System.out.println("Bullet/1");
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(Bullet.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
+		assertEquals(Bullet.class, s.getProjectileType());
 		s.fireProjectile();
 		int afterParts = ag.getDieableParts().size();
-
+		System.out.println("Projectiles, 1: "+ag.getProjectiles());
 		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
 

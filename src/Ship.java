@@ -35,8 +35,8 @@ public class Ship extends Dieable {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Ship(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Ship(double gridX, double gridY) {
+		super(gridX, gridY);
 		this.setColor(Color.RED);
 		this.setVelocityX(2.5);
 		this.setVelocityY(4);
@@ -179,7 +179,7 @@ public class Ship extends Dieable {
 	 *
 	 */
 	public void fireProjectile() {
-
+		System.out.println(this.getProjectileType());
 		long currentTime = System.currentTimeMillis();
 		if (currentTime - lastFiredTime < 200)
 			return;
@@ -189,11 +189,14 @@ public class Ship extends Dieable {
 
 		Point2D.Double projectilePoint = new Point2D.Double(coordinateX,
 				coordinateY);
+
+		System.out.println(this.projectileType.getTypeName());
+
 		if (isClass(Bullet.class)) {
-			this.getGame().addNewBullet(projectilePoint);
-		} else if (isClass(Missile.class)){
+			Bullet.generateAtPixels(coordinateX, coordinateY);
+		} else if (isClass(Missile.class)) {
 			this.getGame().addNewMissile(projectilePoint);
-		}else if (isClass(ShotGun.class)) {
+		} else if (isClass(ShotGun.class)) {
 			this.getGame().addNewShotgunShot(projectilePoint);
 		} else if (isClass(Bomb.class)) {
 			if (this.bombsRemaining > 0 && this.getGame().countBomb() < 5) {
@@ -226,9 +229,19 @@ public class Ship extends Dieable {
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
 	}
-	
+
 	@Override
-	public BufferedImage getImage() throws IOException{
+	public BufferedImage getImage() throws IOException {
 		return ImageIO.read(new File("shipFinal.png"));
+	}
+
+	static void generateAtPixels(double x, double y) {
+		//
+	}
+
+	@Override
+	void generateAtPixels_override(double x, double y) {
+		// TODO Auto-generated method stub.
+		
 	}
 }

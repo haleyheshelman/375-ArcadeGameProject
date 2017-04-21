@@ -12,7 +12,7 @@ public class ShotGun extends Projectile {
 	}
 	
 	private void generateBullet (double xVel){
-		Bullet b = new Bullet (this.getGame(), this.getCenterPoint()); 
+		Bullet b = new Bullet (this.getCenterPoint()); 
 		b.setVelocityX(xVel);
 		this.getGame().addObject(b);
 		

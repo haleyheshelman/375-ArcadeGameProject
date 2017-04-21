@@ -98,7 +98,7 @@ public class ArcadeGameComponent extends JComponent {
 
 		try {
 			image = ImageIO.read(new File("gameBackground.png"));
-			graphics.drawImage(image, 0, 0, this.game.width, this.game.height + 40,
+			graphics.drawImage(image, 0, 0, ArcadeGame.width, ArcadeGame.height + 40,
 					Color.BLACK, this);
 
 		} catch (Exception exception) {

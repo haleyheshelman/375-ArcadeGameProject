@@ -48,25 +48,28 @@ public class StartScreen {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("resource")
-	public StartScreen(ArcadeGame game, JFrame frame, Scoreboard board) throws IOException {
+	public StartScreen(ArcadeGame game, JFrame frame, Scoreboard board,
+			boolean mute) throws IOException {
 
 		this.game = game;
 
 		this.mainFrame = frame;
 
 		this.scoreBoard = board;
-		
+
 		// Loads and plays the music in the game
-		InputStream in = new FileInputStream("gameSound.wav");
-		AudioStream audioStream = new AudioStream(in);
-		AudioPlayer.player.start(audioStream);
-		
+		if (!mute) {
+			InputStream in = new FileInputStream("gameSound.wav");
+			AudioStream audioStream = new AudioStream(in);
+			AudioPlayer.player.start(audioStream);
+		}
 		// Builds the image/instructions/button of the game.
 		initImage();
 		initDescription();
 		initButton();
 
-		// Adds the three panels containing the image/instructions/button to the frame.
+		// Adds the three panels containing the image/instructions/button to the
+		// frame.
 		this.mainFrame.add(this.titleImage, BorderLayout.NORTH);
 		this.mainFrame.add(this.gameDescription, BorderLayout.CENTER);
 		this.mainFrame.add(this.startGameButton, BorderLayout.SOUTH);
@@ -98,26 +101,21 @@ public class StartScreen {
 	public void initDescription() {
 
 		this.gameDescription = new JPanel();
-		
+
 		JTextArea textDescription = new JTextArea(20, 37);
-		
+
 		textDescription.setText(
-				  "                                          Welcome to our Game !! \n"
-				+ "            Created by Anthony De Rada, Bochuan Lu and Daniel Verlaque \n"
-				+		  " \n "
-				+		  " \n "
-				+ "     Centipede is a vertical shooter developed by Atari Inc. that was \n"
-				+ "     originally released in 1980 as an arcade game. In our version of \n"
-				+ "     the game you control a space craft, shooting bugs that come down \n "
-				+ "     from the top of the playing field. A centipede will snake back and \n"
-				+ "     forth down the screen until the player successfully destroys it thus \n"
-				+ "     completing the round."
-				+ 	"\n"
-				+	"\n"
-				+	"\n"
-				+ "                                      Press H in-game for instructions \n"
-				+ "                        Press the 'Start Game' button to start playing"
-				);
+				"                                          Welcome to our Game !! \n"
+						+ "            Created by Anthony De Rada, Bochuan Lu and Daniel Verlaque \n"
+						+ " \n " + " \n "
+						+ "     Centipede is a vertical shooter developed by Atari Inc. that was \n"
+						+ "     originally released in 1980 as an arcade game. In our version of \n"
+						+ "     the game you control a space craft, shooting bugs that come down \n "
+						+ "     from the top of the playing field. A centipede will snake back and \n"
+						+ "     forth down the screen until the player successfully destroys it thus \n"
+						+ "     completing the round." + "\n" + "\n" + "\n"
+						+ "                                      Press H in-game for instructions \n"
+						+ "                        Press the 'Start Game' button to start playing");
 		textDescription.setBackground(Color.BLACK);
 		textDescription.setFont(new Font("Times", Font.BOLD, 12));
 		textDescription.setOpaque(true);
@@ -126,7 +124,7 @@ public class StartScreen {
 		textDescription.setWrapStyleWord(true);
 		textDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
 		textDescription.setEditable(false);
-		
+
 		this.gameDescription.add(textDescription);
 	}
 
@@ -180,10 +178,10 @@ public class StartScreen {
 		this.startGameButton.setVisible(false);
 
 		this.agc = new ArcadeGameComponent(this.game);
-		
+
 		this.mainFrame.add(this.scoreBoard, BorderLayout.SOUTH);
 		this.mainFrame.add(this.agc);
-		
+
 		this.agc.requestFocusInWindow();
 	}
 }

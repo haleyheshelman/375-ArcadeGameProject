@@ -30,7 +30,7 @@ public class Mushroom extends Dieable {
 	 * @throws IOException
 	 */
 	public Mushroom(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+		super(gridX, gridY);
 		this.gridY = gridY;
 		this.setColor(Color.MAGENTA);
 		this.setHealth(DEFAULT_MUSHROOM_HEALTH);
@@ -47,7 +47,7 @@ public class Mushroom extends Dieable {
 	 */
 	private void checkInPlayerArea() {
 		if (this.gridY > 10) {
-			this.getGame().mushroomsInPlayerArea++;
+			Dieable.getGame().mushroomsInPlayerArea++;
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Mushroom extends Dieable {
 	 * @return
 	 */
 	private void checkForOverlap() {
-		if (this.intersectsObject(this.getGame().getMushrooms()) != null)
+		if (this.intersectsObject(Dieable.getGame().getMushrooms()) != null)
 			this.die();
 
 	}
@@ -78,11 +78,7 @@ public class Mushroom extends Dieable {
 	 */
 	public void setPoisonous(boolean poisonous) {
 		this.poisonous = poisonous;
-		if (poisonous) {
-			this.setColor(Color.RED);
-		} else {
-			this.setColor(Color.MAGENTA);
-		}
+		this.setColor(poisonous ? Color.RED : Color.MAGENTA);
 	}
 
 	/**
@@ -97,28 +93,6 @@ public class Mushroom extends Dieable {
 	}
 
 	/**
-	 * Gets the image of Mushroom.
-	 * 
-	 * @return
-	 */
-	// @Override
-	// public BufferedImage getImage() {
-	// if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) <
-	// 0) {
-	// System.out.println("HELLO FROM THE GREAT BEYOND");
-	//
-	// System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() /
-	// DEFAULT_MUSHROOM_HEALTH);
-	// System.out.println(this.getHealth());
-	// }
-	// if (this.getHealth() != 0) {
-	// return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
-	// MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-	// }
-	// return this.image;
-	// }
-
-	/**
 	 * Removes the mushroom from the frame when its health its at 0
 	 * 
 	 * @return
@@ -127,7 +101,7 @@ public class Mushroom extends Dieable {
 	public void die() {
 		super.die();
 		if (this.gridY > 10)
-			this.getGame().mushroomsInPlayerArea--;
+			Dieable.getGame().mushroomsInPlayerArea--;
 	}
 
 	private boolean healthDroppedLessThan(int drop) {

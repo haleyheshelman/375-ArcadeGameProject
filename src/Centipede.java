@@ -43,8 +43,8 @@ public class Centipede extends Monster {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Centipede(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Centipede(double gridX, double gridY) {
+		super( gridX, gridY);
 		this.setColor(Color.BLACK);
 		// System.outprintln("Making new centipede");
 		// game.numCentipedes++;

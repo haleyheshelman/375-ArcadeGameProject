@@ -8,8 +8,8 @@ public class Zombie extends Monster {
 	private boolean movingRight;
 	private boolean moveDown;
 
-	public Zombie(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Zombie(double gridX, double gridY) {
+		super(gridX, gridY);
 		this.setColor(Color.MAGENTA);
 		this.bounty = ZOMBIE_SCORE;
 		this.movingRight = true;
