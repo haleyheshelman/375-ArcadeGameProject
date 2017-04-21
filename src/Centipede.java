@@ -308,10 +308,6 @@ public class Centipede extends Monster {
 		return ImageIO.read(new File(imagePath));
 	}
 	
-	static Centipede generateAtGrid(int gridX, int gridY){
-		Centipede centipede = new Centipede(gridX, gridY);
-		getGame().addObject(centipede);
-		return centipede;
-	}
+	
 
 }

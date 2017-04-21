@@ -201,7 +201,7 @@ public class ArcadeGame {
 			String row = input.nextLine();
 			for (int gridX = 0; gridX < row.length(); gridX++) {
 				if (row.charAt(gridX) == 'C') {
-					Centipede.generateAtGrid(gridX, gridY);
+					new Centipede(gridX, gridY).add();
 				}
 				if (row.charAt(gridX) == 'M') {
 					Mushroom.generateAtGrid(gridX, gridY);
@@ -283,8 +283,7 @@ public class ArcadeGame {
 	public void check_about_adding_bonus() {
 		if (System.currentTimeMillis()
 				- this.lastBonusTime > this.bonusMinTime) {
-			Bonus.generateAtGrid(Bonus.random_x_coord(),
-					Bonus.random_y_coord());
+			new Bonus().add();
 		}
 	}
 

@@ -24,7 +24,6 @@ public class Ship extends Dieable {
 	private int upMove = 0;
 	private int downMove = 0;
 	private Class<? extends Projectile> projectileType = Bullet.class;
-	protected int bombsRemaining = 5;
 	private static long lastFiredTime = System.currentTimeMillis();
 
 	/**
@@ -49,7 +48,7 @@ public class Ship extends Dieable {
 	public void setProjectileType(Class<? extends Projectile> type) {
 		this.projectileType = type;
 		if (this.projectileType.getClass().equals(Bomb.class)) {
-			Main.scoreboard.changeWeapon(4, this.bombsRemaining);
+			Main.scoreboard.changeWeapon(4, Bomb.bombsRemaining);
 		} else {
 			Main.scoreboard.changeWeapon(type);
 		}
@@ -185,37 +184,13 @@ public class Ship extends Dieable {
 		long currentTime = System.currentTimeMillis();
 
 		if (firedTooRecently(currentTime)) {
-			System.out.println("fired too recently");
 			return;
 		}
 		lastFiredTime = currentTime;
 		double coordinateX = this.getCenterPoint().getX();
 		double coordinateY = this.getCenterPoint().getY() - 10;
-		// special case: bombs are rate-limited
-		if (isClass(Bomb.class)) {
-			if (this.bombsRemaining > 0 && getGame().countBomb() < 5) {
-				Bomb.generateAtPixels(coordinateX, coordinateY);
-				this.bombsRemaining--;
-				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
-			}
-			return;
-		}
 
-		if (isClass(Missile.class)) {
-			Missile.generateAtPixels(coordinateX, coordinateY);
-		} else if (isClass(ShotGun.class)) {
-			ShotGun.generateAtPixels(coordinateX, coordinateY);
-		} else if (isClass(ExplodingBullet.class)) {
-			ExplodingBullet.generateAtPixels(coordinateX, coordinateY);
-		} else if (isClass(Bullet.class)) {
-			Bullet.generateAtPixels(coordinateX, coordinateY);
-		} else {
-			System.err.println("failed to create projectile");
-		}
-	}
-
-	private boolean isClass(Class<? extends Projectile> p) {
-		return this.projectileType.getTypeName().equals(p.getTypeName());
+		Projectile.spawn(getProjectileType(), coordinateX, coordinateY);
 	}
 
 	/**
@@ -244,5 +219,11 @@ public class Ship extends Dieable {
 		Ship ship = new Ship(x, y);
 		getGame().setShip(ship);
 		return ship;
+	}
+
+	@Override
+	void add() {
+		// TODO Auto-generated method stub.
+
 	}
 }

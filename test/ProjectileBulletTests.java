@@ -17,7 +17,7 @@ public class ProjectileBulletTests {
 	public void setUp() throws Exception {
 		Main.scoreboard = new Scoreboard();
 		ag = ArcadeGame.getInstance();
-		b = new Bullet(new Point2D.Double(40, 40));
+		b = new Bullet(40, 40);
 	}
 
 	@Test

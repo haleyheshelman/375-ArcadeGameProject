@@ -1,14 +1,22 @@
 import java.awt.Color;
-import java.awt.geom.Point2D;
 
 public class ExplodingBullet extends Projectile {
 
 	private static final int INITIAL_DAMAGE = 0;
 	private static final int EXPLODED_DAMAGE = 5;
 
-	public ExplodingBullet(Point2D centerPoint) {
-		super(centerPoint, INITIAL_DAMAGE);
+	public ExplodingBullet() {
+		super();
+	}
+
+	@Override
+	void setUniques() {
+		this.setDamage(INITIAL_DAMAGE);
 		this.setColor(Color.BLUE);
+	}
+
+	public ExplodingBullet(double px, double py) {
+		super(px, py);
 	}
 
 	@Override
@@ -32,18 +40,11 @@ public class ExplodingBullet extends Projectile {
 	}
 
 	private void generateBullet(double xVel, double yVel) {
-		Bullet b = new Bullet(this.getCenterPoint(), EXPLODED_DAMAGE);
-		b.setVelocityX(xVel);
+		Bullet b = new Bullet(this.getCenterPoint().getX(),
+				this.getCenterPoint().getY(), EXPLODED_DAMAGE, xVel);
 		b.setVelocityY(yVel);
 		b.setColor(Color.CYAN);
-
 		getGame().addObject(b);
 	}
-
-	static ExplodingBullet generateAtPixels(double x, double y) {
-		ExplodingBullet exploding_bullet = new ExplodingBullet(new Point2D.Double(x, y));
-		getGame().addObject(exploding_bullet);
-		return exploding_bullet;
-	}
-
+	
 }

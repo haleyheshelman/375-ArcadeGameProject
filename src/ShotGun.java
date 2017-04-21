@@ -1,23 +1,33 @@
-import java.awt.geom.Point2D;
-
 public class ShotGun extends Projectile {
 
-	public ShotGun(Point2D centerPoint) {
-		super(centerPoint);
+	public static final int DEF_SHOTGUN_DMG = Bullet.DEFAULT_PROJECTILE_DAMAGE
+			/ 3;
+
+	public ShotGun() {
+		super();
+	}
+
+	public ShotGun(double px, double py) {
+		super(px, py);
 	}
 
 	private void generateBullet(double xVel) {
-		Bullet b = new Bullet(this.getCenterPoint());
+		Bullet b = new Bullet(this.getCenterPoint().getX(),
+				this.getCenterPoint().getY());
 		b.setVelocityX(xVel);
 		getGame().addObject(b);
 
 	}
 
-	static ShotGun generateAtPixels(double x, double y) {
-		ShotGun sh = new ShotGun(new Point2D.Double(x, y));
+	@Override
+	void setUniques() {
+		setDamage(DEF_SHOTGUN_DMG);
+	}
+
+	@Override
+	public void add() {
 		for (int direction : new int[] { -1, 0, 1 }) {
-			sh.generateBullet(direction);
+			this.generateBullet(direction);
 		}
-		return sh;
 	}
 }

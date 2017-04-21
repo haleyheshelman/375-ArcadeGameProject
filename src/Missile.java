@@ -11,10 +11,12 @@ public class Missile extends Projectile {
 
 	private static final int PROJECTILE_2_VELOCITY = -3;
 
-	public Missile(Point2D centerPoint) {
-		super(centerPoint, MISSILE_DAMAGE);
-		this.setVelocityY(PROJECTILE_2_VELOCITY);
-		this.setColor(Color.RED);
+	public Missile() {
+		super();
+	}
+
+	public Missile(double px, double py) {
+		super(px, py);
 	}
 
 	/**
@@ -29,10 +31,12 @@ public class Missile extends Projectile {
 			this.die();
 		}
 	}
-	
-	static Missile generateAtPixels(double x, double y){
-		Missile missile = new Missile(new Point2D.Double(x,y));
-		getGame().addObject(missile);
-		return missile;
+
+
+	@Override
+	void setUniques() {
+		this.setVelocityY(PROJECTILE_2_VELOCITY);
+		this.setColor(Color.RED);
+		this.setDamage(MISSILE_DAMAGE);
 	}
 }

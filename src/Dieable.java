@@ -3,6 +3,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+
 /**
  * Represents the creatures in the arcade game.
  *
@@ -13,11 +14,11 @@ public abstract class Dieable implements Drawable {
 	protected final static int SPRITE_SIZE = 16; // default sprite width
 	protected final static double GAP_SIZE = (int) (0.5
 			* (ArcadeGame.GRID_SIZE - SPRITE_SIZE)); // 2
-											// by
-											// default
+	// by
+	// default
 	private Color color = Color.GREEN;
 	private int health = 10;
-	private double velocityX;
+	private double velocityX = 0;
 	private double velocityY;
 	protected double height = SPRITE_SIZE;
 	protected double width = SPRITE_SIZE;
@@ -25,9 +26,9 @@ public abstract class Dieable implements Drawable {
 	protected double topGap = GAP_SIZE;
 	private Point2D TLPoint;
 	protected int bounty;
-	
-	public Dieable(){
-		this(0,0);
+
+	public Dieable() {
+		this(0, 0);
 	}
 
 	/**
@@ -38,7 +39,8 @@ public abstract class Dieable implements Drawable {
 	 * @param gridY
 	 */
 	public Dieable(int gridX, int gridY) {
-		this((double) /* yes, really */ gridX * ArcadeGame.GRID_SIZE, gridY * ArcadeGame.GRID_SIZE);
+		this((double) /* yes, really */ gridX * ArcadeGame.GRID_SIZE,
+				gridY * ArcadeGame.GRID_SIZE);
 	}
 
 	public Dieable(double pixelX, double pixelY) {
@@ -225,19 +227,13 @@ public abstract class Dieable implements Drawable {
 
 	}
 
-	static Dieable generateAtPixels(double x, double y) {
-		// Due to java silliness, this is how it has to be
-		throwException();
-		return null;
-	}
-
-	static Dieable generateAtGrid(int x, int y) {
-		throwException();
-		return null;
-	}
-	
-	private static void throwException(){
-		((String) null).equals(null);
+	/**
+	 * Override for subclasses whose spawn behavior is more complicated than
+	 * just adding themselves to the ArcadeGame's lists
+	 *
+	 */
+	void add() {
+		getGame().addObject(this);
 	}
 
 }
