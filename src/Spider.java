@@ -82,7 +82,7 @@ public class Spider extends Monster {
 	 */
 	public void moveOrDie(double curY, double nextX, double nextY) {
 		this.setTLPoint(new Point2D.Double(nextX, curY));
-		int randomSwitch = rand.nextInt(1000);
+		int randomSwitch = getRandomSwitch();
 		if (randomSwitch <= 2) {
 			this.xDirection *= -1;
 			this.xReverseTimes++;
@@ -98,6 +98,11 @@ public class Spider extends Monster {
 			this.die();
 		}
 
+	}
+
+	private int getRandomSwitch() {
+		int randomSwitch = rand.nextInt(1000);
+		return randomSwitch;
 	}
 
 	/**
