@@ -68,7 +68,8 @@ public class BonusTests {
 		ag.getShip().decrementBombsRemaining();
 		ag.getShip().decrementBombsRemaining();
 		ag.getShip().decrementBombsRemaining();
-		assertEquals(2, ag.getShip().bombsRemaining);
+		ag.getShip().decrementBombsRemaining();
+		assertEquals(1, ag.getShip().bombsRemaining);
 		b.move(); 
 		assertEquals(5, ag.getShip().bombsRemaining);
 	}

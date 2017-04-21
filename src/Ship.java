@@ -232,6 +232,7 @@ public class Ship extends Dieable {
 		return ImageIO.read(new File("shipFinal.png"));
 	}
 	
+	//general refactoring, this should probably be switched everywhere it is used 
 	protected void decrementBombsRemaining() {
 		if (this.bombsRemaining > 0){
 			this.bombsRemaining--;

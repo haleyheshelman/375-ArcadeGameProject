@@ -43,8 +43,6 @@ public class Bonus extends Dieable {
 		}
 	}
 	
-
-	
 	/*
 	 * This might seem like needless indirection
 	 * but it's for the purpose of testing 
