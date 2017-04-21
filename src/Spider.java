@@ -50,8 +50,8 @@ public class Spider extends Monster {
 				ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
 				+ ArcadeGame.TOP_PLAYER_AREA;
 		this.setTLPoint(new Point2D.Double(
-				INITIAL_X * (1 - this.xDirection) * Dieable.GRID_SIZE,
-				initialY * Dieable.GRID_SIZE));
+				INITIAL_X * (1 - this.xDirection) * ArcadeGame.GRID_SIZE,
+				initialY * ArcadeGame.GRID_SIZE));
 		this.bounty = SPIDER_SCORES;
 	}
 

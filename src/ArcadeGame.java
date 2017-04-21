@@ -1,5 +1,4 @@
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,24 +21,29 @@ public class ArcadeGame {
 
 	static ArcadeGame getInstance() {
 		if (instance == null) {
-			System.out.println("Making new instance");
+			System.out.println("New game created");
 			instance = new ArcadeGame();
 		}
 		return instance;
 	}
 
 	static void resetArcadeGame() {
-		instance = new ArcadeGame();
+		instance = null;
 	}
 
 	protected boolean USE_IMAGES = true;
 
-	protected final static int width = 400;
-	protected final static int height = 318;
+	public static final int DEF_AG_PIX_HGHT = 318;
+	public static final int DEF_AG_PIX_WDTH = 400;
+
+	protected final static int width = DEF_AG_PIX_WDTH;
+	protected final static int height = DEF_AG_PIX_HGHT;
 	protected static final int GRID_SIZE = 20;
 
 	protected static final int TOP_PLAYER_AREA = 11;
 	protected static final int BOTTOM_PLAYER_AREA = 16;
+
+	protected static final int BOARD_GRID_WIDTH = DEF_AG_PIX_WDTH / GRID_SIZE;
 
 	private long lastLevelChange;
 
@@ -65,8 +69,8 @@ public class ArcadeGame {
 
 	public MonsterManager MM = new MonsterManager(this);
 
-	private ArcadeGame() {
-		this(318, 400);
+	protected ArcadeGame() {
+		this(DEF_AG_PIX_HGHT, DEF_AG_PIX_WDTH);
 	}
 
 	/**
@@ -79,9 +83,13 @@ public class ArcadeGame {
 	 * @throws IOException
 	 */
 	private ArcadeGame(int height, int width) {
+		if (Main.scoreboard == null)
+			Main.scoreboard = new Scoreboard();
+
 		initializeAddObjectMap();
+
 		instance = this;
-		this.ship = new Ship(10, 16);
+		Ship.generateAtGrid(BOARD_GRID_WIDTH / 2, BOTTOM_PLAYER_AREA);
 		try {
 			createLevel(1);
 		} catch (Exception exception) {
@@ -89,6 +97,9 @@ public class ArcadeGame {
 		}
 	}
 
+	/**
+	 * The numbers below may be adjusted as desired to change the time limits
+	 */
 	public void randomizeTimeLimits() {
 		this.MM.setSpiderMinTime(rand.nextInt(3) * 1000 + 8000);
 		this.MM.setScorpionMinTime(rand.nextInt(6) * 1000 + 10000);
@@ -182,7 +193,7 @@ public class ArcadeGame {
 		readLevelFromFile(textFile);
 	}
 
-	private void readLevelFromFile(String textFile)
+	private static void readLevelFromFile(String textFile)
 			throws FileNotFoundException {
 		int gridY = 0;
 		Scanner input = new Scanner(new File(textFile));
@@ -190,10 +201,10 @@ public class ArcadeGame {
 			String row = input.nextLine();
 			for (int gridX = 0; gridX < row.length(); gridX++) {
 				if (row.charAt(gridX) == 'C') {
-					this.addObject(new Centipede(gridX, gridY));
+					Centipede.generateAtGrid(gridX, gridY);
 				}
 				if (row.charAt(gridX) == 'M') {
-					this.addObject(new Mushroom(this, gridX, gridY));
+					Mushroom.generateAtGrid(gridX, gridY);
 				}
 			}
 			gridY++;
@@ -319,13 +330,13 @@ public class ArcadeGame {
 	 * @return
 	 */
 	public int countBomb() {
-		int number = 0;
+		int count = 0;
 		for (Dieable bomb : this.projectiles) {
 			if (bomb instanceof Bomb) {
-				number++;
+				count++;
 			}
 		}
-		return number;
+		return count;
 	}
 
 	/**
@@ -426,6 +437,10 @@ public class ArcadeGame {
 		return this.ship;
 	}
 
+	protected void setShip(Ship ship) {
+		this.ship = ship;
+	}
+
 	protected int getLevelNum() {
 		return this.levelNum;
 	}
@@ -464,28 +479,6 @@ public class ArcadeGame {
 		dieables.add(this.ship);
 
 		return dieables;
-	}
-
-	public void addNewBullet(Double projectilePoint) {
-		addObject(new Bullet(projectilePoint));
-	}
-
-	public void addNewExplodingBullet(Double projectilePoint) {
-		addObject(new ExplodingBullet(this, projectilePoint));
-	}
-
-	public void addNewMissile(Double projectilePoint) {
-		addObject(new Missile(this, projectilePoint));
-	}
-
-	@SuppressWarnings("unused")
-	public void addNewShotgunShot(Double projectilePoint) {
-		new ShotGun(this, projectilePoint);
-	}
-
-	public void addNewBomb(Double projectilePoint) {
-		System.out.println("Adding new bomb");
-		addObject(new Bomb(projectilePoint));
 	}
 
 	long getLastLevelChange() {

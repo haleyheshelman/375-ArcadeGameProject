@@ -17,7 +17,7 @@ public abstract class Projectile extends Dieable {
 	protected static final int DEFAULT_PROJECTILE_DAMAGE = 10;
 	protected static final int PROJECTILE_Y_ADJUST = 4;
 	private int damage;
-
+	
 	/**
 	 * Constructs a projectile with given damage at the specified centerpoint.
 	 * If unspecified, default damage is 10.
@@ -28,11 +28,19 @@ public abstract class Projectile extends Dieable {
 	 * @param centerPoint
 	 * @param damage
 	 */
-	public Projectile(ArcadeGame game, Point2D centerPoint) {
+	public Projectile(Point2D centerPoint) {
 		this(centerPoint, DEFAULT_PROJECTILE_DAMAGE);
 	}
 
-	public Projectile( Point2D centerPoint, int damage) {
+	public Projectile(double px, double py) {
+		this(px, py, DEFAULT_PROJECTILE_DAMAGE);
+	}
+
+	public Projectile(double px, double py, int damage) {
+		this(new Point2D.Double(px, py), damage);
+	}
+
+	public Projectile(Point2D centerPoint, int damage) {
 
 		super(10, 16);
 		this.setVelocityY(DEFAULT_PROJECTILE_VELOCITY);
@@ -42,8 +50,8 @@ public abstract class Projectile extends Dieable {
 		this.damage = damage;
 		this.height = PROJECTILE_HEIGHT;
 		this.width = PROJECTILE_WIDTH;
-		this.gap = (GRID_SIZE - this.width) * 0.5;
-		this.topGap = (GRID_SIZE - this.height) * 0.5;
+		this.gap = (ArcadeGame.GRID_SIZE - this.width) * 0.5;
+		this.topGap = (ArcadeGame.GRID_SIZE - this.height) * 0.5;
 
 	}
 
@@ -74,8 +82,8 @@ public abstract class Projectile extends Dieable {
 	 */
 	public boolean checkHit() {
 		ArrayList<Dieable> objsToCheck = new ArrayList<>();
-		objsToCheck.addAll(this.getGame().getMonsters());
-		objsToCheck.addAll(this.getGame().getMushrooms());
+		objsToCheck.addAll(getGame().getMonsters());
+		objsToCheck.addAll(getGame().getMushrooms());
 		boolean hit = false;
 		Dieable intersectObject = this.intersectsObject(objsToCheck);
 		if (intersectObject != null) {
@@ -98,8 +106,8 @@ public abstract class Projectile extends Dieable {
 		double x = getCenterPoint().getX();
 		double y = getCenterPoint().getY();
 
-		return new Rectangle2D.Double(x - PROJECTILE_WIDTH / 2, y - PROJECTILE_HEIGHT / 2 + PROJECTILE_Y_ADJUST,
+		return new Rectangle2D.Double(x - PROJECTILE_WIDTH / 2,
+				y - PROJECTILE_HEIGHT / 2 + PROJECTILE_Y_ADJUST,
 				PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
 	}
-
 }

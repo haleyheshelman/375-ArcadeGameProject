@@ -6,7 +6,7 @@ public class ExplodingBullet extends Projectile {
 	private static final int INITIAL_DAMAGE = 0;
 	private static final int EXPLODED_DAMAGE = 5;
 
-	public ExplodingBullet(ArcadeGame game, Point2D centerPoint) {
+	public ExplodingBullet(Point2D centerPoint) {
 		super(centerPoint, INITIAL_DAMAGE);
 		this.setColor(Color.BLUE);
 	}
@@ -37,7 +37,13 @@ public class ExplodingBullet extends Projectile {
 		b.setVelocityY(yVel);
 		b.setColor(Color.CYAN);
 
-		Dieable.getGame().addObject(b);
+		getGame().addObject(b);
+	}
+
+	static ExplodingBullet generateAtPixels(double x, double y) {
+		ExplodingBullet exploding_bullet = new ExplodingBullet(new Point2D.Double(x, y));
+		getGame().addObject(exploding_bullet);
+		return exploding_bullet;
 	}
 
 }

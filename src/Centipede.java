@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
  * @author deradaam, lub, and verlaqd. Created Nov 6, 2015.
  */
 public class Centipede extends Monster {
-	private static final double yShiftMax = GRID_SIZE / DEF_MONST_VEL;
+	private static final double yShiftMax = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
 	private static final int CENTIPEDE_SCORE = 400;
 
 	protected int xDirection = 1; // 1 is right, -1 is left
@@ -21,7 +21,7 @@ public class Centipede extends Monster {
 	private double yShiftCount = 0;
 	private boolean yShifting = false;
 
-	private static final double POISON_SHIFT_MAX = GRID_SIZE / DEF_MONST_VEL;
+	private static final double POISON_SHIFT_MAX = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
 	private final static double POISON_SHIFT_OFFSET = (Dieable.GAP_SIZE * 2);
 	private double firstPoisonMovement = 1;
 
@@ -43,11 +43,9 @@ public class Centipede extends Monster {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Centipede(double gridX, double gridY) {
-		super( gridX, gridY);
+	public Centipede(int gridX, int gridY) {
+		super(gridX, gridY);
 		this.setColor(Color.BLACK);
-		// System.outprintln("Making new centipede");
-		// game.numCentipedes++;
 		this.bounty = CENTIPEDE_SCORE;
 
 	}
@@ -126,13 +124,12 @@ public class Centipede extends Monster {
 				this.xDirection = this.poisonXDirOriginal * -1;
 			}
 		}
-		// System.out.println(xOffset);
 		this.setTLPoint(new Point2D.Double(
 				this.getX() + (this.getVelocityX() * this.xDirection - xOffset),
 				this.getTLPoint().getY()
 						+ this.getVelocityY() * this.yDirection));
 
-		if ((int) (this.getY() / GRID_SIZE) == ArcadeGame.BOTTOM_PLAYER_AREA) {
+		if ((int) (this.getY() / ArcadeGame.GRID_SIZE) == ArcadeGame.BOTTOM_PLAYER_AREA) {
 			this.poisoned = false;
 			this.yShifting = false;
 			this.yDirection = -1;
@@ -169,7 +166,7 @@ public class Centipede extends Monster {
 		double curY = this.getY();
 		if (Math.abs(curX - this.markedX) > ArcadeGame.GRID_SIZE
 				|| Math.abs(curY - this.markedY) > ArcadeGame.GRID_SIZE) {
-			this.getGame().MM.removeObject(this.getGame(), this);
+			getGame().MM.removeObject(getGame(), this);
 			return;
 		}
 
@@ -178,12 +175,12 @@ public class Centipede extends Monster {
 
 		if (curXGrid % 1 == 0 && curYGrid % 1 == 0) {
 
-			Mushroom droppedMushroom = new Mushroom(this.getGame(),
-					(int) curXGrid, (int) curYGrid);
+			Mushroom droppedMushroom = new Mushroom((int) curXGrid,
+					(int) curYGrid);
 			if (droppedMushroom.intersectsObject(
-					droppedMushroom.getGame().getMushrooms()) == null)
-				this.getGame().addObject(droppedMushroom);
-			this.getGame().MM.removeObject(this.getGame(), this);
+					getGame().getMushrooms()) == null)
+				getGame().addObject(droppedMushroom);
+			getGame().MM.removeObject(getGame(), this);
 		}
 	}
 
@@ -202,9 +199,9 @@ public class Centipede extends Monster {
 		this.setTLPoint(new Point2D.Double(nextX, curY));
 
 		Dieable intersectedObject = this.intersectsObject(
-				this.getGame().getMushrooms(), this.ignoredMushroom);
+				getGame().getMushrooms(), this.ignoredMushroom);
 
-		if (this.getGame().inGameX(nextX, this.gap, this.width)
+		if (getGame().inGameX(nextX, this.gap, this.width)
 				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 
@@ -257,17 +254,17 @@ public class Centipede extends Monster {
 
 		// if we landed on top of a mushroom, we need to ignore it:
 		this.ignoredMushroom = (Mushroom) this
-				.intersectsObject(this.getGame().getMushrooms());
+				.intersectsObject(getGame().getMushrooms());
 
 		if (this.ignoredMushroom != null && this.ignoredMushroom.isPoisonous())
 			this.ignoredMushroom = null;
 
 		// If we're at the top or bottom, set direction accordingly and round
 		// the y value to take care of boundary/pixel issues.
-		if ((int) curY / GRID_SIZE == ArcadeGame.BOTTOM_PLAYER_AREA) {
+		if ((int) curY / ArcadeGame.GRID_SIZE == ArcadeGame.BOTTOM_PLAYER_AREA) {
 			this.yDirection = -1;
-			return ArcadeGame.BOTTOM_PLAYER_AREA * GRID_SIZE;
-		} else if ((int) curY / GRID_SIZE == 0) {
+			return ArcadeGame.BOTTOM_PLAYER_AREA * ArcadeGame.GRID_SIZE;
+		} else if ((int) curY / ArcadeGame.GRID_SIZE == 0) {
 			this.yDirection = 1;
 			return 0;
 		}
@@ -302,13 +299,19 @@ public class Centipede extends Monster {
 		if (this.poisoned) {
 			imagePath = poisonedImgs[ind];
 		} else {
-			if (this.getHealth() == this.DEF_MONST_HEALTH) {
+			if (this.getHealth() == Monster.DEF_MONST_HEALTH) {
 				imagePath = fullHealthImgs[ind];
 			} else {
 				imagePath = damagedImgs[ind];
 			}
 		}
 		return ImageIO.read(new File(imagePath));
+	}
+	
+	static Centipede generateAtGrid(int gridX, int gridY){
+		Centipede centipede = new Centipede(gridX, gridY);
+		getGame().addObject(centipede);
+		return centipede;
 	}
 
 }

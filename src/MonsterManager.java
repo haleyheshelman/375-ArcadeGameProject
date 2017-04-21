@@ -109,8 +109,8 @@ public class MonsterManager {
 					- ArcadeGame.TOP_PLAYER_AREA + 1)
 					+ ArcadeGame.TOP_PLAYER_AREA - 1;
 
-			Mushroom testMush1 = new Mushroom(this.game, initialX, mush1Y);
-			Mushroom testMush2 = new Mushroom(this.game, initialX, mush1Y);
+			Mushroom testMush1 = new Mushroom(initialX, mush1Y);
+			Mushroom testMush2 = new Mushroom(initialX, mush1Y);
 			if (testMush1.intersectsObject(this.game.getMushrooms()) == null
 					&& testMush2.intersectsObject(
 							this.game.getMushrooms()) == null) {

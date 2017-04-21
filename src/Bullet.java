@@ -23,10 +23,11 @@ public class Bullet extends Projectile {
 		this.setVelocityX(velX);
 	}
 
-	@Override
-	void generateAtPixels_override(double x, double y) {
-		getGame().addObject(new Bullet(new Point2D.Double(x,y)));
-		
+	static Bullet generateAtPixels(double x, double y) {
+		System.out.println("Gen bullet");
+		Bullet b = new Bullet(new Point2D.Double(x, y));
+		getGame().addObject(b);
+		return b;
 	}
-
+	
 }

@@ -17,8 +17,7 @@ public class ZombieTests {
 	@Before
 	public void setUp() throws Exception {
 		Main.main(null);
-		System.out.println("SETUP");
-		g = new ArcadeGame(100, 100);
+		g = new ArcadeGame();
 		s = g.getShip();
 		z = new Zombie(50, -1);
 		g.addObject(z);
@@ -27,7 +26,6 @@ public class ZombieTests {
 	@After
 	public void tearDown() throws Exception {
 		ArcadeGame.resetArcadeGame();
-		System.out.println("teardown");
 	}
 
 	@Test

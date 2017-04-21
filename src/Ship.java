@@ -35,7 +35,7 @@ public class Ship extends Dieable {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Ship(double gridX, double gridY) {
+	public Ship(int gridX, int gridY) {
 		super(gridX, gridY);
 		this.setColor(Color.RED);
 		this.setVelocityX(2.5);
@@ -95,13 +95,11 @@ public class Ship extends Dieable {
 	 * @return
 	 */
 	private boolean stillAlive(double curX, double curY) {
-		// System.out.println(this.getGame().getMonsters().size());
 		// See if the ship is dead
-		if (this.intersectsObject(this.getGame().getMonsters()) == null) {
+		if (this.intersectsObject(getGame().getMonsters()) == null) {
 			return true;
 		}
 		// if in contact with a monster, return false
-		// System.out.println("false");
 		return false;
 	}
 
@@ -122,9 +120,9 @@ public class Ship extends Dieable {
 		this.setTLPoint(new Point2D.Double(curX, nextY));
 
 		Dieable intersectedObject = this
-				.intersectsObject(this.getGame().getMushrooms());
+				.intersectsObject(getGame().getMushrooms());
 
-		if (this.getGame().inGameY(nextY) && nextY >= MAX_HEIGHT
+		if (getGame().inGameY(nextY) && nextY >= MAX_HEIGHT
 				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextY;
@@ -139,9 +137,9 @@ public class Ship extends Dieable {
 		this.setTLPoint(new Point2D.Double(nextX, curY));
 
 		Dieable intersectedObject = this
-				.intersectsObject(this.getGame().getMushrooms());
+				.intersectsObject(getGame().getMushrooms());
 
-		if (this.getGame().inGameX(nextX, this.gap, this.width)
+		if (getGame().inGameX(nextX, this.gap, this.width)
 				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextX;
@@ -178,34 +176,41 @@ public class Ship extends Dieable {
 	 * Fire projectile
 	 *
 	 */
+
+	public boolean firedTooRecently(long currentTime) {
+		return currentTime - lastFiredTime < 200;
+	}
+
 	public void fireProjectile() {
-		System.out.println(this.getProjectileType());
 		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastFiredTime < 200)
+
+		if (firedTooRecently(currentTime)) {
+			System.out.println("fired too recently");
 			return;
+		}
 		lastFiredTime = currentTime;
 		double coordinateX = this.getCenterPoint().getX();
 		double coordinateY = this.getCenterPoint().getY() - 10;
-
-		Point2D.Double projectilePoint = new Point2D.Double(coordinateX,
-				coordinateY);
-
-		System.out.println(this.projectileType.getTypeName());
-
-		if (isClass(Bullet.class)) {
-			Bullet.generateAtPixels(coordinateX, coordinateY);
-		} else if (isClass(Missile.class)) {
-			this.getGame().addNewMissile(projectilePoint);
-		} else if (isClass(ShotGun.class)) {
-			this.getGame().addNewShotgunShot(projectilePoint);
-		} else if (isClass(Bomb.class)) {
-			if (this.bombsRemaining > 0 && this.getGame().countBomb() < 5) {
-				this.getGame().addNewBomb(projectilePoint);
+		// special case: bombs are rate-limited
+		if (isClass(Bomb.class)) {
+			if (this.bombsRemaining > 0 && getGame().countBomb() < 5) {
+				Bomb.generateAtPixels(coordinateX, coordinateY);
 				this.bombsRemaining--;
 				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
 			}
+			return;
+		}
+
+		if (isClass(Missile.class)) {
+			Missile.generateAtPixels(coordinateX, coordinateY);
+		} else if (isClass(ShotGun.class)) {
+			ShotGun.generateAtPixels(coordinateX, coordinateY);
 		} else if (isClass(ExplodingBullet.class)) {
-			this.getGame().addNewExplodingBullet(projectilePoint);
+			ExplodingBullet.generateAtPixels(coordinateX, coordinateY);
+		} else if (isClass(Bullet.class)) {
+			Bullet.generateAtPixels(coordinateX, coordinateY);
+		} else {
+			System.err.println("failed to create projectile");
 		}
 	}
 
@@ -219,13 +224,13 @@ public class Ship extends Dieable {
 	@Override
 	public Shape getShape() {
 
-		if (this.getGame().USE_IMAGES) {
+		if (getGame().USE_IMAGES) {
 
 			return super.getShape();
 		}
 
-		double x = getTLPoint().getX();
-		double y = getTLPoint().getY();
+		double x = getX();
+		double y = getY();
 		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
 				this.height);
 	}
@@ -235,13 +240,9 @@ public class Ship extends Dieable {
 		return ImageIO.read(new File("shipFinal.png"));
 	}
 
-	static void generateAtPixels(double x, double y) {
-		//
-	}
-
-	@Override
-	void generateAtPixels_override(double x, double y) {
-		// TODO Auto-generated method stub.
-		
+	static Ship generateAtGrid(int x, int y) {
+		Ship ship = new Ship(x, y);
+		getGame().setShip(ship);
+		return ship;
 	}
 }

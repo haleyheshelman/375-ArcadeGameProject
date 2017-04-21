@@ -11,28 +11,28 @@ public class Missile extends Projectile {
 
 	private static final int PROJECTILE_2_VELOCITY = -3;
 
-	public Missile(ArcadeGame game, Point2D centerPoint) {
+	public Missile(Point2D centerPoint) {
 		super(centerPoint, MISSILE_DAMAGE);
 		this.setVelocityY(PROJECTILE_2_VELOCITY);
 		this.setColor(Color.RED);
 	}
 
 	/**
-	 * It can follow the ship with same X coordinate.
+	 * It follows the ship with same X coordinate.
 	 */
 	@Override
 	public void move() {
-		double nextX = this.getGame().getShip().getCenterPoint().getX();
+		double nextX = getGame().getShip().getCenterPoint().getX();
 		double nextY = this.getCenterPoint().getY() + this.getVelocityY();
 		this.setCenterPoint(new Point2D.Double(nextX, nextY));
 		if (this.checkHit()) {
 			this.die();
 		}
 	}
-
-	@Override
-	void generateAtPixels_override(double x, double y) {
-		// TODO Auto-generated method stub.
-		
+	
+	static Missile generateAtPixels(double x, double y){
+		Missile missile = new Missile(new Point2D.Double(x,y));
+		getGame().addObject(missile);
+		return missile;
 	}
 }

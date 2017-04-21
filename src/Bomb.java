@@ -43,9 +43,10 @@ public class Bomb extends Projectile {
 				y - BOMB_DIAMETER, BOMB_DIAMETER, BOMB_DIAMETER);
 	}
 
-	static void generateAtPixels(double x, double y) {
-		Bomb b = new Bomb(x, y);
-		getGame().addObject(b);
+	static Bomb generateAtPixels(double x, double y) {
+		Bomb bomb = new Bomb(x, y);
+		getGame().addObject(bomb);
+		return bomb;
 
 	}
 }

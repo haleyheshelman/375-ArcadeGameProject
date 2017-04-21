@@ -3,7 +3,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
 /**
  * Represents the creatures in the arcade game.
  *
@@ -11,13 +10,9 @@ import java.util.ArrayList;
  */
 public abstract class Dieable implements Drawable {
 
-	protected final static int GRID_SIZE = ArcadeGame.GRID_SIZE; // 20 pixel
-																	// squares
-																	// on the
-																	// grid
 	protected final static int SPRITE_SIZE = 16; // default sprite width
 	protected final static double GAP_SIZE = (int) (0.5
-			* (GRID_SIZE - SPRITE_SIZE)); // 2
+			* (ArcadeGame.GRID_SIZE - SPRITE_SIZE)); // 2
 											// by
 											// default
 	private Color color = Color.GREEN;
@@ -30,7 +25,10 @@ public abstract class Dieable implements Drawable {
 	protected double topGap = GAP_SIZE;
 	private Point2D TLPoint;
 	protected int bounty;
-	private static ArcadeGame game;
+	
+	public Dieable(){
+		this(0,0);
+	}
 
 	/**
 	 * Creates a new Dieable at the specified grid location, using the grid size
@@ -40,8 +38,7 @@ public abstract class Dieable implements Drawable {
 	 * @param gridY
 	 */
 	public Dieable(int gridX, int gridY) {
-		// yes, it's silly
-		this((double) gridX * GRID_SIZE, gridY * GRID_SIZE);
+		this((double) /* yes, really */ gridX * ArcadeGame.GRID_SIZE, gridY * ArcadeGame.GRID_SIZE);
 	}
 
 	public Dieable(double pixelX, double pixelY) {
@@ -57,7 +54,7 @@ public abstract class Dieable implements Drawable {
 	void removeHealth(int damage) {
 		this.health -= damage;
 		if (this.health <= 0) {
-			this.getGame().score += this.bounty;
+			getGame().score += this.bounty;
 			this.health = 0;
 			this.die();
 		}
@@ -68,8 +65,7 @@ public abstract class Dieable implements Drawable {
 	 *
 	 */
 	void die() {
-		// System.out.println("Dying");
-		this.getGame().MM.removeObject(this.getGame(), this);
+		getGame().MM.removeObject(getGame(), this);
 	}
 
 	/**
@@ -219,23 +215,29 @@ public abstract class Dieable implements Drawable {
 		this.velocityY = velocityY;
 	}
 
+	/**
+	 * A slight variation on the Singleton pattern. Because I said so.
+	 *
+	 * @return
+	 */
 	public static ArcadeGame getGame() {
-		if (game == null)
-			game = ArcadeGame.getInstance();
-		return game;
+		return ArcadeGame.getInstance();
 
 	}
 
-	static void generateAtPixels(double x, double y) {
+	static Dieable generateAtPixels(double x, double y) {
 		// Due to java silliness, this is how it has to be
-		String n = null;
-		System.out.println(n.equals("Test"));
+		throwException();
+		return null;
+	}
+
+	static Dieable generateAtGrid(int x, int y) {
+		throwException();
+		return null;
 	}
 	
-	abstract void generateAtPixels_override(double x, double y);
-
-	static final void generateAtGrid(int x, int y) {
-		generateAtPixels(x * GRID_SIZE, y * GRID_SIZE);
+	private static void throwException(){
+		((String) null).equals(null);
 	}
 
 }

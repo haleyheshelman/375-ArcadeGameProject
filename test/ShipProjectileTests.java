@@ -11,10 +11,15 @@ public class ShipProjectileTests {
 
 	@Before
 	public void setUp() throws Exception {
-		Main.main(new String[]{"mute"});
+		// Main.main(new String[]{"mute"});
 		// System.out.println("SETUP");
 		ag = ArcadeGame.getInstance();
-		s = new Ship(10, 16);
+		s = new Ship(10, 16) {
+			@Override
+			public boolean firedTooRecently(long curTime) {
+				return false;
+			}
+		};
 	}
 
 	@After
@@ -51,7 +56,6 @@ public class ShipProjectileTests {
 		assertEquals(ExplodingBullet.class, s.getProjectileType());
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(0, ag.getProjectiles().size());
-
 	}
 
 	public void waitToFire() {
@@ -64,16 +68,17 @@ public class ShipProjectileTests {
 
 	@Test
 	public void testFireProjectileType1() {
-		System.out.println("Bullet/1");
 		assertEquals(5, s.bombsRemaining);
 		assertEquals(Bullet.class, s.getProjectileType());
 		assertEquals(0, ag.getProjectiles().size());
 
 		int beforeParts = ag.getDieableParts().size();
 		assertEquals(Bullet.class, s.getProjectileType());
+		System.out.println("1: ");
+		System.out.print(ag.getProjectiles() + "\t");
 		s.fireProjectile();
+		System.out.println(ag.getProjectiles());
 		int afterParts = ag.getDieableParts().size();
-		System.out.println("Projectiles, 1: "+ag.getProjectiles());
 		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
 
@@ -121,7 +126,6 @@ public class ShipProjectileTests {
 		s.fireProjectile();
 		int afterParts = ag.getProjectiles().size();
 
-		System.out.println(ag.getProjectiles());
 		assertEquals(beforeParts + 3, afterParts);
 		assertEquals(3, ag.getProjectiles().size());
 

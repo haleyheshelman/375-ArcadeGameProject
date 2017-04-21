@@ -17,7 +17,7 @@ public class ArcadeGameTests {
 
 	@Before
 	public void setUp() throws Exception {
-		ag = new ArcadeGame(318, 400) {
+		ag = new ArcadeGame() {
 			@Override
 			public void updateScoreboard() {
 				// nothing
@@ -32,19 +32,25 @@ public class ArcadeGameTests {
 		};
 
 		inGame[0] = new Point2D.Double(-1, 0);
-		inGame[1] = new Point2D.Double(ag.width - d.width - 2 * d.gap,
-				ag.height + 4);
+		inGame[1] = new Point2D.Double(ArcadeGame.width - d.width - 2 * d.gap,
+				ArcadeGame.height + 4);
 
 		outOfGame[0] = new Point2D.Double(-2, -1);
-		outOfGame[1] = new Point2D.Double(ag.width - d.width - 2 * d.gap + 1,
-				ag.height + 5);
+		outOfGame[1] = new Point2D.Double(
+				ArcadeGame.width - d.width - 2 * d.gap + 1,
+				ArcadeGame.height + 5);
 
 		ag.isPaused = true;
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		ArcadeGame.resetArcadeGame();
+	}
+
 	@Test
 	public void test_addObject() {
-		Mushroom m = new Mushroom(ag, 5, 5);
+		Mushroom m = new Mushroom(5, 5);
 		assertFalse(ag.getMushrooms().contains(m));
 		ag.addObject(m);
 		assertTrue(ag.getMushrooms().contains(m));
@@ -54,10 +60,6 @@ public class ArcadeGameTests {
 	public void test_createLevel() {
 		assertEquals(1, ag.getLevelNum());
 		assertEquals(ag.lastBonusTime, ag.MM.getLastScorpionTime());
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test
@@ -82,10 +84,15 @@ public class ArcadeGameTests {
 
 	@Test
 	public void test_resetMonsterCounts() {
-		this.ag.MM.resetMonsterCounts();
+		ag.MM.resetMonsterCounts();
 		assertEquals(0, ag.MM.getNumCentipedes());
 		assertEquals(0, ag.MM.getNumSpiders());
 		assertEquals(0, ag.MM.getNumFleas());
 		assertFalse(ag.MM.alreadyAddedScorpion);
+	}
+
+	@Test
+	public void testShipSetup() {
+		Ship ship = ag.getShip();
 	}
 }

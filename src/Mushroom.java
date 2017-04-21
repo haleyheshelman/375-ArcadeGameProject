@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
  *
  * @author deradaam, lub and verlaqd. Created Oct 28, 2015.
  */
+@SuppressWarnings("boxing")
 public class Mushroom extends Dieable {
 
 	protected static final int DEFAULT_MUSHROOM_HEALTH = 40;
@@ -29,7 +30,7 @@ public class Mushroom extends Dieable {
 	 * @param gridY
 	 * @throws IOException
 	 */
-	public Mushroom(ArcadeGame game, double gridX, double gridY) {
+	public Mushroom(int gridX, int gridY) {
 		super(gridX, gridY);
 		this.gridY = gridY;
 		this.setColor(Color.MAGENTA);
@@ -104,10 +105,6 @@ public class Mushroom extends Dieable {
 			Dieable.getGame().mushroomsInPlayerArea--;
 	}
 
-	private boolean healthDroppedLessThan(int drop) {
-		return this.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - drop;
-	}
-
 	private static Map<Integer, String[]> imagesMap = new HashMap<>();
 	static int health_level_0 = 0;
 	static int health_level_1 = 10;
@@ -136,6 +133,10 @@ public class Mushroom extends Dieable {
 				new String[] { normalImage, poisonImage });
 	}
 
+	private boolean healthDroppedLessThan(int drop) {
+		return this.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - drop;
+	}
+
 	public String getImageForDropLevel(int drop) {
 		int ind = (this.isPoisonous() ? 1 : 0);
 		if (imagesMap.isEmpty()) {
@@ -155,6 +156,11 @@ public class Mushroom extends Dieable {
 			}
 		}
 		return ImageIO.read(new File(imagePath));
+	}
 
+	static Mushroom generateAtGrid(int gridX, int gridY) {
+		Mushroom mushroom = new Mushroom(gridX,gridY);
+		getGame().addObject(mushroom);
+		return mushroom;
 	}
 }

@@ -3,19 +3,19 @@ import java.awt.geom.Point2D;
 
 public class Zombie extends Monster {
 	private static final int ZOMBIE_SCORE = 10;
-	private static final double yShiftMax = GRID_SIZE / DEF_MONST_VEL;
+	private static final double yShiftMax = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
 
 	private boolean movingRight;
 	private boolean moveDown;
 
-	public Zombie(double gridX, double gridY) {
+	public Zombie(int gridX, int gridY) {
 		super(gridX, gridY);
 		this.setColor(Color.MAGENTA);
 		this.bounty = ZOMBIE_SCORE;
 		this.movingRight = true;
 		this.moveDown = false;
-		this.setVelocityY(GRID_SIZE);
-		this.setVelocityX(this.DEF_MONST_VEL * 2);
+		this.setVelocityY(ArcadeGame.GRID_SIZE);
+		this.setVelocityX(Monster.DEF_MONST_VEL * 2);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class Zombie extends Monster {
 	}
 
 	private boolean inGameX(double position) {
-		return this.getGame().inGameX(position, this.gap, this.width);
+		return Dieable.getGame().inGameX(position, this.gap, this.width);
 	}
 
 	protected void indicateMoveDown() {
