@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class ArcadeGame {
 
-	static ArcadeGame instance;
+	private static ArcadeGame instance;
 
 	static ArcadeGame getInstance() {
 		if (instance == null) {
