@@ -25,18 +25,36 @@ public class Bonus extends Dieable {
 		super(game, 0, 0);
 		this.setVelocityX(0);
 		this.setVelocityY(0);
-		int gridY = rand.nextInt(6) + 11;
-		int gridX = rand.nextInt(20);
+		int gridY = getRandY();
+		int gridX = getRandX();
 		this.setTLPoint(new Point2D.Double(gridX * Dieable.GRID_SIZE, gridY
 				* Dieable.GRID_SIZE));
-		this.BonusType = rand.nextInt(3) + 1;
-		if (this.BonusType == 1) {
+		getRandBonusType();
+		setColor(this.BonusType);
+	}
+
+	private void setColor(int type) {
+		if (type == 1) {
 			this.setColor(Color.GRAY);
-		} else if (this.BonusType == 2) {
+		} else if (type == 2) {
 			this.setColor(Color.YELLOW);
 		} else {
 			this.setColor(Color.ORANGE);
 		}
+	}
+
+	private void getRandBonusType() {
+		this.BonusType = rand.nextInt(3) + 1;
+	}
+
+	private int getRandY() {
+		int gridY = rand.nextInt(6) + 11;
+		return gridY;
+	}
+
+	private int getRandX() {
+		int gridX = rand.nextInt(20);
+		return gridX;
 	}
 
 	/**
