@@ -242,7 +242,7 @@ public class MonsterManager {
 	 */
 	public void removeObject(ArcadeGame arcadeGame, Dieable objToRemove) {
 		if (objToRemove instanceof Monster) {
-			arcadeGame.monsters.remove(objToRemove);
+			arcadeGame.getMonsters().remove(objToRemove);
 			// System.out.println("CC: " + this.numCentipedes);
 			if (objToRemove instanceof Centipede) {
 				this.numCentipedes--;

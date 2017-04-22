@@ -119,10 +119,8 @@ public class Bonus extends Dieable {
 	 * @return
 	 */
 	public boolean checkObtain() {
-		boolean res = this.getShape().intersects(
+		return this.getShape().intersects(
 				Dieable.getGame().getShip().getShape().getBounds2D());
-		System.out.println("RL " + res);
-		return res;
 	}
 
 	/**

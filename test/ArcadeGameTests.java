@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArcadeGameTests {
+public class ArcadeGameTests implements ArcadeGameWiper {
 	static ArcadeGame ag;
 	static Point2D.Double[] inGame = new Point2D.Double[2];
 	static Point2D.Double[] outOfGame = new Point2D.Double[2];

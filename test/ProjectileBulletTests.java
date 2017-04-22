@@ -6,10 +6,12 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ProjectileBulletTests {
+public class ProjectileBulletTests implements ArcadeGameWiper {
 	static Projectile b;
 	static ArcadeGame ag;
 
@@ -18,6 +20,16 @@ public class ProjectileBulletTests {
 		Main.scoreboard = new Scoreboard();
 		ag = ArcadeGame.getInstance();
 		b = new Bullet(40, 40);
+	}
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ArcadeGame.resetArcadeGame();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		ArcadeGame.resetArcadeGame();
 	}
 
 	@Test
@@ -56,7 +68,8 @@ public class ProjectileBulletTests {
 		int gridY = 3;
 		b.setTLPoint(new Point2D.Double(gridX * ArcadeGame.GRID_SIZE,
 				gridY * ArcadeGame.GRID_SIZE));
-		Mushroom hitMushroom = Mushroom.generateAtGrid(gridX, gridY);
+		Mushroom hitMushroom = new Mushroom(gridX, gridY);
+		hitMushroom.add();
 		/* assert that bullet hit mushroom */
 		assertTrue(b.checkHit());
 		ag.MM.removeObject(ag, hitMushroom);

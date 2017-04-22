@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DieableTests {
+public class DieableTests implements ArcadeGameWiper {
 
 	static Dieable d;
 	static ArcadeGame game;

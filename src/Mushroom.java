@@ -158,9 +158,4 @@ public class Mushroom extends Dieable {
 		return ImageIO.read(new File(imagePath));
 	}
 
-	static Mushroom generateAtGrid(int gridX, int gridY) {
-		Mushroom mushroom = new Mushroom(gridX,gridY);
-		getGame().addObject(mushroom);
-		return mushroom;
-	}
 }

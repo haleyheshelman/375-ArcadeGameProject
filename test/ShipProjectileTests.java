@@ -5,12 +5,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ShipProjectileTests {
+public class ShipProjectileTests implements ArcadeGameWiper {
 	static Ship s;
 	static ArcadeGame ag;
 
 	@Before
 	public void setUp() throws Exception {
+
+		ArcadeGame.resetArcadeGame();
 		// Main.main(new String[]{"mute"});
 		// System.out.println("SETUP");
 		ag = ArcadeGame.getInstance();
@@ -38,8 +40,10 @@ public class ShipProjectileTests {
 
 	@Test
 	public void testSetProjectileType() {
-		Class[] projectileTypes = new Class[]{Bullet.class,ExplodingBullet.class,Bomb.class,Missile.class,ShotGun.class};
-		for(Class type:projectileTypes){
+		Class[] projectileTypes = new Class[] { Bullet.class,
+				ExplodingBullet.class, Bomb.class, Missile.class,
+				ShotGun.class };
+		for (Class type : projectileTypes) {
 			trySetFor(type);
 		}
 	}
@@ -67,10 +71,7 @@ public class ShipProjectileTests {
 
 		int beforeParts = ag.getDieableParts().size();
 		assertEquals(Bullet.class, s.getProjectileType());
-		System.out.println("1: ");
-		System.out.print(ag.getProjectiles() + "\t");
 		s.fireProjectile();
-		System.out.println(ag.getProjectiles());
 		int afterParts = ag.getDieableParts().size();
 		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
@@ -146,7 +147,6 @@ public class ShipProjectileTests {
 		assertEquals(beforeParts + 1, afterParts);
 		assertEquals(1, ag.getProjectiles().size());
 		assertTrue(ag.getProjectiles().get(0) instanceof Bomb);
-		System.out.println(ag.projectiles);
 		assertEquals(4, Bomb.getBombsRemaining());
 		waitToFire();
 

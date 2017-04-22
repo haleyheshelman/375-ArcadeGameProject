@@ -7,7 +7,7 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BonusTests {
+public class BonusTests implements ArcadeGameWiper {
 	static ArcadeGame ag;
 	static Bonus b;
 	static int offset = ArcadeGame.GRID_SIZE;
@@ -78,11 +78,9 @@ public class BonusTests {
 		}
 		assertEquals(1, Bomb.getBombsRemaining());
 		new Ship(X + 3, Y + 3).add();
-		System.out.println("Move 1");
 		b.move();
 		assertEquals(1, Bomb.getBombsRemaining());
 		new Ship(X, Y).add();
-		System.out.println("Move 2");
 		b.move();
 
 		assertEquals(5, Bomb.getBombsRemaining());
@@ -92,14 +90,8 @@ public class BonusTests {
 	@Test
 	public void testCheckObtain() {
 		new Ship(X + 2, Y + 2).add();
-		System.out.println(b.getShape().getBounds2D());
-		System.out
-				.println(Dieable.getGame().getShip().getShape().getBounds2D());
-		System.out.println(b.getShape().intersects(
-				Dieable.getGame().getShip().getShape().getBounds2D()));
 		boolean res = b.checkObtain();
 
-		System.out.println(res);
 		assertFalse(res);
 		new Ship(X, Y).add();
 		assertTrue(b.checkObtain());

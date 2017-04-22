@@ -42,7 +42,7 @@ public class Flea extends Monster {
 	private double mush1Y;
 	private double mush2Y;
 
-	private double gridX;
+	private int gridX;
 	private static double terminalVelocity = DEF_MONST_VEL * 3;
 
 	public Flea(int gridX, double mush1Y, double mush2Y) {
@@ -92,7 +92,7 @@ public class Flea extends Monster {
 				this.mush2Y = -100;
 			}
 			
-			Mushroom.generateAtGrid((int) this.gridX, curPos);
+			new Mushroom(this.gridX, curPos).add();
 			this.numDropped++;
 		}
 	}

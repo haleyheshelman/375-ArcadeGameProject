@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ZombieTests {
+public class ZombieTests implements ArcadeGameWiper{
 
 	static ArcadeGame g;
 	static Ship s;

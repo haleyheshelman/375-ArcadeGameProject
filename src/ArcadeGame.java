@@ -21,7 +21,6 @@ public class ArcadeGame {
 
 	static ArcadeGame getInstance() {
 		if (instance == null) {
-			System.out.println("New game created");
 			instance = new ArcadeGame();
 		}
 		return instance;
@@ -62,7 +61,7 @@ public class ArcadeGame {
 
 	protected boolean isPaused = false;
 	private ArrayList<Dieable> mushrooms = new ArrayList<>();
-	ArrayList<Dieable> monsters = new ArrayList<>();
+	ArrayList<Dieable> monsters_ = new ArrayList<>();
 	ArrayList<Dieable> projectiles = new ArrayList<>();
 	ArrayList<Dieable> bonuses = new ArrayList<>();
 	private Ship ship;
@@ -204,7 +203,7 @@ public class ArcadeGame {
 					new Centipede(gridX, gridY).add();
 				}
 				if (row.charAt(gridX) == 'M') {
-					Mushroom.generateAtGrid(gridX, gridY);
+					new Mushroom(gridX, gridY).add();
 				}
 			}
 			gridY++;
@@ -222,7 +221,7 @@ public class ArcadeGame {
 
 	private void clearBoard() {
 		this.mushrooms.clear();
-		this.monsters.clear();
+		this.monsters_.clear();
 		this.projectiles.clear();
 		this.bonuses.clear();
 	}
@@ -302,7 +301,7 @@ public class ArcadeGame {
 	HashMap<Class<? extends Dieable>, ArrayList<Dieable>> dieableMap = new HashMap<>();
 
 	private void initializeAddObjectMap() {
-		this.dieableMap.put(Monster.class, this.monsters);
+		this.dieableMap.put(Monster.class, this.monsters_);
 		this.dieableMap.put(Projectile.class, this.projectiles);
 		this.dieableMap.put(Mushroom.class, this.mushrooms);
 		this.dieableMap.put(Bonus.class, this.bonuses);
@@ -347,7 +346,7 @@ public class ArcadeGame {
 		// if there are no more lives left, game over
 		if (this.lives < 0) {
 			System.out.println("game over");
-			System.out.println("You Scores are: " + this.score);
+			System.out.println("Your score was: " + this.score);
 			String nameString = JOptionPane
 					.showInputDialog("What is your name?");
 			HighestScoresBoard board = new HighestScoresBoard(this, nameString,
@@ -366,7 +365,7 @@ public class ArcadeGame {
 			// reset ship to center
 			this.ship = new Ship(10, BOTTOM_PLAYER_AREA);
 			// clear monsters
-			this.monsters.clear();
+			this.monsters_.clear();
 			this.projectiles.clear();
 			// reset centipede count
 			this.MM.resetMonsterCounts();
@@ -425,7 +424,7 @@ public class ArcadeGame {
 	}
 
 	public ArrayList<Dieable> getMonsters() {
-		return this.monsters;
+		return this.monsters_;
 	}
 
 	public ArrayList<Dieable> getProjectiles() {
@@ -454,7 +453,7 @@ public class ArcadeGame {
 		ArrayList<Drawable> drawables = new ArrayList<>();
 		drawables.addAll(this.bonuses);
 		drawables.addAll(this.mushrooms);
-		drawables.addAll(this.monsters);
+		drawables.addAll(this.monsters_);
 
 		drawables.addAll(this.projectiles);
 
@@ -471,7 +470,7 @@ public class ArcadeGame {
 	public ArrayList<Dieable> getDieableParts() {
 
 		ArrayList<Dieable> dieables = new ArrayList<>();
-		dieables.addAll(this.monsters);
+		dieables.addAll(this.monsters_);
 		dieables.addAll(this.mushrooms);
 		dieables.addAll(this.projectiles);
 		dieables.addAll(this.bonuses);
