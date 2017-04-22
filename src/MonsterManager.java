@@ -71,7 +71,7 @@ public class MonsterManager {
 	public void newCentipede() {
 		this.numCentipedes = 0;
 		for (int i = 0; i < this.game.getLevelNum() + CENTIPEDE_BASE_NUM; i++) {
-			this.game.addObject(new Centipede(this.game, -i, 0));
+			this.game.addObject(new Centipede(-i, 0));
 		}
 	}
 
@@ -109,15 +109,14 @@ public class MonsterManager {
 					- ArcadeGame.TOP_PLAYER_AREA + 1)
 					+ ArcadeGame.TOP_PLAYER_AREA - 1;
 
-			Mushroom testMush1 = new Mushroom(this.game, initialX, mush1Y);
-			Mushroom testMush2 = new Mushroom(this.game, initialX, mush1Y);
+			Mushroom testMush1 = new Mushroom(initialX, mush1Y);
+			Mushroom testMush2 = new Mushroom(initialX, mush1Y);
 			if (testMush1.intersectsObject(this.game.getMushrooms()) == null
 					&& testMush2.intersectsObject(
 							this.game.getMushrooms()) == null) {
 				testMush1.die();
 				testMush2.die();
-				this.game.addObject(
-						new Flea(this.game, initialX, mush1Y, mush2Y));
+				this.game.addObject(new Flea(initialX, mush1Y, mush2Y));
 				break;
 			}
 		}
@@ -132,9 +131,9 @@ public class MonsterManager {
 	 */
 	public void addSpiders() {
 		if (this.numSpiders == 0) {
-			if (System.currentTimeMillis()
-					- this.getLastSpiderTime() > this.getSpiderMinTime()) {
-				this.game.addObject(new Spider(this.game));
+			if (System.currentTimeMillis() - this.getLastSpiderTime() > this
+					.getSpiderMinTime()) {
+				this.game.addObject(new Spider());
 				this.setLastSpiderTime(System.currentTimeMillis());
 			}
 		}
@@ -148,13 +147,13 @@ public class MonsterManager {
 	 */
 	public void addScorpions() {
 		if ((!this.alreadyAddedScorpion) && (!this.scorpionIsAlive)) {
-			if (System.currentTimeMillis()
-					- this.getLastScorpionTime() > this.getScorpionMinTime()) {
+			if (System.currentTimeMillis() - this.getLastScorpionTime() > this
+					.getScorpionMinTime()) {
 
 				int yGrid = ArcadeGame.rand
 						.nextInt(ArcadeGame.TOP_PLAYER_AREA - 1) + 1;
 
-				this.game.addObject(new Scorpion(this.game, 0, yGrid));
+				this.game.addObject(new Scorpion(0, yGrid));
 				this.setLastScorpionTime(System.currentTimeMillis());
 			}
 		}
@@ -163,7 +162,7 @@ public class MonsterManager {
 	public void addZombies() {
 		if (System.currentTimeMillis() > this.lastZombieTime
 				+ this.zombieMinTime) {
-			this.game.addObject(new Zombie(this.game, randomGridX(), -1));
+			this.game.addObject(new Zombie(randomGridX(), -1));
 			this.lastZombieTime = System.currentTimeMillis();
 		}
 	}
@@ -186,7 +185,7 @@ public class MonsterManager {
 	protected void randomizeMonsterMinTimes() {
 		setSpiderMinTime(ArcadeGame.rand.nextInt(3) * 1000 + 8000);
 		setScorpionMinTime(ArcadeGame.rand.nextInt(6) * 1000 + 10000);
-		this.zombieMinTime =  ArcadeGame.rand.nextInt(10) * 2000 + 2000;
+		this.zombieMinTime = ArcadeGame.rand.nextInt(10) * 2000 + 7000;
 	}
 
 	public void incrementMonsterCounts(Monster objToAdd) {
@@ -201,7 +200,7 @@ public class MonsterManager {
 			this.numSpiders++;
 		}
 	}
-	
+
 	long getLastScorpionTime() {
 		return this.lastScorpionTime;
 	}
@@ -237,12 +236,13 @@ public class MonsterManager {
 	/**
 	 * Removes the specified mushroom/monster/projectile.
 	 *
-	 * @param arcadeGame TODO
+	 * @param arcadeGame
+	 *            TODO
 	 * @param objToRemove
 	 */
 	public void removeObject(ArcadeGame arcadeGame, Dieable objToRemove) {
 		if (objToRemove instanceof Monster) {
-			arcadeGame.monsters.remove(objToRemove);
+			arcadeGame.getMonsters().remove(objToRemove);
 			// System.out.println("CC: " + this.numCentipedes);
 			if (objToRemove instanceof Centipede) {
 				this.numCentipedes--;
@@ -255,7 +255,7 @@ public class MonsterManager {
 				this.scorpionIsAlive = false;
 				setLastScorpionTime(System.currentTimeMillis());
 			}
-	
+
 			if (this.numCentipedes <= 0) {
 				arcadeGame.nextLevel();
 			}
@@ -268,12 +268,20 @@ public class MonsterManager {
 		}
 		if (objToRemove instanceof Ship) {
 			arcadeGame.playerDied();
-	
+
 		}
 		if (objToRemove instanceof Bonus) {
 			arcadeGame.bonuses.remove(objToRemove);
 			// this.lastBonusTime = System.currentTimeMillis();
 		}
 		Main.scoreboard.changeScore(arcadeGame.score);
+	}
+
+	private long getLastZombieTime() {
+		return this.lastZombieTime;
+	}
+
+	private void setLastZombieTime(long lastZombieTime) {
+		this.lastZombieTime = lastZombieTime;
 	}
 }

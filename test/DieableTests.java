@@ -7,14 +7,12 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DieableTests {
+public class DieableTests implements ArcadeGameWiper {
 
 	static Dieable d;
 	static ArcadeGame game;
@@ -22,14 +20,8 @@ public class DieableTests {
 	@Before
 	public void setUp() throws Exception {
 		Main.main(null);
-		System.out.println("SETUP");
-		game = new ArcadeGame(100, 100);
+		game = new ArcadeGame();
 		d = game.getShip();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		System.out.println("teardown");
 	}
 
 	@Test
@@ -43,8 +35,6 @@ public class DieableTests {
 	@Test
 	public void testDie() {
 		ArrayList<Dieable> inGame = game.getDieableParts();
-		System.out.println(inGame);
-		System.out.println(d);
 		assertTrue(inGame.contains(d));
 		d.die();
 		inGame = game.getDieableParts();
@@ -62,12 +52,8 @@ public class DieableTests {
 	}
 
 	@Test
-	public void getGame() throws IOException {
-		ArcadeGame g = d.getGame();
-		assertTrue(g.equals(game));
-
-		ArcadeGame newGame = new ArcadeGame(100, 100);
-		assertFalse(g.equals(newGame));
+	public void getGame() {
+		assertTrue(game == Dieable.getGame());
 
 	}
 
@@ -127,7 +113,6 @@ public class DieableTests {
 	public void testGetTLPoint() {
 		Point2D p = new Point();
 		p.setLocation(200.0, 320.0);
-		System.out.println(this.d.getTLPoint());
 		assertTrue(p.equals(d.getTLPoint()));
 
 		Point2D t = new Point();

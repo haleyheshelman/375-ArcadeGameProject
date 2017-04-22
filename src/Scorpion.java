@@ -27,8 +27,8 @@ public class Scorpion extends Monster {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Scorpion(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Scorpion(int gridX, int gridY) {
+		super(gridX, gridY);
 		this.setColor(Color.CYAN);
 		// System.out.println("new Scorpion");
 		this.bounty = 900;

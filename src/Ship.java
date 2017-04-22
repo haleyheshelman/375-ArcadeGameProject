@@ -1,7 +1,5 @@
 import java.awt.Color;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +22,6 @@ public class Ship extends Dieable {
 	private int upMove = 0;
 	private int downMove = 0;
 	private Class<? extends Projectile> projectileType = Bullet.class;
-	protected int bombsRemaining = 5;
 	private static long lastFiredTime = System.currentTimeMillis();
 
 	/**
@@ -35,8 +32,9 @@ public class Ship extends Dieable {
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Ship(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Ship(int gridX, int gridY) {
+		super(gridX, gridY);
+		//TODO: magic numbers
 		this.setColor(Color.RED);
 		this.setVelocityX(2.5);
 		this.setVelocityY(4);
@@ -49,7 +47,7 @@ public class Ship extends Dieable {
 	public void setProjectileType(Class<? extends Projectile> type) {
 		this.projectileType = type;
 		if (this.projectileType.getClass().equals(Bomb.class)) {
-			Main.scoreboard.changeWeapon(4, this.bombsRemaining);
+			Main.scoreboard.changeWeapon(4, Bomb.getBombsRemaining());
 		} else {
 			Main.scoreboard.changeWeapon(type);
 		}
@@ -95,13 +93,11 @@ public class Ship extends Dieable {
 	 * @return
 	 */
 	private boolean stillAlive(double curX, double curY) {
-		// System.out.println(this.getGame().getMonsters().size());
 		// See if the ship is dead
-		if (this.intersectsObject(this.getGame().getMonsters()) == null) {
+		if (this.intersectsObject(getGame().getMonsters()) == null) {
 			return true;
 		}
 		// if in contact with a monster, return false
-		// System.out.println("false");
 		return false;
 	}
 
@@ -122,9 +118,9 @@ public class Ship extends Dieable {
 		this.setTLPoint(new Point2D.Double(curX, nextY));
 
 		Dieable intersectedObject = this
-				.intersectsObject(this.getGame().getMushrooms());
+				.intersectsObject(getGame().getMushrooms());
 
-		if (this.getGame().inGameY(nextY) && nextY >= MAX_HEIGHT
+		if (getGame().inGameY(nextY) && nextY >= MAX_HEIGHT
 				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextY;
@@ -139,9 +135,9 @@ public class Ship extends Dieable {
 		this.setTLPoint(new Point2D.Double(nextX, curY));
 
 		Dieable intersectedObject = this
-				.intersectsObject(this.getGame().getMushrooms());
+				.intersectsObject(getGame().getMushrooms());
 
-		if (this.getGame().inGameX(nextX, this.gap, this.width)
+		if (getGame().inGameX(nextX, this.gap, this.width)
 				&& intersectedObject == null) {
 			this.setTLPoint(curTL);
 			return nextX;
@@ -178,53 +174,21 @@ public class Ship extends Dieable {
 	 * Fire projectile
 	 *
 	 */
-	public void fireProjectile() {
 
+	public boolean firedTooRecently(long currentTime) {
+		return currentTime - lastFiredTime < 200;
+	}
+
+	public void fireProjectile() {
 		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastFiredTime < 200)
+		if (firedTooRecently(currentTime)) {
 			return;
+		}
 		lastFiredTime = currentTime;
 		double coordinateX = this.getCenterPoint().getX();
 		double coordinateY = this.getCenterPoint().getY() - 10;
-
-		Point2D.Double projectilePoint = new Point2D.Double(coordinateX,
-				coordinateY);
-		if (isClass(Bullet.class)) {
-			this.getGame().addNewBullet(projectilePoint);
-		} else if (isClass(Missile.class)){
-			this.getGame().addNewMissile(projectilePoint);
-		}else if (isClass(ShotGun.class)) {
-			this.getGame().addNewShotgunShot(projectilePoint);
-		} else if (isClass(Bomb.class)) {
-			if (this.bombsRemaining > 0 && this.getGame().countBomb() < 5) {
-				this.getGame().addNewBomb(projectilePoint);
-				decrementBombsRemaining();
-				Main.scoreboard.changeWeapon(4, this.bombsRemaining);
-			}
-		} else if (isClass(ExplodingBullet.class)) {
-			this.getGame().addNewExplodingBullet(projectilePoint);
-		}
-	}
-
-	private boolean isClass(Class<? extends Projectile> p) {
-		return this.projectileType.getTypeName().equals(p.getTypeName());
-	}
-
-	/**
-	 * Gets the shape of this ship.
-	 */
-	@Override
-	public Shape getShape() {
-
-		if (this.getGame().USE_IMAGES) {
-
-			return super.getShape();
-		}
-
-		double x = getTLPoint().getX();
-		double y = getTLPoint().getY();
-		return new Rectangle2D.Double(x + this.gap, y + this.gap, this.width,
-				this.height);
+		
+		Projectile.spawn(getProjectileType(), coordinateX, coordinateY);
 	}
 	
 	@Override
@@ -232,10 +196,9 @@ public class Ship extends Dieable {
 		return ImageIO.read(new File("shipFinal.png"));
 	}
 	
-	//general refactoring, this should probably be switched everywhere it is used 
-	protected void decrementBombsRemaining() {
-		if (this.bombsRemaining > 0){
-			this.bombsRemaining--;
-		}
+	
+	@Override
+	void add() {
+		getGame().setShip(this);
 	}
 }

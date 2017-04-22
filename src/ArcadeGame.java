@@ -1,5 +1,4 @@
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,14 +17,32 @@ import javax.swing.JOptionPane;
  */
 public class ArcadeGame {
 
+	private static ArcadeGame instance;
+
+	static ArcadeGame getInstance() {
+		if (instance == null) {
+			instance = new ArcadeGame();
+		}
+		return instance;
+	}
+
+	static void resetArcadeGame() {
+		instance = null;
+	}
+
 	protected boolean USE_IMAGES = true;
 
-	protected final static int width = 400;
-	protected final static int height = 318;
+	public static final int DEF_AG_PIX_HGHT = 318;
+	public static final int DEF_AG_PIX_WDTH = 400;
+
+	protected final static int width = DEF_AG_PIX_WDTH;
+	protected final static int height = DEF_AG_PIX_HGHT;
 	protected static final int GRID_SIZE = 20;
 
 	protected static final int TOP_PLAYER_AREA = 11;
 	protected static final int BOTTOM_PLAYER_AREA = 16;
+
+	protected static final int BOARD_GRID_WIDTH = DEF_AG_PIX_WDTH / GRID_SIZE;
 
 	private long lastLevelChange;
 
@@ -44,17 +61,17 @@ public class ArcadeGame {
 
 	protected boolean isPaused = false;
 	private ArrayList<Dieable> mushrooms = new ArrayList<>();
-	ArrayList<Dieable> monsters = new ArrayList<>();
+	ArrayList<Dieable> monsters_ = new ArrayList<>();
 	ArrayList<Dieable> projectiles = new ArrayList<>();
 	ArrayList<Dieable> bonuses = new ArrayList<>();
 	private Ship ship;
 
 	public MonsterManager MM = new MonsterManager(this);
 
-	public ArcadeGame() throws IOException{
-		this(318,400);
+	protected ArcadeGame() {
+		this(DEF_AG_PIX_HGHT, DEF_AG_PIX_WDTH);
 	}
-	
+
 	/**
 	 * 
 	 * Creates an ArcadeGame at level 1, with a new ship at grid location 10,16
@@ -64,12 +81,24 @@ public class ArcadeGame {
 	 * @param width
 	 * @throws IOException
 	 */
-	public ArcadeGame(int height, int width) throws IOException {
+	private ArcadeGame(int height, int width) {
+		if (Main.scoreboard == null)
+			Main.scoreboard = new Scoreboard();
+
 		initializeAddObjectMap();
-		this.ship = new Ship(this, 10, 16);
-		createLevel(1);
+
+		instance = this;
+		new Ship(BOARD_GRID_WIDTH / 2, BOTTOM_PLAYER_AREA).add();
+		try {
+			createLevel(1);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
+	/**
+	 * The numbers below may be adjusted as desired to change the time limits
+	 */
 	public void randomizeTimeLimits() {
 		this.MM.setSpiderMinTime(rand.nextInt(3) * 1000 + 8000);
 		this.MM.setScorpionMinTime(rand.nextInt(6) * 1000 + 10000);
@@ -86,7 +115,7 @@ public class ArcadeGame {
 
 		this.MM.addNewMonsters();
 		this.moveDieables();
-		this.addBonuses();
+		this.check_about_adding_bonus();
 	}
 
 	/**
@@ -163,7 +192,7 @@ public class ArcadeGame {
 		readLevelFromFile(textFile);
 	}
 
-	private void readLevelFromFile(String textFile)
+	private static void readLevelFromFile(String textFile)
 			throws FileNotFoundException {
 		int gridY = 0;
 		Scanner input = new Scanner(new File(textFile));
@@ -171,10 +200,10 @@ public class ArcadeGame {
 			String row = input.nextLine();
 			for (int gridX = 0; gridX < row.length(); gridX++) {
 				if (row.charAt(gridX) == 'C') {
-					this.addObject(new Centipede(this, gridX, gridY));
+					new Centipede(gridX, gridY).add();
 				}
 				if (row.charAt(gridX) == 'M') {
-					this.addObject(new Mushroom(this, gridX, gridY));
+					new Mushroom(gridX, gridY).add();
 				}
 			}
 			gridY++;
@@ -192,7 +221,7 @@ public class ArcadeGame {
 
 	private void clearBoard() {
 		this.mushrooms.clear();
-		this.monsters.clear();
+		this.monsters_.clear();
 		this.projectiles.clear();
 		this.bonuses.clear();
 	}
@@ -223,7 +252,7 @@ public class ArcadeGame {
 		this.score = 0;
 		this.isPaused = false;
 		this.lives = this.DEFAULT_LIVES;
-		this.ship = new Ship(this, 10, BOTTOM_PLAYER_AREA);
+		this.ship = new Ship(10, BOTTOM_PLAYER_AREA);
 		this.updateScoreboard();
 	}
 
@@ -250,12 +279,16 @@ public class ArcadeGame {
 	 * Adds a Bonus to the game.
 	 *
 	 */
-	public void addBonuses() {
+	public void check_about_adding_bonus() {
 		if (System.currentTimeMillis()
 				- this.lastBonusTime > this.bonusMinTime) {
-			this.addObject(new Bonus(this));
-			this.lastBonusTime = System.currentTimeMillis();
+			new Bonus().add();
 		}
+	}
+
+	public void add_bonus(Bonus b) {
+		this.addObject(b);
+		this.lastBonusTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -268,10 +301,10 @@ public class ArcadeGame {
 	HashMap<Class<? extends Dieable>, ArrayList<Dieable>> dieableMap = new HashMap<>();
 
 	private void initializeAddObjectMap() {
-		dieableMap.put(Monster.class, monsters);
-		dieableMap.put(Projectile.class, projectiles);
-		dieableMap.put(Mushroom.class, mushrooms);
-		dieableMap.put(Bonus.class, bonuses);
+		this.dieableMap.put(Monster.class, this.monsters_);
+		this.dieableMap.put(Projectile.class, this.projectiles);
+		this.dieableMap.put(Mushroom.class, this.mushrooms);
+		this.dieableMap.put(Bonus.class, this.bonuses);
 	}
 
 	public void addObject(Dieable objToAdd) {
@@ -280,10 +313,10 @@ public class ArcadeGame {
 
 		}
 		ArrayList<Dieable> list;
-		if (dieableMap.containsKey(objToAdd.getClass())) {
-			list = dieableMap.get(objToAdd.getClass());
+		if (this.dieableMap.containsKey(objToAdd.getClass())) {
+			list = this.dieableMap.get(objToAdd.getClass());
 		} else {
-			list = dieableMap.get(objToAdd.getClass().getSuperclass());
+			list = this.dieableMap.get(objToAdd.getClass().getSuperclass());
 		}
 		list.add(objToAdd);
 	}
@@ -295,13 +328,13 @@ public class ArcadeGame {
 	 * @return
 	 */
 	public int countBomb() {
-		int number = 0;
+		int count = 0;
 		for (Dieable bomb : this.projectiles) {
 			if (bomb instanceof Bomb) {
-				number++;
+				count++;
 			}
 		}
-		return number;
+		return count;
 	}
 
 	/**
@@ -313,7 +346,7 @@ public class ArcadeGame {
 		// if there are no more lives left, game over
 		if (this.lives < 0) {
 			System.out.println("game over");
-			System.out.println("You Scores are: " + this.score);
+			System.out.println("Your score was: " + this.score);
 			String nameString = JOptionPane
 					.showInputDialog("What is your name?");
 			HighestScoresBoard board = new HighestScoresBoard(this, nameString,
@@ -330,9 +363,9 @@ public class ArcadeGame {
 			// decrease lives remaining
 			this.lives--;
 			// reset ship to center
-			this.ship = new Ship(this, 10, BOTTOM_PLAYER_AREA);
+			this.ship = new Ship(10, BOTTOM_PLAYER_AREA);
 			// clear monsters
-			this.monsters.clear();
+			this.monsters_.clear();
 			this.projectiles.clear();
 			// reset centipede count
 			this.MM.resetMonsterCounts();
@@ -361,17 +394,17 @@ public class ArcadeGame {
 	 * @return
 	 */
 	public boolean inGameX(double X, double gap, double obWidth) {
-		return (0 - 1 <= X && X + 2 * gap + obWidth <= this.width);
+		return (0 - 1 <= X && X + 2 * gap + obWidth <= ArcadeGame.width);
 	}
 
 	public boolean inGameY(double Y) {
-		return (0 <= Y && Y <= this.height + 4);
+		return (0 <= Y && Y <= ArcadeGame.height + 4);
 	}
 
 	// ////// GETTERS AND SETTERS ////// //
 
 	public int getHeight() {
-		return this.height;
+		return ArcadeGame.height;
 	}
 
 	public void setLevelNum(int levelNum) {
@@ -391,7 +424,7 @@ public class ArcadeGame {
 	}
 
 	public ArrayList<Dieable> getMonsters() {
-		return this.monsters;
+		return this.monsters_;
 	}
 
 	public ArrayList<Dieable> getProjectiles() {
@@ -400,6 +433,10 @@ public class ArcadeGame {
 
 	public Ship getShip() {
 		return this.ship;
+	}
+
+	protected void setShip(Ship ship) {
+		this.ship = ship;
 	}
 
 	protected int getLevelNum() {
@@ -416,7 +453,7 @@ public class ArcadeGame {
 		ArrayList<Drawable> drawables = new ArrayList<>();
 		drawables.addAll(this.bonuses);
 		drawables.addAll(this.mushrooms);
-		drawables.addAll(this.monsters);
+		drawables.addAll(this.monsters_);
 
 		drawables.addAll(this.projectiles);
 
@@ -433,35 +470,13 @@ public class ArcadeGame {
 	public ArrayList<Dieable> getDieableParts() {
 
 		ArrayList<Dieable> dieables = new ArrayList<>();
-		dieables.addAll(this.monsters);
+		dieables.addAll(this.monsters_);
 		dieables.addAll(this.mushrooms);
 		dieables.addAll(this.projectiles);
 		dieables.addAll(this.bonuses);
 		dieables.add(this.ship);
 
 		return dieables;
-	}
-
-	public void addNewBullet(Double projectilePoint) {
-		addObject(new Bullet(this, projectilePoint));
-	}
-
-	public void addNewExplodingBullet(Double projectilePoint) {
-		addObject(new ExplodingBullet(this, projectilePoint));
-	}
-
-	public void addNewMissile(Double projectilePoint) {
-		addObject(new Missile(this, projectilePoint));
-	}
-
-	@SuppressWarnings("unused")
-	public void addNewShotgunShot(Double projectilePoint) {
-		new ShotGun(this, projectilePoint);
-	}
-
-	public void addNewBomb(Double projectilePoint) {
-		System.out.println("Adding new bomb");
-		addObject(new Bomb(this, projectilePoint));
 	}
 
 	long getLastLevelChange() {

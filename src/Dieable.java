@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -12,46 +11,40 @@ import java.util.ArrayList;
  */
 public abstract class Dieable implements Drawable {
 
-	protected final static int GRID_SIZE = ArcadeGame.GRID_SIZE; // 20 pixel
-																	// squares
-																	// on the
-																	// grid
 	protected final static int SPRITE_SIZE = 16; // default sprite width
 	protected final static double GAP_SIZE = (int) (0.5
-			* (GRID_SIZE - SPRITE_SIZE)); // 2
-											// by
-											// default
-	private Color color;
-	private int health;
-	private double velocityX;
+			* (ArcadeGame.GRID_SIZE - SPRITE_SIZE)); // 2
+	// by
+	// default
+	private Color color = Color.GREEN;
+	private int health = 10;
+	private double velocityX = 0;
 	private double velocityY;
-	private BufferedImage image;
-	protected double height;
-	protected double width;
-	protected double gap;
-	protected double topGap;
+	protected double height = SPRITE_SIZE;
+	protected double width = SPRITE_SIZE;
+	protected double gap = GAP_SIZE;
+	protected double topGap = GAP_SIZE;
 	private Point2D TLPoint;
-	private ArcadeGame game;
 	protected int bounty;
+
+	public Dieable() {
+		this(0, 0);
+	}
 
 	/**
 	 * Creates a new Dieable at the specified grid location, using the grid size
 	 * for pixel placement
 	 *
-	 * @param game
 	 * @param gridX
 	 * @param gridY
 	 */
-	public Dieable(ArcadeGame game, double gridX, double gridY) {
-		this.setTLPoint(
-				new Point2D.Double(gridX * (GRID_SIZE), gridY * (GRID_SIZE)));
-		this.health = 10;
-		this.game = game;
-		this.height = SPRITE_SIZE;
-		this.width = SPRITE_SIZE;
-		this.gap = GAP_SIZE;
-		this.topGap = this.gap;
-		this.color = Color.GREEN;
+	public Dieable(int gridX, int gridY) {
+		this((double) /* yes, really */ gridX * ArcadeGame.GRID_SIZE,
+				gridY * ArcadeGame.GRID_SIZE);
+	}
+
+	public Dieable(double pixelX, double pixelY) {
+		this.setTLPoint(new Point2D.Double(pixelX, pixelY));
 	}
 
 	/**
@@ -63,7 +56,7 @@ public abstract class Dieable implements Drawable {
 	void removeHealth(int damage) {
 		this.health -= damage;
 		if (this.health <= 0) {
-			this.game.score += this.bounty;
+			getGame().score += this.bounty;
 			this.health = 0;
 			this.die();
 		}
@@ -74,8 +67,7 @@ public abstract class Dieable implements Drawable {
 	 *
 	 */
 	void die() {
-		// System.out.println("Dying");
-		this.game.MM.removeObject(this.game, this);
+		getGame().MM.removeObject(getGame(), this);
 	}
 
 	/**
@@ -225,14 +217,23 @@ public abstract class Dieable implements Drawable {
 		this.velocityY = velocityY;
 	}
 
-	@Override
-	public void setImage(BufferedImage image) {
+	/**
+	 * A slight variation on the Singleton pattern. Because I said so.
+	 *
+	 * @return
+	 */
+	public static ArcadeGame getGame() {
+		return ArcadeGame.getInstance();
 
-		this.image = image;
 	}
 
-	public ArcadeGame getGame() {
-		return this.game;
+	/**
+	 * Override for subclasses whose spawn behavior is more complicated than
+	 * just adding themselves to the ArcadeGame's lists
+	 *
+	 */
+	void add() {
+		getGame().addObject(this);
 	}
 
 }

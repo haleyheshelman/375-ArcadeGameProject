@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
  *
  * @author deradaam, lub and verlaqd. Created Oct 28, 2015.
  */
+@SuppressWarnings("boxing")
 public class Mushroom extends Dieable {
 
 	protected static final int DEFAULT_MUSHROOM_HEALTH = 40;
@@ -29,8 +30,8 @@ public class Mushroom extends Dieable {
 	 * @param gridY
 	 * @throws IOException
 	 */
-	public Mushroom(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Mushroom(int gridX, int gridY) {
+		super(gridX, gridY);
 		this.gridY = gridY;
 		this.setColor(Color.MAGENTA);
 		this.setHealth(DEFAULT_MUSHROOM_HEALTH);
@@ -47,7 +48,7 @@ public class Mushroom extends Dieable {
 	 */
 	private void checkInPlayerArea() {
 		if (this.gridY > 10) {
-			this.getGame().mushroomsInPlayerArea++;
+			Dieable.getGame().mushroomsInPlayerArea++;
 		}
 	}
 
@@ -57,7 +58,7 @@ public class Mushroom extends Dieable {
 	 * @return
 	 */
 	private void checkForOverlap() {
-		if (this.intersectsObject(this.getGame().getMushrooms()) != null)
+		if (this.intersectsObject(Dieable.getGame().getMushrooms()) != null)
 			this.die();
 
 	}
@@ -78,11 +79,7 @@ public class Mushroom extends Dieable {
 	 */
 	public void setPoisonous(boolean poisonous) {
 		this.poisonous = poisonous;
-		if (poisonous) {
-			this.setColor(Color.RED);
-		} else {
-			this.setColor(Color.MAGENTA);
-		}
+		this.setColor(poisonous ? Color.RED : Color.MAGENTA);
 	}
 
 	/**
@@ -97,28 +94,6 @@ public class Mushroom extends Dieable {
 	}
 
 	/**
-	 * Gets the image of Mushroom.
-	 * 
-	 * @return
-	 */
-	// @Override
-	// public BufferedImage getImage() {
-	// if ((MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH) <
-	// 0) {
-	// System.out.println("HELLO FROM THE GREAT BEYOND");
-	//
-	// System.out.println(MUSHROOM_IMAGE_SIZE * this.getHealth() /
-	// DEFAULT_MUSHROOM_HEALTH);
-	// System.out.println(this.getHealth());
-	// }
-	// if (this.getHealth() != 0) {
-	// return this.image.getSubimage(0, 0, MUSHROOM_IMAGE_SIZE,
-	// MUSHROOM_IMAGE_SIZE * this.getHealth() / DEFAULT_MUSHROOM_HEALTH);
-	// }
-	// return this.image;
-	// }
-
-	/**
 	 * Removes the mushroom from the frame when its health its at 0
 	 * 
 	 * @return
@@ -127,11 +102,7 @@ public class Mushroom extends Dieable {
 	public void die() {
 		super.die();
 		if (this.gridY > 10)
-			this.getGame().mushroomsInPlayerArea--;
-	}
-
-	private boolean healthDroppedLessThan(int drop) {
-		return this.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - drop;
+			Dieable.getGame().mushroomsInPlayerArea--;
 	}
 
 	private static Map<Integer, String[]> imagesMap = new HashMap<>();
@@ -162,6 +133,10 @@ public class Mushroom extends Dieable {
 				new String[] { normalImage, poisonImage });
 	}
 
+	private boolean healthDroppedLessThan(int drop) {
+		return this.getHealth() >= Mushroom.DEFAULT_MUSHROOM_HEALTH - drop;
+	}
+
 	public String getImageForDropLevel(int drop) {
 		int ind = (this.isPoisonous() ? 1 : 0);
 		if (imagesMap.isEmpty()) {
@@ -181,6 +156,6 @@ public class Mushroom extends Dieable {
 			}
 		}
 		return ImageIO.read(new File(imagePath));
-
 	}
+
 }

@@ -42,16 +42,16 @@ public class Spider extends Monster {
 	 *
 	 * @param game
 	 */
-	public Spider(ArcadeGame game) {
-		super(game, 0, 0);
+	public Spider() {
+		super(0, 0);
 		this.setVelocityX(SPIDER_VELOCITY_X * this.xDirection);
 		this.setVelocityY(SPIDER_VELOCITY_Y * this.yDirection);
 		int initialY = rand.nextInt(
 				ArcadeGame.BOTTOM_PLAYER_AREA - ArcadeGame.TOP_PLAYER_AREA + 1)
 				+ ArcadeGame.TOP_PLAYER_AREA;
 		this.setTLPoint(new Point2D.Double(
-				INITIAL_X * (1 - this.xDirection) * Dieable.GRID_SIZE,
-				initialY * Dieable.GRID_SIZE));
+				INITIAL_X * (1 - this.xDirection) * ArcadeGame.GRID_SIZE,
+				initialY * ArcadeGame.GRID_SIZE));
 		this.bounty = SPIDER_SCORES;
 	}
 

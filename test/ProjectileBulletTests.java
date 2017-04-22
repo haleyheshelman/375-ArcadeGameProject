@@ -1,43 +1,47 @@
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-public class ProjectileBulletTests {
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class ProjectileBulletTests implements ArcadeGameWiper {
 	static Projectile b;
 	static ArcadeGame ag;
 
 	@Before
 	public void setUp() throws Exception {
 		Main.scoreboard = new Scoreboard();
-		ag = new ArcadeGame(318, 400);
-		b = new Bullet(ag, new Point2D.Double(40, 40));
+		ag = ArcadeGame.getInstance();
+		b = new Bullet(40, 40);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		System.out.println("teardown");
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ArcadeGame.resetArcadeGame();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		ArcadeGame.resetArcadeGame();
 	}
 
 	@Test
 	public void testMove() {
-
 		Random r = new Random();
 		int dX = r.nextInt(15);
 		int dY = r.nextInt(15);
-
 		double x0 = b.getCenterPoint().getX();
 		double y0 = b.getCenterPoint().getY();
-
 		b.setVelocityX(dX);
 		b.setVelocityY(dY);
 		b.move();
-
 		assertEquals(dX + x0, b.getCenterPoint().getX(), 0.1);
 		assertEquals(dY + y0, b.getCenterPoint().getY(), 0.1);
 	}
@@ -50,9 +54,11 @@ public class ProjectileBulletTests {
 
 	@Test
 	public void testCheckHit() {
+		/* completely clear the board */
 		for (Dieable d : ag.getDieableParts()) {
 			ag.MM.removeObject(ag, d);
 		}
+		/* give bullet zero velocity */
 		b.setVelocityX(0);
 		b.setVelocityY(0);
 		b.move();
@@ -60,11 +66,14 @@ public class ProjectileBulletTests {
 
 		int gridX = 3;
 		int gridY = 3;
-		b.setTLPoint(new Point2D.Double(gridX * Dieable.GRID_SIZE, gridY * Dieable.GRID_SIZE));
-		Mushroom hitMushroom = new Mushroom(ag, gridX, gridY);
-		ag.addObject(hitMushroom);
+		b.setTLPoint(new Point2D.Double(gridX * ArcadeGame.GRID_SIZE,
+				gridY * ArcadeGame.GRID_SIZE));
+		Mushroom hitMushroom = new Mushroom(gridX, gridY);
+		hitMushroom.add();
+		/* assert that bullet hit mushroom */
 		assertTrue(b.checkHit());
 		ag.MM.removeObject(ag, hitMushroom);
+		/* assert that bullet no longer hits the (now-removed) mushroom */
 		assertFalse(b.checkHit());
 	}
 
