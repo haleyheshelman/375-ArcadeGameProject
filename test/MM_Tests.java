@@ -9,34 +9,25 @@ public class MM_Tests {
 
 	@Before
 	public void setUp() throws Exception {
-		Main.scoreboard = new Scoreboard();
-		ag = new ArcadeGame(318, 400);
+		ag = ArcadeGame.getInstance();
 		ag.isPaused = true;
 	}
 
 	@Test
 	public void testAddNewMonsters() {
+
+		testForLevel(MonsterManager.FLEAS_START_LEVEL);
+		testForLevel(MonsterManager.SCORPIONS_START_LEVEL);
+		testForLevel(MonsterManager.ZOMBIES_START_LEVEL);
+
+	}
+
+	public void testForLevel(int level) {
 		int target;
-
-		target = MonsterManager.FLEAS_START_LEVEL;
-		ag.setLevelNum(target - 1);
-		assertFalse(ag.at_or_above_level(target));
-		ag.setLevelNum(target);
-		assertTrue(ag.at_or_above_level(target));
-		
-		target = MonsterManager.SCORPIONS_START_LEVEL;
-		ag.setLevelNum(target - 1);
-		assertFalse(ag.at_or_above_level(target));
-		ag.setLevelNum(target);
-		assertTrue(ag.at_or_above_level(target));
-
-		
 		target = MonsterManager.ZOMBIES_START_LEVEL;
 		ag.setLevelNum(target - 1);
 		assertFalse(ag.at_or_above_level(target));
 		ag.setLevelNum(target);
 		assertTrue(ag.at_or_above_level(target));
-
-
 	}
 }

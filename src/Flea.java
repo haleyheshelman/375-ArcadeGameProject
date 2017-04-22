@@ -45,16 +45,13 @@ public class Flea extends Monster {
 	private double gridX;
 	private static double terminalVelocity = DEF_MONST_VEL * 3;
 
-	public Flea(ArcadeGame game, double gridX, double mush1Y, double mush2Y) {
-		super(game, gridX, -1.0);
+	public Flea(int gridX, double mush1Y, double mush2Y) {
+		super(gridX, -1);
 		this.gridX = gridX;
 		this.mush1Y = mush1Y;
 		this.mush2Y = mush2Y;
-		// this.getGame().numFleas++;
 		this.setVelocityX(0);
 		this.setHealth(DEFAULT_FLEA_HEALTH);
-		// System.out.println("New flea at " + gridX + " dropping " + mush1Y
-		// + " & " + mush2Y);
 		this.bounty = FLEA_SCORE;
 	}
 
@@ -66,7 +63,7 @@ public class Flea extends Monster {
 	public void move() {
 
 		double newY = this.getY() + this.getVelocityY();
-		if (newY > this.getGame().getHeight() + this.height) {
+		if (newY > getGame().getHeight() + this.height) {
 			this.die();
 		}
 		double newX = this.getX();
@@ -82,7 +79,7 @@ public class Flea extends Monster {
 	 * @param yPos
 	 */
 	public void mushroomDropper(double yPos) {
-		int curPos = (int) yPos / GRID_SIZE;
+		int curPos = (int) yPos / ArcadeGame.GRID_SIZE;
 		if ((int) this.mush1Y == curPos || (int) this.mush2Y == curPos) {
 			if (this.numDropped == 0) {
 				/*
@@ -94,8 +91,8 @@ public class Flea extends Monster {
 			} else {
 				this.mush2Y = -100;
 			}
-			this.getGame().addObject(
-					new Mushroom(this.getGame(), this.gridX, curPos));
+			
+			Mushroom.generateAtGrid((int) this.gridX, curPos);
 			this.numDropped++;
 		}
 	}

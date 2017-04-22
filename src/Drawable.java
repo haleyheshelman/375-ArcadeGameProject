@@ -16,7 +16,7 @@ public interface Drawable {
 	 * @return the fill color
 	 */
 	Color getColor();
-
+	
 	/**
 	 * Gets the shape the should be drawn to represent this object.
 	 * 
@@ -41,12 +41,4 @@ public interface Drawable {
 	default BufferedImage getImage() throws IOException {
 		return null;
 	}
-
-	/**
-	 * Sets the image of the object.
-	 *
-	 * @param image
-	 */
-	void setImage(BufferedImage image);
-
 }

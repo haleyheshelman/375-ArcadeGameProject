@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -12,43 +11,52 @@ import java.util.Random;
  */
 public class Bonus extends Dieable {
 
+	public static final int BOMB_TYPE = 1;
+	public static final int SCORE_TYPE = 2;
+	public static final int LIFE_TYPE = 3;
+
 	protected static Random rand = new Random();
 	protected int BonusType = 0;
 	private int BonusTimeLimit = 5000;
+
+	public Bonus() {
+		this(0, 0);
+	}
 
 	/**
 	 * Constructs a Bonus in the given ArcadeGame.
 	 *
 	 * @param game
 	 */
-	public Bonus(ArcadeGame game) {
-		super(game, 0, 0);
+	private Bonus(int x, int y) {
+		super(0, 0);
 		this.setVelocityX(0);
 		this.setVelocityY(0);
-		int gridY = getRandY();
-		int gridX = getRandX();
-		this.setTLPoint(new Point2D.Double(gridX * Dieable.GRID_SIZE, gridY
-				* Dieable.GRID_SIZE));
-		setBonusType(); 
-		setColor(this.BonusType);
+		this.setTLPoint(new Point2D.Double(x, y));
+		setBonusType(getRandBonusType());
+		setColor(getBonusType());
 	}
 
 	protected void setColor(int type) {
-		if (type == 1) {
+		switch (type) {
+		case BOMB_TYPE:
 			this.setColor(Color.GRAY);
-		} else if (type == 2) {
+			break;
+		case SCORE_TYPE:
 			this.setColor(Color.YELLOW);
-		} else {
+			break;
+
+		case LIFE_TYPE:
 			this.setColor(Color.ORANGE);
+			break;
+		default:
+			System.err.println("invalid bonus type");
+			break;
 		}
 	}
-	
-	/*
-	 * This might seem like needless indirection
-	 * but it's for the purpose of testing 
-	 */
-	protected void setBonusType() {
-		this.BonusType = getRandBonusType();
+
+	protected void setBonusType(int type) {
+		this.BonusType = type;
 	}
 
 	protected int getRandBonusType() {
@@ -56,40 +64,53 @@ public class Bonus extends Dieable {
 	}
 
 	protected int getRandY() {
-		int gridY = rand.nextInt(6) + 11;
-		return gridY;
+		return rand.nextInt(6) + 11;
 	}
 
 	protected int getRandX() {
-		int gridX = rand.nextInt(20);
-		return gridX;
+		return rand.nextInt(20);
 	}
-	
-	protected int getBonusTyp(){
+
+	protected int getBonusType() {
 		return this.BonusType;
 	}
 
 	/**
 	 * When player touches the Bonus, he can get extra scores, life or bomb.
+	 * While the bonus does not actually 'move', this method is used because it
+	 * is already called on every refresh.
 	 */
 	@Override
 	public void move() {
-		if (System.currentTimeMillis() - this.getGame().lastBonusTime > this.BonusTimeLimit) {
+		if (expired()) {
 			this.die();
 		}
 		if (this.checkObtain()) {
-			if (this.BonusType == 1) {
-				this.getGame().getShip().bombsRemaining = 5;
-			} else if (this.BonusType == 2) {
-				this.getGame().score += 1000;
-				Main.scoreboard.changeScore(this.getGame().score);
-			} else {
-				this.getGame().lives++;
-				Main.scoreboard.changeLives(this.getGame().lives);
-			}
-			this.die();
+			activateBonus(this.getBonusType());
 		}
 		this.BonusTimeLimit--;
+	}
+
+	private void activateBonus(int bonusNum) {
+		switch (bonusNum) {
+		case 1:
+			Bomb.setBombsRemaining(5);
+			break;
+		case 2:
+			getGame().score += 1000;
+			Main.scoreboard.changeScore(getGame().score);
+			break;
+
+		default:
+			getGame().lives++;
+			Main.scoreboard.changeLives(getGame().lives);
+			break;
+		}
+	}
+
+	private boolean expired() {
+		return System.currentTimeMillis()
+				- getGame().lastBonusTime > this.BonusTimeLimit;
 	}
 
 	/**
@@ -98,15 +119,10 @@ public class Bonus extends Dieable {
 	 * @return
 	 */
 	public boolean checkObtain() {
-		ArrayList<Dieable> objsToCheck = new ArrayList<>();
-		objsToCheck.add(this.getGame().getShip());
-		boolean hit = false;
-		Dieable intersectObject = this.intersectsObject(objsToCheck);
-		if (intersectObject != null) {
-			hit = true;
-		}
-
-		return hit;
+		boolean res = this.getShape().intersects(
+				Dieable.getGame().getShip().getShape().getBounds2D());
+		System.out.println("RL " + res);
+		return res;
 	}
 
 	/**
@@ -114,9 +130,12 @@ public class Bonus extends Dieable {
 	 */
 	@Override
 	public Shape getShape() {
-		double x = getTLPoint().getX();
-		double y = getTLPoint().getY();
-		return new Ellipse2D.Double(x + this.gap, y + this.gap, this.width,
-				this.height);
+		return new Ellipse2D.Double(getX() + this.gap, getY() + this.gap,
+				this.width, this.height);
+	}
+
+	@Override
+	public void add() {
+		getGame().add_bonus(this);
 	}
 }

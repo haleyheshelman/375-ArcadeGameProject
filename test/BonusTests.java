@@ -1,81 +1,108 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class BonusTests {
-	static ArcadeGame ag; 
-	static Bonus b; 
-	static int offset =  Dieable.GRID_SIZE; 
-	
-	@Before 
+	static ArcadeGame ag;
+	static Bonus b;
+	static int offset = ArcadeGame.GRID_SIZE;
+	public static int X;
+	public static int Y;
+	public static int BONUS_TYPE;
+
+	@Before
 	public void setUp() throws Exception {
 		Main.scoreboard = new Scoreboard();
-		ag = new ArcadeGame(318, 400); 
-		b = new Bonus(ag) {
+		ag = new ArcadeGame();
+		b = new Bonus() {
 			@Override
-			public int getRandX(){
-				return 100; 
+			protected int getRandX() {
+				X = super.getRandX();
+				return X;
 			}
-			
-			@Override 
-			public int getRandY(){
-				return 150;
+
+			@Override
+			protected int getRandY() {
+				Y = super.getRandY();
+				return Y;
 			}
-			
-			@Override 
+
+			@Override
 			public int getRandBonusType() {
-				return 1;
-			}
-			
-			@Override 
-			public boolean checkObtain() {
-				return true; 
+				BONUS_TYPE = super.getRandBonusType();
+				return BONUS_TYPE;
 			}
 		};
 	}
-	
+
+	@Test
+	public void testAdd() {
+		long timeBefore = System.currentTimeMillis();
+		b.add();
+		long timeAfter = System.currentTimeMillis();
+		assertTrue(timeBefore <= ag.lastBonusTime);
+		assertTrue(timeAfter >= ag.lastBonusTime);
+	}
+
 	@Test
 	public void testCreateBonus() {
 		assertFalse(ag.getDieableParts().contains(b));
 		ag.addObject(b);
 		assertTrue(ag.getDieableParts().contains(b));
-		assertEquals(100*offset, b.getX(),0); 
-		assertEquals(150*offset, b.getY(), 0);
+		assertEquals(X * offset, b.getX(), 0);
+		assertEquals(Y * offset, b.getY(), 0);
 	}
-	
+
 	@Test
-	public void testSetBonusType() {
-		assertEquals(1, b.getBonusTyp());
-		assertEquals(Color.GRAY, b.getColor()); 
-		
-	}
-	
-	@Test 
 	public void testSetColor() {
-		assertEquals(Color.GRAY, b.getColor()); 
-		b.setColor(2);
-		assertEquals(Color.YELLOW, b.getColor()); 
-		b.setColor(3);
+		b.setColor(Bonus.BOMB_TYPE);
+		assertEquals(Color.GRAY, b.getColor());
+		b.setColor(Bonus.SCORE_TYPE);
+		assertEquals(Color.YELLOW, b.getColor());
+		b.setColor(Bonus.LIFE_TYPE);
 		assertEquals(Color.ORANGE, b.getColor());
 	}
-	
+
 	@Test
 	public void testMove() {
-		ag.getShip().decrementBombsRemaining();
-		ag.getShip().decrementBombsRemaining();
-		ag.getShip().decrementBombsRemaining();
-		ag.getShip().decrementBombsRemaining();
-		assertEquals(1, ag.getShip().bombsRemaining);
-		b.move(); 
-		assertEquals(5, ag.getShip().bombsRemaining);
+		b.setBonusType(1);
+		int startVal = Bomb.getBombsRemaining();
+		while (Bomb.getBombsRemaining() > 1) {
+			Bomb.decrementBombsRemaining();
+			assertEquals(--startVal, Bomb.getBombsRemaining());
+		}
+		assertEquals(1, Bomb.getBombsRemaining());
+		new Ship(X + 3, Y + 3).add();
+		System.out.println("Move 1");
+		b.move();
+		assertEquals(1, Bomb.getBombsRemaining());
+		new Ship(X, Y).add();
+		System.out.println("Move 2");
+		b.move();
+
+		assertEquals(5, Bomb.getBombsRemaining());
+
 	}
-	
 
+	@Test
+	public void testCheckObtain() {
+		new Ship(X + 2, Y + 2).add();
+		System.out.println(b.getShape().getBounds2D());
+		System.out
+				.println(Dieable.getGame().getShip().getShape().getBounds2D());
+		System.out.println(b.getShape().intersects(
+				Dieable.getGame().getShip().getShape().getBounds2D()));
+		boolean res = b.checkObtain();
 
-
+		System.out.println(res);
+		assertFalse(res);
+		new Ship(X, Y).add();
+		assertTrue(b.checkObtain());
+	}
 
 }

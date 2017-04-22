@@ -3,7 +3,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
- * The main class for your arcade game. 
+ * The main class for your arcade game.
  * 
  * @author Buffalo
  *
@@ -21,11 +21,17 @@ public class Main {
 	protected static StartScreen startScreen;
 
 	public static void main(String[] args) throws IOException {
+		boolean mute = false;
+		if (args != null)
+			for (String s : args)
+				mute = mute | s.equals("mute");
+
 		frameSetup();
 		scoreboard = new Scoreboard();
-		ArcadeGame game = new ArcadeGame(FRAME_HEIGHT - 87 - IMAGE_HEIGHT,
-				getFrameWidth() - 18);
-		startScreen = new StartScreen(game, frame, scoreboard);
+//		ArcadeGame game = new ArcadeGame(FRAME_HEIGHT - 87 - IMAGE_HEIGHT,
+//				getFrameWidth() - 18);
+		ArcadeGame game = ArcadeGame.getInstance();
+		startScreen = new StartScreen(game, frame, scoreboard, mute);
 		displayFrame();
 	}
 

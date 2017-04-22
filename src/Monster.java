@@ -13,11 +13,11 @@ public abstract class Monster extends Dieable {
 	 * Constructs a monster with the specific location in the arcade game.
 	 *
 	 * @param game
-	 * @param gridX
-	 * @param gridY
+	 * @param pixelX
+	 * @param pixelY
 	 */
-	public Monster(ArcadeGame game, double gridX, double gridY) {
-		super(game, gridX, gridY);
+	public Monster(int pixelX, int pixelY) {
+		super(pixelX, pixelY);
 
 		// in most cases, velocity y = velocity x.
 		this.setVelocityX(DEF_MONST_VEL);

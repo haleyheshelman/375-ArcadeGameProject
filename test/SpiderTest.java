@@ -1,6 +1,5 @@
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,13 +14,13 @@ public class SpiderTest {
 	public void setUp() throws Exception {
 		System.out.println("setup");
 		Main.scoreboard = new Scoreboard(); 
-		g = new ArcadeGame(318, 400){
+		g = new ArcadeGame(){
 			@Override 
 			public void addObject(Dieable objToAdd){
 				this.monsters.add(objToAdd);
 			}
 		};
-		spidey = new Spider (g){
+		spidey = new Spider (){
 			@Override 
 			public int getRandomSwitch() {
 				return 2;
@@ -37,8 +36,7 @@ public class SpiderTest {
 	@Test 
 	public void testSetup() {
 		assertFalse(g.getDieableParts().contains(spidey)); 
-		assertFalse(g.getDieableParts().contains(spidey)); 
-		g.addObject(spidey); 
+		spidey.add();
 		assertTrue(g.getDieableParts().contains(spidey));
 	}
 	
