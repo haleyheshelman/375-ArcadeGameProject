@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -305,7 +304,7 @@ public class Centipede extends Monster {
 				imagePath = damagedImgs[ind];
 			}
 		}
-		return ImageIO.read(new File(imagePath));
+		return ImageIO.read(Main.ResourceInputStream(imagePath));
 	}
 	
 	

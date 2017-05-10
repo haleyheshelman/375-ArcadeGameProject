@@ -1,5 +1,4 @@
 import java.awt.geom.Point2D;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -192,10 +191,11 @@ public class ArcadeGame {
 		readLevelFromFile(textFile);
 	}
 
-	private static void readLevelFromFile(String textFile)
-			throws FileNotFoundException {
+	private static void readLevelFromFile(String fileName) {
 		int gridY = 0;
-		Scanner input = new Scanner(new File(textFile));
+
+		Scanner input = new Scanner(Main.ResourceInputStream(fileName));
+
 		while (input.hasNextLine()) {
 			String row = input.nextLine();
 			for (int gridX = 0; gridX < row.length(); gridX++) {

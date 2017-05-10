@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -67,7 +66,7 @@ public class HighestScoresBoard {
 		BufferedImage image = null;
 
 		try {
-			image = ImageIO.read(new File("centipedeMainImage.png"));
+			image = ImageIO.read(Main.ResourceInputStream("centipedeMainImage.png"));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -81,7 +80,7 @@ public class HighestScoresBoard {
 	 * @throws FileNotFoundException
 	 */
 	public void scanFile() throws FileNotFoundException {
-		Scanner input = new Scanner(new File("HighestScores.txt"));
+		Scanner input = new Scanner(Main.ResourceInputStream("HighestScores.txt"));
 		for (int i = 0; i < 5; i++) {
 			this.playerNames[i] = input.next();
 			this.topScores[i] = input.nextInt();

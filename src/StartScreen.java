@@ -6,8 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -59,7 +57,8 @@ public class StartScreen {
 
 		// Loads and plays the music in the game
 		if (!mute) {
-			InputStream in = new FileInputStream("gameSound.wav");
+			InputStream in = Main.class
+					.getResourceAsStream("gameSound.wav");
 			AudioStream audioStream = new AudioStream(in);
 			AudioPlayer.player.start(audioStream);
 		}
@@ -82,9 +81,9 @@ public class StartScreen {
 	public void initImage() {
 
 		BufferedImage image = null;
-
+		
 		try {
-			image = ImageIO.read(new File("centipedeMainImage.png"));
+			image = ImageIO.read(Main.ResourceInputStream("centipedeMainImage.png"));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -158,7 +157,6 @@ public class StartScreen {
 
 			@Override
 			public void actionPerformed(ActionEvent y) {
-
 				startGame();
 			}
 		});

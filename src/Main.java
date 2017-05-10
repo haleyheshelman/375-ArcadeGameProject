@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.JFrame;
 
@@ -52,6 +53,10 @@ public class Main {
 
 	public static int getFrameWidth() {
 		return FRAME_WIDTH;
+	}
+	
+	public static InputStream ResourceInputStream(String filename){
+		return Main.class.getResourceAsStream(filename);
 	}
 
 }

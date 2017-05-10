@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -193,7 +192,7 @@ public class Ship extends Dieable {
 	
 	@Override
 	public BufferedImage getImage() throws IOException{
-		return ImageIO.read(new File("shipFinal.png"));
+		return ImageIO.read(Main.ResourceInputStream("shipFinal.png"));
 	}
 	
 	

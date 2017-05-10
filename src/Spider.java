@@ -2,7 +2,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
@@ -149,6 +148,6 @@ public class Spider extends Monster {
 			imagePath = "spiderFinal.png";
 		}
 
-		return ImageIO.read(new File(imagePath));
+		return ImageIO.read(Main.ResourceInputStream(imagePath));
 	}
 }

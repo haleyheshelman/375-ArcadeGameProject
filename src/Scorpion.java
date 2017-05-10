@@ -3,7 +3,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -80,7 +79,7 @@ public class Scorpion extends Monster {
 
 	@Override
 	public BufferedImage getImage() throws IOException {
-		return ImageIO.read(new File("scorpionFinal.png"));
+		return ImageIO.read(Main.ResourceInputStream("scorpionFinal.png"));
 	}
 
 }

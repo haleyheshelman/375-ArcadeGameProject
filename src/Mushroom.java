@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -155,7 +154,7 @@ public class Mushroom extends Dieable {
 				break;
 			}
 		}
-		return ImageIO.read(new File(imagePath));
+		return ImageIO.read(Main.ResourceInputStream(imagePath));
 	}
 
 }
