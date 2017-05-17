@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -87,18 +89,30 @@ public class ArcadeGameComponent extends JComponent {
 		}
 	}
 
+	static BufferedImage background = loadBackgroundImage();
+
+	static BufferedImage loadBackgroundImage() {
+		try {
+			return ImageIO.read(new File("resources/gameBackground.png"));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+			return null;
+		}
+	}
+
 	/**
 	 * Draw the background
 	 *
 	 * @param graphics
 	 */
 	private void drawBackground(Graphics2D graphics) {
-		BufferedImage image = null;
-
 		try {
-			image = ImageIO.read(Main.ResourceInputStream("gameBackground.png"));
-			graphics.drawImage(image, 0, 0, ArcadeGame.width, ArcadeGame.height + 40,
-					Color.BLACK, this);
+			// image =
+			// ImageIO.read(Main.ResourceInputStream("gameBackground.png"));
+			// still laggy
+
+			graphics.drawImage(background, 0, 0, ArcadeGame.width,
+					ArcadeGame.height + 40, Color.BLACK, this);
 
 		} catch (Exception exception) {
 			exception.printStackTrace();

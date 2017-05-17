@@ -2,10 +2,6 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents the Scorpion in the Arcade Game.
@@ -78,8 +74,8 @@ public class Scorpion extends Monster {
 	}
 
 	@Override
-	public BufferedImage getImage() throws IOException {
-		return ImageIO.read(Main.ResourceInputStream("scorpionFinal.png"));
+	public String getImageString() {
+		return "scorpionFinal.png";
 	}
 
 }

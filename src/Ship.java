@@ -1,9 +1,5 @@
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents the ship in the arcade game.
@@ -33,7 +29,7 @@ public class Ship extends Dieable {
 	 */
 	public Ship(int gridX, int gridY) {
 		super(gridX, gridY);
-		//TODO: magic numbers
+		// TODO: magic numbers
 		this.setColor(Color.RED);
 		this.setVelocityX(2.5);
 		this.setVelocityY(4);
@@ -186,16 +182,15 @@ public class Ship extends Dieable {
 		lastFiredTime = currentTime;
 		double coordinateX = this.getCenterPoint().getX();
 		double coordinateY = this.getCenterPoint().getY() - 10;
-		
+
 		Projectile.spawn(getProjectileType(), coordinateX, coordinateY);
 	}
-	
+
 	@Override
-	public BufferedImage getImage() throws IOException{
-		return ImageIO.read(Main.ResourceInputStream("shipFinal.png"));
+	public String getImageString() {
+		return "shipFinal.png";
 	}
-	
-	
+
 	@Override
 	void add() {
 		getGame().setShip(this);

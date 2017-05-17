@@ -1,10 +1,7 @@
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents the mushrooms in the arcade game.
@@ -145,7 +142,7 @@ public class Mushroom extends Dieable {
 	}
 
 	@Override
-	public BufferedImage getImage() throws IOException {
+	public String getImageString() {
 
 		String imagePath = null;
 		for (int level : health_level_arr) {
@@ -154,7 +151,7 @@ public class Mushroom extends Dieable {
 				break;
 			}
 		}
-		return ImageIO.read(Main.ResourceInputStream(imagePath));
+		return imagePath;
 	}
 
 }

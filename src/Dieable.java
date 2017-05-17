@@ -2,7 +2,13 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents the creatures in the arcade game.
@@ -234,6 +240,34 @@ public abstract class Dieable implements Drawable {
 	 */
 	void add() {
 		getGame().addObject(this);
+	}
+
+	protected String getImageString() {
+		return null;
+	}
+
+	private Map<String, BufferedImage> imageMap = new HashMap<>();
+
+	@Override
+	final public BufferedImage getImage() throws IOException {
+		String imageString = this.getImageString();
+		if (imageString == null || imageString.isEmpty())
+			return null;
+
+		if (!this.imageMap.containsKey(imageString)) {
+			try {
+				this.imageMap.put(imageString,
+						ImageIO.read(Main.ResourceFile(imageString)));
+			} catch (IOException exception) {
+				System.err.println(imageString);
+				System.err.println(this.getClass().getName());
+				exception.printStackTrace();
+				System.exit(1);
+			}
+
+		}
+
+		return this.imageMap.getOrDefault(imageString, null);
 	}
 
 }

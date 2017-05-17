@@ -3,7 +3,8 @@ import java.awt.geom.Point2D;
 
 public class Zombie extends Monster {
 	private static final int ZOMBIE_SCORE = 10;
-	private static final double yShiftMax = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
+	private static final double yShiftMax = ArcadeGame.GRID_SIZE
+			/ DEF_MONST_VEL;
 
 	private boolean movingRight;
 	private boolean moveDown;
@@ -76,5 +77,4 @@ public class Zombie extends Monster {
 	protected boolean checkMoveDown() {
 		return this.moveDown;
 	}
-
 }

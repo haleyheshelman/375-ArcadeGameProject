@@ -193,8 +193,9 @@ public class ArcadeGame {
 
 	private static void readLevelFromFile(String fileName) {
 		int gridY = 0;
-
-		Scanner input = new Scanner(Main.ResourceInputStream(fileName));
+		Scanner input = null;
+		System.out.println("HERE");
+		input = new Scanner(ArcadeGame.class.getResourceAsStream(fileName));
 
 		while (input.hasNextLine()) {
 			String row = input.nextLine();
@@ -271,7 +272,11 @@ public class ArcadeGame {
 	protected void moveDieables() {
 		List<Dieable> dieableParts = this.getDieableParts();
 		for (Dieable curDie : dieableParts) {
-			curDie.move();
+			try {
+				curDie.move();
+			} catch (NullPointerException ex) {
+				this.MM.removeObject(this, curDie);
+			}
 		}
 	}
 

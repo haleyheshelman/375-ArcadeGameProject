@@ -1,10 +1,6 @@
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents the Flea in the Arcade Game.
@@ -90,7 +86,7 @@ public class Flea extends Monster {
 			} else {
 				this.mush2Y = -100;
 			}
-			
+
 			new Mushroom(this.gridX, curPos).add();
 			this.numDropped++;
 		}
@@ -115,7 +111,7 @@ public class Flea extends Monster {
 	}
 
 	@Override
-	public BufferedImage getImage() throws IOException {
-		return ImageIO.read(Main.ResourceInputStream("fleaFinal.png"));
+	public String getImageString() {
+		return "fleaFinal.png";
 	}
 }

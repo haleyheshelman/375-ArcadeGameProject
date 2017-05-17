@@ -57,8 +57,7 @@ public class StartScreen {
 
 		// Loads and plays the music in the game
 		if (!mute) {
-			InputStream in = Main.class
-					.getResourceAsStream("gameSound.wav");
+			InputStream in = Main.class.getResourceAsStream("gameSound.wav");
 			AudioStream audioStream = new AudioStream(in);
 			AudioPlayer.player.start(audioStream);
 		}
@@ -74,21 +73,16 @@ public class StartScreen {
 		this.mainFrame.add(this.startGameButton, BorderLayout.SOUTH);
 	}
 
+	BufferedImage topImage = ImageIO
+			.read(getClass().getResourceAsStream("centipedeMainImage.png"));
+
 	/**
 	 * Loads the image in the title screen and saves it to a panel
 	 * 
 	 */
 	public void initImage() {
 
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(Main.ResourceInputStream("centipedeMainImage.png"));
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-
-		this.titleImage = new JLabel(new ImageIcon(image));
+		this.titleImage = new JLabel(new ImageIcon(this.topImage));
 	}
 
 	/**

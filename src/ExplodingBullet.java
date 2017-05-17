@@ -12,7 +12,7 @@ public class ExplodingBullet extends Projectile {
 	@Override
 	void setUniques() {
 		this.setDamage(INITIAL_DAMAGE);
-		this.setColor(Color.BLUE);
+		this.setColor(Color.CYAN);
 	}
 
 	public ExplodingBullet(double px, double py) {
@@ -46,5 +46,5 @@ public class ExplodingBullet extends Projectile {
 		b.setColor(Color.CYAN);
 		getGame().addObject(b);
 	}
-	
+
 }

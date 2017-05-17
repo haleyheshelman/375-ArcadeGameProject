@@ -1,9 +1,5 @@
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents a specific kind of monster in the arcade game.
@@ -11,7 +7,8 @@ import javax.imageio.ImageIO;
  * @author deradaam, lub, and verlaqd. Created Nov 6, 2015.
  */
 public class Centipede extends Monster {
-	private static final double yShiftMax = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
+	private static final double yShiftMax = ArcadeGame.GRID_SIZE
+			/ DEF_MONST_VEL;
 	private static final int CENTIPEDE_SCORE = 400;
 
 	protected int xDirection = 1; // 1 is right, -1 is left
@@ -20,7 +17,8 @@ public class Centipede extends Monster {
 	private double yShiftCount = 0;
 	private boolean yShifting = false;
 
-	private static final double POISON_SHIFT_MAX = ArcadeGame.GRID_SIZE / DEF_MONST_VEL;
+	private static final double POISON_SHIFT_MAX = ArcadeGame.GRID_SIZE
+			/ DEF_MONST_VEL;
 	private final static double POISON_SHIFT_OFFSET = (Dieable.GAP_SIZE * 2);
 	private double firstPoisonMovement = 1;
 
@@ -105,9 +103,11 @@ public class Centipede extends Monster {
 			this.poisonDir = (this.poisonDir + 1) % 4;
 
 			if (this.poisonDir == 0) {
+				// going down
 				this.yDirection = 1;
 				this.xDirection = 0;
 			} else if (this.poisonDir == 1) {
+				// going right
 				this.yDirection = 0;
 				this.xDirection = this.poisonXDirOriginal;
 				if (this.firstPoisonMovement == 1) {
@@ -116,9 +116,11 @@ public class Centipede extends Monster {
 					this.firstPoisonMovement = 0;
 				}
 			} else if (this.poisonDir == 2) {
+				// going down again
 				this.yDirection = 1;
 				this.xDirection = 0;
 			} else if (this.poisonDir == 3) {
+				// going left
 				this.yDirection = 0;
 				this.xDirection = this.poisonXDirOriginal * -1;
 			}
@@ -128,7 +130,8 @@ public class Centipede extends Monster {
 				this.getTLPoint().getY()
 						+ this.getVelocityY() * this.yDirection));
 
-		if ((int) (this.getY() / ArcadeGame.GRID_SIZE) == ArcadeGame.BOTTOM_PLAYER_AREA) {
+		if ((int) (this.getY()
+				/ ArcadeGame.GRID_SIZE) == ArcadeGame.BOTTOM_PLAYER_AREA) {
 			this.poisoned = false;
 			this.yShifting = false;
 			this.yDirection = -1;
@@ -176,8 +179,8 @@ public class Centipede extends Monster {
 
 			Mushroom droppedMushroom = new Mushroom((int) curXGrid,
 					(int) curYGrid);
-			if (droppedMushroom.intersectsObject(
-					getGame().getMushrooms()) == null)
+			if (droppedMushroom
+					.intersectsObject(getGame().getMushrooms()) == null)
 				getGame().addObject(droppedMushroom);
 			getGame().MM.removeObject(getGame(), this);
 		}
@@ -260,7 +263,8 @@ public class Centipede extends Monster {
 
 		// If we're at the top or bottom, set direction accordingly and round
 		// the y value to take care of boundary/pixel issues.
-		if ((int) curY / ArcadeGame.GRID_SIZE == ArcadeGame.BOTTOM_PLAYER_AREA) {
+		if ((int) curY
+				/ ArcadeGame.GRID_SIZE == ArcadeGame.BOTTOM_PLAYER_AREA) {
 			this.yDirection = -1;
 			return ArcadeGame.BOTTOM_PLAYER_AREA * ArcadeGame.GRID_SIZE;
 		} else if ((int) curY / ArcadeGame.GRID_SIZE == 0) {
@@ -291,7 +295,7 @@ public class Centipede extends Monster {
 			"centipedeFinalDamaged.png" };
 
 	@Override
-	public BufferedImage getImage() throws IOException {
+	public String getImageString() {
 		String imagePath;
 		// right = 1 -> 1; left = -1 -> 0
 		int ind = (this.xDirection + 1) / 2;
@@ -304,9 +308,9 @@ public class Centipede extends Monster {
 				imagePath = damagedImgs[ind];
 			}
 		}
-		return ImageIO.read(Main.ResourceInputStream(imagePath));
+		// return ImageIO.read(Main.ResourceInputStream(imagePath));
+		// still laggy
+		return imagePath;
 	}
-	
-	
 
 }

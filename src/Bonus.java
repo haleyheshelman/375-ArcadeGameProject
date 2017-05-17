@@ -32,7 +32,8 @@ public class Bonus extends Dieable {
 		super(0, 0);
 		this.setVelocityX(0);
 		this.setVelocityY(0);
-		this.setTLPoint(new Point2D.Double(x, y));
+		this.setTLPoint(new Point2D.Double(x * ArcadeGame.GRID_SIZE,
+				y * ArcadeGame.GRID_SIZE));
 		setBonusType(getRandBonusType());
 		setColor(getBonusType());
 	}
@@ -91,7 +92,7 @@ public class Bonus extends Dieable {
 		this.BonusTimeLimit--;
 	}
 
-	private void activateBonus(int bonusNum) {
+	private static void activateBonus(int bonusNum) {
 		switch (bonusNum) {
 		case 1:
 			Bomb.setBombsRemaining(5);

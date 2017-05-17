@@ -50,11 +50,8 @@ public class HighestScoresBoard {
 	 */
 	public HighestScoresBoard(ArcadeGame game, String inputName, int score) {
 		String name = inputName;
-		if (name == null) {
-			name = "";
-		}
-		if (name.isEmpty() || name.startsWith(" ")) {
-			name = "*";
+		if (name == null || name.isEmpty() || name.startsWith(" ")) {
+			name = "(null)";
 		}
 		this.game = game;
 		this.newName = name;
@@ -66,7 +63,7 @@ public class HighestScoresBoard {
 		BufferedImage image = null;
 
 		try {
-			image = ImageIO.read(Main.ResourceInputStream("centipedeMainImage.png"));
+			image = ImageIO.read(Main.ResourceFile("centipedeMainImage.png"));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -80,7 +77,7 @@ public class HighestScoresBoard {
 	 * @throws FileNotFoundException
 	 */
 	public void scanFile() throws FileNotFoundException {
-		Scanner input = new Scanner(Main.ResourceInputStream("HighestScores.txt"));
+		Scanner input = new Scanner(Main.ResourceFile("HighestScores.txt"));
 		for (int i = 0; i < 5; i++) {
 			this.playerNames[i] = input.next();
 			this.topScores[i] = input.nextInt();
@@ -116,7 +113,8 @@ public class HighestScoresBoard {
 	 * @throws FileNotFoundException
 	 */
 	public void outPut() throws FileNotFoundException {
-		java.io.PrintStream output = new java.io.PrintStream("HighestScores.txt");
+		java.io.PrintStream output = new java.io.PrintStream(
+				"HighestScores.txt");
 
 		// Adds the title of the highest scores board.
 		this.label = new JLabel("Top Board", SwingConstants.CENTER);
@@ -126,26 +124,32 @@ public class HighestScoresBoard {
 
 		// Adds the names and scores on the top.
 		for (int i = 0; i < 5; i++) {
-			//System.out.println(this.playerNames[i] + " " + this.topScores[i]);
+			// System.out.println(this.playerNames[i] + " " +
+			// this.topScores[i]);
 
 			this.nameLabel = new JLabel((i + 1) + ". " + this.playerNames[i]);
 			this.scoresLabel = new JLabel(this.topScores[i] + "");
 
 			JLabel leftLabel = new JLabel();
-			leftLabel.setPreferredSize(new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
+			leftLabel.setPreferredSize(
+					new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
 			leftLabel.setFont(new Font("Helvetica", Font.BOLD, FONT_SIZE));
 			this.panel.add(leftLabel);
 
-			this.nameLabel.setPreferredSize(new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
+			this.nameLabel.setPreferredSize(
+					new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
 			this.nameLabel.setFont(new Font("Helvetica", Font.BOLD, FONT_SIZE));
 			this.panel.add(this.nameLabel);
 
-			this.scoresLabel.setPreferredSize(new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
-			this.scoresLabel.setFont(new Font("Helvetica", Font.BOLD, FONT_SIZE));
+			this.scoresLabel.setPreferredSize(
+					new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
+			this.scoresLabel
+					.setFont(new Font("Helvetica", Font.BOLD, FONT_SIZE));
 			this.panel.add(this.scoresLabel);
 
 			JLabel rightLabel = new JLabel();
-			rightLabel.setPreferredSize(new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
+			rightLabel.setPreferredSize(
+					new Dimension(LABEL_WIDTH / 4, LABEL_HEIGHT));
 			rightLabel.setFont(new Font("Helvetica", Font.BOLD, FONT_SIZE));
 			this.panel.add(rightLabel);
 
@@ -162,10 +166,10 @@ public class HighestScoresBoard {
 		this.panel.add(this.label);
 
 		if (this.index == -1) {
-			//System.out.println("Sorry, you are not on the board");
+			// System.out.println("Sorry, you are not on the board");
 			this.label = new JLabel("Sorry, you are not on the board");
 		} else {
-			//System.out.println("Good Job!");
+			// System.out.println("Good Job!");
 			this.label = new JLabel("Good Job!");
 		}
 

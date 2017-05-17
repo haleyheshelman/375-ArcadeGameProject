@@ -1,5 +1,5 @@
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.swing.JFrame;
 
@@ -29,8 +29,8 @@ public class Main {
 
 		frameSetup();
 		scoreboard = new Scoreboard();
-//		ArcadeGame game = new ArcadeGame(FRAME_HEIGHT - 87 - IMAGE_HEIGHT,
-//				getFrameWidth() - 18);
+		// ArcadeGame game = new ArcadeGame(FRAME_HEIGHT - 87 - IMAGE_HEIGHT,
+		// getFrameWidth() - 18);
 		ArcadeGame game = ArcadeGame.getInstance();
 		startScreen = new StartScreen(game, frame, scoreboard, mute);
 		displayFrame();
@@ -54,9 +54,15 @@ public class Main {
 	public static int getFrameWidth() {
 		return FRAME_WIDTH;
 	}
-	
-	public static InputStream ResourceInputStream(String filename){
-		return Main.class.getResourceAsStream(filename);
+
+	public static File ResourceFile(String filename) {
+		if (filename == null)
+			return null;
+
+		String path = Main.class.getResource(filename).getFile();
+
+		return new File(path);
+		// return new File("resources/" + filename);
 	}
 
 }

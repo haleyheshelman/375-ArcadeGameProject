@@ -1,11 +1,7 @@
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 /**
  * Represents the spider in the Arcade Game.
@@ -140,7 +136,7 @@ public class Spider extends Monster {
 	}
 
 	@Override
-	public BufferedImage getImage() throws IOException {
+	public String getImageString() {
 		String imagePath;
 		if (this.getHealth() < Monster.DEF_MONST_HEALTH) {
 			imagePath = "spiderFinalDamaged.png";
@@ -148,6 +144,6 @@ public class Spider extends Monster {
 			imagePath = "spiderFinal.png";
 		}
 
-		return ImageIO.read(Main.ResourceInputStream(imagePath));
+		return imagePath;
 	}
 }
