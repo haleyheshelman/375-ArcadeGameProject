@@ -1,0 +1,4 @@
+Centipede poisoned movement: Zig-zags down, stops at the bottom of the screen (NOT top of player area)
+
+On level win: No mushrooms change. Centipede respawns. 
+On life loss: Partially damaged mushrooms are restored. Destroyed mushrooms stay destroyed. Monsters reset. 
